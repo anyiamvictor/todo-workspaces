@@ -1,0 +1,19 @@
+.taskDetail {
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .taskDetail h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .taskDetail p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  

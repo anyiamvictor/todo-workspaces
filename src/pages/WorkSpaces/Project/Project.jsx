@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";;
 import styles from "./Project.module.css";
 import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskModal";
 import BackButton from "../../../components/BackButton/BackButton";
+import TaskItem from "../../../components/TaskItem/TaskItem";
 
 function Project() {
   const { projectId } = useParams();
@@ -91,26 +92,21 @@ function Project() {
         </div>
 
       {loading ? <p>Loading...</p> : error ? <p>{error}</p> : (
-        <ul className={styles.taskList}>
-          {tasks.map(task => (
-            <li className={styles.taskItem} key={task.id}>
-              <h3>{task.title}</h3>
-              <p>{task.description}</p>
-              <p>Status: {task.status}</p>
-              <p>Assigned to: {task.assignedTo}</p>
-              <p>Due Date: {task.dueDate}</p>
-              <div className={styles.taskActions}>
-                <button onClick={() => handleDone(task.id)}>Done</button>
-                <button onClick={() => handleApprove(task.id)}>Approve</button>
-                <button onClick={() => handleReject(task.id)}>Reject</button>
-                <button onClick={() => {
-                  setEditingTask(task);
-                  setShowModal(true);
-                }}>Edit</button>
-              </div>
-            </li>
-          ))}
-        </ul>
+    <ul className={styles.taskList}>
+    {tasks.map((task) => (
+      <TaskItem
+        key={task.id}
+        task={task}
+        onDone={handleDone}
+        onApprove={handleApprove}
+        onReject={handleReject}
+        onEdit={(t) => {
+          setEditingTask(t);
+          setShowModal(true);
+        }}
+      />
+    ))}
+  </ul>
       )}
 
       {showModal && (

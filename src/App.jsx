@@ -14,11 +14,11 @@ import WorkspaceItem from "./pages/WorkSpaces/WorkspaceItem/WorkspaceItem";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import ProjectList from "./components/ProjectList/ProjectList";
 import Project from "./pages/WorkSpaces/Project/Project";
-import TaskDetail from "./pages/WorkSpaces/TaskDetail/TaskDetail";
 import AddEditTask from "./components/AddEditTaskModal/AddEditTaskModal";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Rootlayout from "./components/Rootlayout/Rootlayout";
 import Admin from "./pages/Admin/Admin";
+import TaskDetail from "./pages/WorkSpaces/TaskDetail/TaskDetail";
 
 function App() {
   return (

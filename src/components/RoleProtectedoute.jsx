@@ -6,12 +6,8 @@ function RoleProtectedRoute({ allowedRoles, children }) {
   const { user } = useAuth();
   const location = useLocation();
 
-  if (user === null) {
-    return <div>Loading...</div>; // You can replace this with a spinner if you like
-  }
-
   // Not logged in
-  if (!user) {
+  if (!user || user === null) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 

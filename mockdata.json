@@ -9,10 +9,12 @@
       "avatarUrl": "https://randomuser.me/api/portraits/women/1.jpg",
       "status": "active",
       "createdAt": "2024-01-01T08:00:00Z",
-      "lastLogin": "2025-06-08T09:30:00Z",
+      "lastSeen": "2025-06-08T09:30:00Z",
       "bio": "Project Manager at Marketing Team",
       "phoneNumber": "+2348012345671",
-      "groupId": "g1"
+      "groupId": "g1",
+      "isOnline": false,
+      "sessionToken": null
     },
     {
       "id": "u2",
@@ -23,10 +25,12 @@
       "avatarUrl": "https://randomuser.me/api/portraits/men/2.jpg",
       "status": "active",
       "createdAt": "2024-01-05T09:15:00Z",
-      "lastLogin": "2025-06-10T11:20:00Z",
+      "lastSeen": "2025-06-10T11:20:00Z",
       "bio": "Team Lead for Operations",
       "phoneNumber": "+2348012345672",
-      "groupId": "g1"
+      "groupId": "g1",
+      "isOnline": false,
+      "sessionToken": null
     },
     {
       "id": "u3",
@@ -37,10 +41,12 @@
       "avatarUrl": "https://randomuser.me/api/portraits/men/3.jpg",
       "status": "active",
       "createdAt": "2024-01-10T10:30:00Z",
-      "lastLogin": "2025-06-11T08:00:00Z",
+      "lastSeen": "2025-06-11T08:00:00Z",
       "bio": "Junior Analyst",
       "phoneNumber": "+2348012345673",
-      "groupId": "g1"
+      "groupId": "g1",
+      "isOnline": false,
+      "sessionToken": null
     },
     {
       "id": "u4",
@@ -51,10 +57,12 @@
       "avatarUrl": "https://randomuser.me/api/portraits/women/4.jpg",
       "status": "active",
       "createdAt": "2024-02-01T08:45:00Z",
-      "lastLogin": "2025-06-09T14:25:00Z",
+      "lastSeen": "2121-06-10T01:24:37.207Z",
       "bio": "Technical Manager for Development",
       "phoneNumber": "+2348012345674",
-      "groupId": "g2"
+      "groupId": "g2",
+      "isOnline": true,
+      "sessionToken": "78f46a5f-90d9-46b3-88a4-bd3e7dc062d7"
     },
     {
       "id": "u5",
@@ -65,10 +73,12 @@
       "avatarUrl": "https://randomuser.me/api/portraits/women/5.jpg",
       "status": "active",
       "createdAt": "2024-02-15T12:00:00Z",
-      "lastLogin": "2025-06-10T16:10:00Z",
+      "lastSeen": "2121-06-10T01:16:57.186Z",
       "bio": "Operations Coordinator",
       "phoneNumber": "+2348012345675",
-      "groupId": "g2"
+      "groupId": "g2",
+      "isOnline": true,
+      "sessionToken": "b4054134-79e9-4ab4-abf5-f75ff92fb9b1"
     },
     {
       "id": "u6",
@@ -79,10 +89,12 @@
       "avatarUrl": "https://randomuser.me/api/portraits/men/6.jpg",
       "status": "active",
       "createdAt": "2024-03-01T07:30:00Z",
-      "lastLogin": "2025-06-12T07:45:00Z",
+      "lastSeen": "2121-06-10T01:25:07.912Z",
       "bio": "Support Team Member",
       "phoneNumber": "+2348012345676",
-      "groupId": "g2"
+      "groupId": "g2",
+      "isOnline": true,
+      "sessionToken": "8598a502-12c1-424f-aa5a-efccc9f516be"
     },
     {
       "id": "u-a5adab62-b61c-4e83-b9d5-0846668e97d4",
@@ -94,9 +106,11 @@
       "role": "admin",
       "status": "active",
       "createdAt": "2025-06-12T17:18:37.672Z",
-      "lastLogin": null,
+      "lastSeen": "2121-06-09T23:30:07.576Z",
       "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
-      "avatarUrl": null
+      "avatarUrl": null,
+      "isOnline": false,
+      "sessionToken": null
     },
     {
       "id": "u-9de56aab-6604-4ce7-9c54-aad71ac3a5d1",
@@ -106,11 +120,13 @@
       "phoneNumber": "07013723537",
       "bio": "mee",
       "role": "member",
-      "status": "inactive",
+      "status": "active",
       "createdAt": "2025-06-12T17:22:49.222Z",
-      "lastLogin": null,
+      "lastSeen": "2025-06-13T09:28:55.542Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
+      "isOnline": false,
+      "sessionToken": null
     },
     {
       "id": "u-41aaa9bd-df26-4aad-9dda-bbe61334ebd7",
@@ -122,9 +138,11 @@
       "role": "member",
       "status": "active",
       "createdAt": "2025-06-12T17:24:30.860Z",
-      "lastLogin": null,
+      "lastSeen": "2025-06-13T09:32:01.511Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
+      "isOnline": false,
+      "sessionToken": null
     },
     {
       "id": "u-ae9dd0ae-cb14-40ef-a7f5-e1d8b7059544",
@@ -136,9 +154,60 @@
       "role": "member",
       "status": "active",
       "createdAt": "2025-06-12T17:48:02.829Z",
+      "lastSeen": null,
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
+      "isOnline": false,
+      "sessionToken": null
+    },
+    {
+      "id": "u-21d9d730-d1bc-4eec-9cc9-15d299be4c62",
+      "name": "aa",
+      "email": "aa@a.com",
+      "password": "leaves",
+      "phoneNumber": "07013723537",
+      "bio": "aa",
+      "role": "member",
+      "status": "active",
+      "isOnline": false,
+      "sessionToken": null,
+      "createdAt": "2025-06-13T08:22:46.704Z",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
+      "lastSeen": "2121-06-09T23:36:51.125Z"
+    },
+    {
+      "id": "u-8c1694c5-6a64-48d3-ae1c-6dcef6fe7613",
+      "name": "gigo",
+      "email": "gigo@gigo.com",
+      "password": "leaves",
+      "phoneNumber": "07013723537",
+      "bio": "gigo",
+      "role": "supervisor",
+      "status": "active",
+      "isOnline": false,
+      "createdAt": "2025-06-13T10:59:28.651Z",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
+      "sessionToken": null,
+      "lastSeen": "2025-06-13T12:00:24.969Z"
+    },
+    {
+      "id": "u-b6e0f51d-6eea-4062-b535-20d648c535b4",
+      "name": "new",
+      "email": "new@new.com",
+      "password": "new",
+      "phoneNumber": "07013723537",
+      "bio": "new user",
+      "role": "member",
+      "status": "active",
+      "isOnline": false,
+      "createdAt": "2121-06-10T00:51:27.284Z",
       "lastLogin": null,
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+      "groupId": "g2",
+      "sessionToken": null,
+      "lastSeen": "2121-06-10T01:24:24.519Z"
     }
   ],
   "groups": [
@@ -184,7 +253,61 @@
         "u5",
         "u6"
       ],
-      "groupId": "g-7d02bd74-dd77-40e9-a882-e9d281042062"
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+    },
+    {
+      "id": "ws1749815647193",
+      "name": "dcsdcs",
+      "description": "sdcsd",
+      "createdAt": "2025-06-13T11:54:07.193Z",
+      "ownerId": "u1",
+      "memberIds": [
+        "u6"
+      ],
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+    },
+    {
+      "id": "ws1749816097473",
+      "name": "dcsdcsdcsdscsdcs",
+      "description": "sdcscscscsdcSDCS",
+      "createdAt": "2025-06-13T12:01:37.473Z",
+      "ownerId": "u2",
+      "memberIds": [
+        "u3"
+      ],
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+    },
+    {
+      "id": "ws4778958054561",
+      "name": "admin tes",
+      "description": "admin",
+      "createdAt": "2121-06-10T00:20:54.561Z",
+      "ownerId": "u4",
+      "memberIds": [],
+      "groupId": "g2"
+    },
+    {
+      "id": "ws4778958290901",
+      "name": "Eva",
+      "description": "eva tester",
+      "createdAt": "2121-06-10T00:24:50.901Z",
+      "ownerId": "u5",
+      "memberIds": [],
+      "groupId": "g2"
+    },
+    {
+      "id": "ws4778961934324",
+      "name": "rfank",
+      "description": "frank\n",
+      "createdAt": "2121-06-10T01:25:34.324Z",
+      "ownerId": "u6",
+      "memberIds": [
+        "u4",
+        "u5",
+        "u6",
+        "u-b6e0f51d-6eea-4062-b535-20d648c535b4"
+      ],
+      "groupId": "g2"
     }
   ],
   "projects": [
@@ -263,6 +386,36 @@
         "u13",
         "u14"
       ]
+    },
+    {
+      "id": "4ba8",
+      "name": "fvdfdf",
+      "description": "dfvdfvdfvdfvdf",
+      "startDate": "2121-06-04",
+      "endDate": "2121-06-20",
+      "status": "pending",
+      "assignedUserIds": [],
+      "workspaceId": "ws1749816097473"
+    },
+    {
+      "id": "92f7",
+      "name": "timber and caliber",
+      "description": "timtim",
+      "startDate": "2121-06-04",
+      "endDate": "2121-06-13",
+      "status": "pending",
+      "assignedUserIds": [],
+      "workspaceId": "ws4778958290901"
+    },
+    {
+      "id": "dc72",
+      "name": "trial",
+      "description": "asasxas",
+      "startDate": "2121-06-10",
+      "endDate": "2121-06-27",
+      "status": "pending",
+      "assignedUserIds": [],
+      "workspaceId": "ws4778961934324"
     }
   ],
   "tasks": [
@@ -292,16 +445,6 @@
       "description": "Craft persuasive text for landing page.",
       "priority": "low",
       "dueDate": "2025-06-18",
-      "status": "not-started",
-      "projectId": "p1",
-      "assignedUserId": "u3"
-    },
-    {
-      "id": "t40",
-      "title": "Launch Beta Version",
-      "description": "Push live to staging environment.",
-      "priority": "high",
-      "dueDate": "2025-06-21",
       "status": "not-started",
       "projectId": "p1",
       "assignedUserId": "u3"
@@ -505,6 +648,36 @@
       "status": "not-started",
       "projectId": "p6",
       "assignedUserId": "u14"
+    },
+    {
+      "id": "d65b",
+      "title": "fvdfv",
+      "description": "fvdfvd",
+      "assignedTo": "fdfvdfv",
+      "dueDate": "",
+      "status": "in-progress",
+      "priority": "medium",
+      "projectId": "4ba8"
+    },
+    {
+      "id": "598e",
+      "title": "new try",
+      "description": "me",
+      "assignedTo": "u5",
+      "dueDate": "2121-06-10",
+      "status": "in-progress",
+      "priority": "medium",
+      "projectId": "92f7"
+    },
+    {
+      "id": "7ed8",
+      "title": "sxasx",
+      "description": "ZZxasdasasxas",
+      "assignedTo": "u6",
+      "dueDate": "2121-06-24",
+      "status": "in-progress",
+      "priority": "medium",
+      "projectId": "dc72"
     }
   ]
 }

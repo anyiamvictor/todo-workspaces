@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Authentication.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 function Authentication() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
 
   const [isLogin, setIsLogin] = useState(true);
@@ -23,6 +25,16 @@ function Authentication() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      if (user.role === "admin") {
+        navigate(`/admin/${user.groupId}`);
+      } else {
+        navigate("/dashboard");
+      }
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,21 +63,14 @@ function Authentication() {
             return;
           }
 
-          login(matchedUser);
-          if (matchedUser.role === "admin") {
-            navigate(`/admin/${matchedUser.groupId}`);
-          } else {
-            navigate("/dashboard");
-          }
+        await  login(matchedUser); // context will handle redirect
         } else {
           setError("Invalid email or password.");
         }
-
       } else {
         if (users.length > 0) {
           setError("Email already exists.");
         } else {
-          // Validate invite code
           const inviteRes = await fetch(`http://localhost:3001/groups?inviteCode=${formData.inviteCode}`);
           const matchedGroups = await inviteRes.json();
 
@@ -87,6 +92,7 @@ function Authentication() {
             bio: formData.bio,
             role: "member",
             status: "inactive",
+            isOnline: false,
             createdAt: new Date().toISOString(),
             lastLogin: null,
             avatarUrl: "https://randomuser.me/api/portraits/men/7.jpg",
@@ -127,102 +133,114 @@ function Authentication() {
     <div className={styles.authPage}>
       <h2>{isLogin ? "Login to Your Account" : "Create a New Account"}</h2>
 
+      <div className={`${styles.formWrapper} ${isLogin ? styles.slideInLogin : styles.slideInSignup}`}>
       <form className={styles.authForm} onSubmit={handleSubmit}>
-        {error && <div className={styles.errorMessage}>{error}</div>}
-
-        {!isLogin && (
-          <>
-            <div className={styles.formGroup}>
-              <label>Full Name</label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Phone Number</label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                placeholder="Enter your phone number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Group Invite Code</label>
-              <input
-                type="text"
-                name="inviteCode"
-                placeholder="Enter invite code from your admin"
-                value={formData.inviteCode}
-                onChange={handleChange}
-                required
-                className={inviteError ? styles.inputError : ""}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Bio</label>
-              <textarea
-                name="bio"
-                placeholder="Write a short bio"
-                value={formData.bio}
-                onChange={handleChange}
-                rows={3}
-                required
-              />
-            </div>
-          </>
-        )}
-
+  {error && <div className={styles.errorMessage}>{error}</div>}
+      
+    <AnimatePresence> {/* using framer to animate the signup/login form*/}
+    {!isLogin && (
+      <motion.div
+        key="signup-fields"
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: "auto" }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <div className={styles.formGroup}>
-          <label>Email</label>
+          <label>Full Name</label>
           <input
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            value={formData.email}
+            type="text"
+            name="name"
+            placeholder="Enter your full name"
+            value={formData.name}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label>Password</label>
-          <div className={styles.passwordInputWrapper}>
+          <label>Phone Number</label>
+          <input
+            type="tel"
+            name="phoneNumber"
+            placeholder="Enter your phone number"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>Group Invite Code</label>
+          <input
+            type="text"
+            name="inviteCode"
+            placeholder="Enter invite code from your admin"
+            value={formData.inviteCode}
+            onChange={handleChange}
+            required
+            className={inviteError ? styles.inputError : ""}
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>Bio</label>
+          <textarea
+            name="bio"
+            placeholder="Write a short bio"
+            value={formData.bio}
+            onChange={handleChange}
+            rows={3}
+            required
+          />
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+
+
+
+          <div className={styles.formGroup}>
+            <label>Email</label>
             <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
               onChange={handleChange}
               required
             />
-            <span
-              className={styles.eyeIcon}
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
-        </div>
 
-        <button
-          type="submit"
-          className={styles.submitButton}
-          disabled={loading}
-        >
-          {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
-        </button>
-      </form>
+          <div className={styles.formGroup}>
+            <label>Password</label>
+            <div className={styles.passwordInputWrapper}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <span
+                className={styles.eyeIcon}
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={loading}
+          >
+            Login
+          </button>
+        </form>
+      </div>
 
       <p className={styles.toggleText}>
         {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
@@ -239,7 +257,7 @@ function Authentication() {
         </button>
       </p>
     </div>
-  );
+  )
 }
 
 export default Authentication;

@@ -1,26 +1,73 @@
 import { useState, useEffect } from "react";
+import Select from "react-select";
 import styles from "./AddEditTaskModal.module.css";
-
+import { useAuth } from "../../contexts/AuthContext/AuthContext";
 
 function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
+  const { user } = useAuth();
+  const [groupUsers, setGroupUsers] = useState([]);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    assignedTo: "",
+    assignedTo: null,
     dueDate: "",
     status: "in-progress",
-    priority: "medium"
+    priority: "medium",
   });
 
   useEffect(() => {
     if (task) {
-      setFormData(task);
+      setFormData({
+        ...task,
+        assignedTo: task.assignedTo
+          ? {
+              value: task.assignedTo,
+              label: "",
+              avatarUrl: "",
+              isOnline: false,
+              isDisabled: false,
+            }
+          : null,
+      });
     }
   }, [task]);
 
+  useEffect(() => {
+    async function fetchGroupUsers() {
+      try {
+        const res = await fetch(`http://localhost:3001/users?groupId=${user.groupId}`);
+        const data = await res.json();
+
+        const filtered = data
+          .filter((u) => u.role === "member" || u.role === "supervisor")
+          .map((u) => ({
+            value: u.id,
+            label: u.name,
+            avatarUrl: u.avatarUrl,
+            isOnline: u.isOnline,
+            isDisabled: !u.isOnline,
+          }))
+          .sort((a, b) => Number(b.isOnline) - Number(a.isOnline));
+
+        setGroupUsers(filtered);
+      } catch (error) {
+        console.error("Failed to load users:", error);
+      }
+    }
+
+    if (user?.groupId) {
+      fetchGroupUsers();
+    }
+  }, [user?.groupId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (selectedOption) => {
+    setFormData((prev) => ({ ...prev, assignedTo: selectedOption }));
   };
 
   const handleSubmit = async (e) => {
@@ -33,7 +80,8 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
 
     const payload = {
       ...formData,
-      projectId
+      projectId,
+      assignedTo: formData.assignedTo?.value || "",
     };
 
     await fetch(url, {
@@ -45,6 +93,46 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
     onSuccess();
   };
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      opacity: state.data.isDisabled ? 0.5 : 1,
+      backgroundColor: state.isFocused ? "#eee" : "white",
+      color: "black",
+      cursor: state.data.isDisabled ? "not-allowed" : "default",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+    }),
+  };
+
+  const formatOptionLabel = ({ label, avatarUrl, isOnline }) => (
+    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", width: "100%" }}>
+      <img
+        src={avatarUrl}
+        alt={label}
+        style={{ width: 24, height: 24, borderRadius: "50%" }}
+      />
+      <span>{label}</span>
+      <span
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: "50%",
+          backgroundColor: isOnline ? "limegreen" : "gray",
+          marginLeft: "auto",
+        }}
+        title={isOnline ? "Online" : "Offline"}
+      ></span>
+    </div>
+  );
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
@@ -52,22 +140,47 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
         <form onSubmit={handleSubmit} className={styles.form}>
           <label>
             Title:
-            <input type="text" name="title" value={formData.title} onChange={handleChange} required />
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
           </label>
 
           <label>
             Description:
-            <textarea name="description" value={formData.description} onChange={handleChange} required />
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
           </label>
 
           <label>
             Assigned To:
-            <input type="text" name="assignedTo" value={formData.assignedTo} onChange={handleChange} />
+            <Select
+              options={groupUsers}
+              value={formData.assignedTo}
+              onChange={handleSelectChange}
+              placeholder="Assign to user"
+              styles={customStyles}
+              formatOptionLabel={formatOptionLabel}
+              isClearable
+              isOptionDisabled={(option) => option.isDisabled}
+            />
           </label>
 
           <label>
             Due Date:
-            <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} />
+            <input
+              type="date"
+              name="dueDate"
+              value={formData.dueDate}
+              onChange={handleChange}
+            />
           </label>
 
           <label>
@@ -79,9 +192,20 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
             </select>
           </label>
 
+          <label>
+            Status:
+            <select name="status" value={formData.status} onChange={handleChange}>
+              <option value="todo">To Do</option>
+              <option value="in-progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </label>
+
           <div className={styles.actions}>
             <button type="submit">{task ? "Update" : "Create"}</button>
-            <button type="button" onClick={onClose}>Cancel</button>
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </form>
       </div>

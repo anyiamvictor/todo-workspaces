@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
 import styles from "./WorkspaceModal.module.css";
 
-function WorkspaceModal({ onClose, onSubmit }) {
+function WorkspaceModal({ user, onClose, onSubmit }) {
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [errorUsers, setErrorUsers] = useState(null);
 
-  // Selected owner (single) and members (multiple)
-  const [selectedOwner, setSelectedOwner] = useState(null);
-  const [selectedMembers, setSelectedMembers] = useState([]);
-
-  // Form fields
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -32,37 +26,19 @@ function WorkspaceModal({ onClose, onSubmit }) {
     fetchUsers();
   }, []);
 
-  // Filter users by role
-  const adminUsers = users.filter((u) => u.role === "admin");
-  const memberUsers = users.filter((u) => u.role === "member");
-
-  // Map users to react-select options
-  const ownerOptions = adminUsers.map((u) => ({
-    value: u.id,
-    label: u.name,
-  }));
-
-  const memberOptions = memberUsers.map((u) => ({
-    value: u.id,
-    label: u.name,
-  }));
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!selectedOwner) {
-      alert("Please select an owner");
-      return;
-    }
-
+    const groupMembers = users.filter(
+      (u) => u.groupId === user.groupId && u.status === "active"
+    );
     const newWorkspace = {
       id: `ws${Date.now()}`,
       name,
       description,
       createdAt: new Date().toISOString(),
-      ownerId: selectedOwner.value,
-      memberIds: selectedMembers.map((m) => m.value),
-      
+      ownerId: user.id,
+      memberIds: groupMembers.map((u) => u.id),
+      groupId: user.groupId,
     };
 
     onSubmit(newWorkspace);
@@ -93,28 +69,6 @@ function WorkspaceModal({ onClose, onSubmit }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-            />
-          </label>
-
-          <label>
-            Owner (Admins only):
-            <Select
-              options={ownerOptions}
-              value={selectedOwner}
-              onChange={setSelectedOwner}
-              placeholder="Select owner"
-              isClearable
-            />
-          </label>
-
-          <label>
-            Members (Members only):
-            <Select
-              options={memberOptions}
-              value={selectedMembers}
-              onChange={setSelectedMembers}
-              placeholder="Select members"
-              isMulti
             />
           </label>
 

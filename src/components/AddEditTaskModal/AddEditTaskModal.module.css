@@ -87,3 +87,14 @@
 .actions button[type="button"]:hover {
   background-color: #c82333;
 }
+
+.react-select__control {
+  border-radius: 8px;
+  border-color: #ccc;
+  padding: 0.2rem;
+  font-size: 1rem;
+}
+
+.react-select__menu {
+  z-index: 9999;
+}

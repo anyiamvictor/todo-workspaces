@@ -1,0 +1,84 @@
+.container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .box {
+    text-align: center;
+    background-color: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  .code {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #dc3545;
+    margin: 0;
+  }
+  
+  .message {
+    font-size: 1.3rem;
+    color: #333;
+    margin: 1rem 0 2rem;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .btn,
+  .btnAlt {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-weight: 600;
+  }
+  
+  .btn {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .btnAlt {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btnAlt:hover {
+    background-color: #5a6268;
+  }
+
+  .subtitle {
+    font-size: 2rem;
+    color: #343a40;
+    margin-top: -1rem;
+  }
+  
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
