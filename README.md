@@ -1,12 +1,30 @@
-# React + Vite
+Todo Workspaces
+Todo Workspaces is a task management web app built with React. It helps users manage their todos within different workspaces. It is useful for small teams or individuals who want to group tasks by project or category and collaborate efficiently.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Features
+Users can create multiple workspaces to organize their tasks.
 
-Currently, two official plugins are available:
+Each workspace can contain multiple todo items.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Team members can mark tasks as completed.
 
-## Expanding the ESLint configuration
+Once marked as completed, a task becomes locked and cannot be edited unless unlocked.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Supervisors can review and either approve the task or unlock it for revisions.
+
+Built using Vite for fast development and performance.
+
+Navigation is handled with React Router.
+
+Global state and logic are managed using Redux Toolkit.
+
+Technologies Used
+React
+
+Vite
+
+Redux Toolkit
+
+React Router
+
+React Redux
