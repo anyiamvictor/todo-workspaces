@@ -1,3 +1,5 @@
+// src/pages/Workspaces/Workspace/Workspace.jsx
+import React from "react";
 import { useParams } from "react-router-dom";
 
 function Workspace() {
@@ -5,9 +7,9 @@ function Workspace() {
 
   return (
     <div>
-      <h1>Workspace Page</h1>
-      <p>Workspace ID: {workspaceId}</p>
-      {/* Later: Fetch workspace details using this ID */}
+      <h1>Workspace Overview</h1>
+      <p>This is the overview page for workspace <b>{workspaceId}</b>.</p>
+      {/* Add more workspace details here */}
     </div>
   );
 }

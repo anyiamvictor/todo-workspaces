@@ -1,14 +1,15 @@
+// src/pages/Workspaces/TaskDetail/TaskDetail.jsx
+import React from "react";
 import { useParams } from "react-router-dom";
 
 function TaskDetail() {
-  const { workspaceId, projectId, taskId } = useParams();
+  const { taskId } = useParams();
 
   return (
     <div>
       <h1>Task Detail</h1>
-      <p>Workspace ID: {workspaceId}</p>
-      <p>Project ID: {projectId}</p>
-      <p>Task ID: {taskId}</p>
+      <p>Details for task <b>{taskId}</b>.</p>
+      {/* Show task details and status here */}
     </div>
   );
 }
