@@ -1,0 +1,32 @@
+
+.rootContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+
+  }
+
+.rootLayout {
+    display: flex;
+   flex-direction: row;
+   height:90%;
+   /* width: 100%; */
+  }
+
+  .sidebar {
+    background-color: #222; 
+    color: whitesmoke;
+    overflow:hidden;
+
+  }
+  
+  .pageContent {
+    flex-grow: 1;
+    padding: 20px;
+  }
+
+  .footerContainer{
+
+  }
+  
