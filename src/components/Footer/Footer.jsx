@@ -5,7 +5,7 @@ function Footer() {
     <footer className={styles.footer}>
       <p>© 2025 Todo-Workspaces. All rights reserved.</p>
       <p>
-        Made with ❤️ by YourName
+        Made with ❤️ by anyiamvictor
       </p>
     </footer>
   );

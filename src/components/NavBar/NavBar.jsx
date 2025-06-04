@@ -6,6 +6,7 @@ function Navbar() {
     <nav className={styles.navbar}>
       <NavLink to="/" className={({ isActive }) => isActive ? styles.active : ""}>
         Home
+        {/* should be dashboard and logo should be home */}
       </NavLink>
       <NavLink to="/tasks" className={({ isActive }) => isActive ? styles.active : ""}>
         Tasks

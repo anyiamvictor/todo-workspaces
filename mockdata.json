@@ -1,0 +1,95 @@
+{
+  "workspaces": [
+    {
+      "id": "ws1",
+      "name": "Marketing Team",
+      "description": "Handles campaigns, branding, and social media engagement.",
+      "projects": [
+        {
+          "id": "p1",
+          "name": "Product Launch Q3",
+          "description": "Plan and execute the product launch for Q3.",
+          "tasks": [
+            { "id": "t1", "title": "Write press release", "status": "done" },
+            { "id": "t2", "title": "Create social media content", "status": "pending" },
+            { "id": "t3", "title": "Influencer outreach", "status": "in-progress" },
+            { "id": "t4", "title": "Email marketing setup", "status": "pending" }
+          ]
+        },
+        {
+          "id": "p2",
+          "name": "SEO Optimization",
+          "description": "Improve Google rankings for all major product pages.",
+          "tasks": [
+            { "id": "t5", "title": "Backlink audit", "status": "in-progress" },
+            { "id": "t6", "title": "Page speed optimization", "status": "pending" },
+            { "id": "t7", "title": "Fix broken links", "status": "done" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ws2",
+      "name": "Development Team",
+      "description": "Responsible for product development and deployment.",
+      "projects": [
+        {
+          "id": "p3",
+          "name": "Bug Fix Sprint",
+          "description": "Resolve urgent production bugs and QA issues.",
+          "tasks": [
+            { "id": "t8", "title": "Fix registration bug", "status": "done" },
+            { "id": "t9", "title": "Database timeout fix", "status": "in-progress" },
+            { "id": "t10", "title": "Broken image links", "status": "pending" }
+          ]
+        },
+        {
+          "id": "p4",
+          "name": "New Feature: Dark Mode",
+          "description": "Implement dark mode toggle in the UI.",
+          "tasks": [
+            { "id": "t11", "title": "Toggle switch UI", "status": "done" },
+            { "id": "t12", "title": "Theme logic", "status": "in-progress" },
+            { "id": "t13", "title": "Accessibility testing", "status": "pending" }
+          ]
+        },
+        {
+          "id": "p5",
+          "name": "API Refactor",
+          "description": "Migrate all APIs to v2 standards.",
+          "tasks": [
+            { "id": "t14", "title": "Update endpoints", "status": "done" },
+            { "id": "t15", "title": "Test new routes", "status": "in-progress" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ws3",
+      "name": "HR Department",
+      "description": "Employee onboarding, engagement, and welfare.",
+      "projects": [
+        {
+          "id": "p6",
+          "name": "Employee Survey",
+          "description": "Conduct quarterly employee satisfaction survey.",
+          "tasks": [
+            { "id": "t16", "title": "Create survey", "status": "done" },
+            { "id": "t17", "title": "Send invites", "status": "pending" },
+            { "id": "t18", "title": "Analyze results", "status": "pending" }
+          ]
+        },
+        {
+          "id": "p7",
+          "name": "Recruitment Drive",
+          "description": "Hire 5 new engineers for DevOps and backend.",
+          "tasks": [
+            { "id": "t19", "title": "Write job description", "status": "done" },
+            { "id": "t20", "title": "Shortlist applicants", "status": "in-progress" },
+            { "id": "t21", "title": "Schedule interviews", "status": "pending" }
+          ]
+        }
+      ]
+    }
+  ]
+}
