@@ -34,13 +34,11 @@ function App() {
           <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
             <Route index element={<WorkspaceItem />} />
             <Route path="projects" element={<ProjectList />} />
-            <Route path="projects/:projectId" element={<ProjectLayout />}>
-              <Route index element={<Project />} />
+            <Route path="projects/:projectId" element={<Project />}>
               <Route path="task/:taskId" element={<TaskDetail />} />
               <Route path="add-task" element={<AddEditTask />} />
             </Route>
           </Route>
-
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
