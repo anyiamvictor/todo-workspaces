@@ -1,42 +1,47 @@
-.projectListContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 1rem;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .projectCard {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 1.2rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-  }
-  
-  .projectCard:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  }
-  
-  .projectTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
-  
-  .projectDescription {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 0.75rem;
-  }
-  
-  .projectMeta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: #999;
-  }
+/* ProjectList.module.css */
+
+.container {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.statusMessage {
+  font-size: 1rem;
+  color: #777;
+  text-align: center;
+  padding: 1rem;
+}
+
+.projectList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.projectItem {
+  margin-bottom: 1rem;
+}
+
+.projectLink {
+  display: flex;
+  padding: 0.8rem 1rem;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.projectLink:hover {
+  background-color: #e2e8f0;
+}

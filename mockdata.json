@@ -105,6 +105,8 @@
       "phoneNumber": "+2348012345678"
     }
   ],
+
+
   "workspaces": [
     {
       "id": "ws1",
@@ -137,35 +139,124 @@
         "u3",
         "u5"
       ]
-    }
-  ],
-  "projects": [
-    {
-      "id": "p1",
-      "name": "Product Launch Q3",
-      "description": "Execute launch plan",
-      "workspaceId": "ws1",
-      "startDate": "2024-06-01",
-      "endDate": "2024-09-30",
-      "status": "active",
-      "assignedUserIds": [
-        "u1",
-        "u2"
-      ]
     },
     {
-      "id": "p2",
-      "name": "New Website",
-      "description": "Revamp company website",
-      "workspaceId": "ws2",
-      "startDate": "2024-07-01",
-      "endDate": "2024-12-31",
-      "status": "pending",
-      "assignedUserIds": [
-        "u2"
-      ]
+      "id": "ws1749479286937",
+      "name": "xzd",
+      "description": "cadc",
+      "createdAt": "2025-06-09T14:28:06.937Z",
+      "ownerId": "u4",
+      "memberIds": []
     }
   ],
+
+
+"projects": [
+  {
+    "id": "p1",
+    "name": "Product Launch Q3",
+    "description": "Execute launch plan",
+    "workspaceId": "ws1",
+    "startDate": "2024-06-01",
+    "endDate": "2024-09-30",
+    "status": "active",
+    "assignedUserIds": ["u1", "u2"]
+  },
+  {
+    "id": "p2",
+    "name": "New Website",
+    "description": "Revamp company website",
+    "workspaceId": "ws2",
+    "startDate": "2024-07-01",
+    "endDate": "2024-12-31",
+    "status": "pending",
+    "assignedUserIds": ["u2"]
+  },
+  {
+    "id": "p3",
+    "name": "Marketing Campaign",
+    "description": "Launch new ad campaign on social media",
+    "workspaceId": "ws1",
+    "startDate": "2024-08-01",
+    "endDate": "2024-10-15",
+    "status": "active",
+    "assignedUserIds": ["u1"]
+  },
+  {
+    "id": "p4",
+    "name": "Team Training",
+    "description": "Organize internal upskilling sessions",
+    "workspaceId": "ws2",
+    "startDate": "2024-06-15",
+    "endDate": "2024-07-30",
+    "status": "completed",
+    "assignedUserIds": ["u2", "u3"]
+  },
+  {
+    "id": "p5",
+    "name": "Client Onboarding",
+    "description": "Onboard 3 new enterprise clients",
+    "workspaceId": "ws1",
+    "startDate": "2024-07-10",
+    "endDate": "2024-08-30",
+    "status": "pending",
+    "assignedUserIds": ["u1", "u3"]
+  },
+  {
+    "id": "p6",
+    "name": "Security Audit",
+    "description": "Conduct Q4 security audit",
+    "workspaceId": "ws3",
+    "startDate": "2024-09-01",
+    "endDate": "2024-09-30",
+    "status": "pending",
+    "assignedUserIds": ["u4"]
+  },
+  {
+    "id": "p7",
+    "name": "API Integration",
+    "description": "Integrate new payment gateway API",
+    "workspaceId": "ws2",
+    "startDate": "2024-08-01",
+    "endDate": "2024-10-01",
+    "status": "active",
+    "assignedUserIds": ["u2", "u4"]
+  },
+  {
+    "id": "p8",
+    "name": "Data Migration",
+    "description": "Migrate data to new cloud provider",
+    "workspaceId": "ws3",
+    "startDate": "2024-07-15",
+    "endDate": "2024-09-15",
+    "status": "active",
+    "assignedUserIds": ["u3"]
+  },
+  {
+    "id": "p9",
+    "name": "UX Improvements",
+    "description": "Redesign user onboarding flow",
+    "workspaceId": "ws1",
+    "startDate": "2024-06-20",
+    "endDate": "2024-07-31",
+    "status": "completed",
+    "assignedUserIds": ["u1", "u2", "u3"]
+  },
+  {
+    "id": "p10",
+    "name": "Inventory Sync",
+    "description": "Build real-time sync with supplier database",
+    "workspaceId": "ws2",
+    "startDate": "2024-08-10",
+    "endDate": "2024-11-20",
+    "status": "pending",
+    "assignedUserIds": ["u2"]
+  }
+]
+,
+
+
+
   "tasks": [
     {
       "id": "t1",

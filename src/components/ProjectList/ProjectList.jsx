@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import styles from "./ProjectList.module.css";
+
 
 function ProjectList() {
   const { workspaceId } = useParams();
@@ -34,19 +36,29 @@ function ProjectList() {
   if (projects.length === 0) return <p>No projects found for this workspace.</p>;
 
   return (
-    <div>
-      <h3>Projects: </h3>
-      <ul>
+    <div className={styles.container}>
+      <h3 className={styles.heading}>Projects:</h3>
+  
+      {loading && <p className={styles.statusMessage}>Loading projects...</p>}
+      {error && <p className={styles.statusMessage}>Error: {error}</p>}
+      {!loading && !error && projects.length === 0 && (
+        <p className={styles.statusMessage}>No projects found for this workspace.</p>
+      )}
+  
+      <ul className={styles.projectList}>
         {projects.map((project) => (
-          <li key={project.id}>
-            <Link to={`/workspaces/${workspaceId}/projects/${project.id}`}>{project.name}</Link>
+          <li key={project.id} className={styles.projectItem}>
+            <Link
+              to={`/workspaces/${workspaceId}/projects/${project.id}`}
+              className={styles.projectLink}>
+              {project.name}
+            </Link>
           </li>
         ))}
       </ul>
-      </div>
-      
-      
+    </div>
   );
+  
 }
 
 export default ProjectList;
