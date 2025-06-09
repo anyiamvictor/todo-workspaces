@@ -28,3 +28,7 @@ Redux Toolkit
 React Router
 
 React Redux
+
+NB:
+ I used react-seelct or the Workspacemodal select input.
+ 

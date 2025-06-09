@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import styles from "./Workspace.module.css";
+import styles from "./WorkspaceItem.module.css";
 
-function Workspace() {
+function WorkspaceItem() {
   const { workspaceId } = useParams();
   const [workspace, setWorkspace] = useState(null);
 
@@ -37,4 +37,4 @@ function Workspace() {
   );
 }
 
-export default Workspace;
+export default WorkspaceItem;

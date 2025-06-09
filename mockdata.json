@@ -3,12 +3,106 @@
     {
       "id": "u1",
       "name": "Alice Johnson",
-      "role": "admin"
+      "role": "admin",
+      "email": "alice.johnson@example.com",
+      "password": "alice123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/1.jpg",
+      "status": "active",
+      "createdAt": "2024-01-01T08:00:00Z",
+      "lastLogin": "2025-06-08T09:30:00Z",
+      "bio": "Project Manager at Marketing Team",
+      "phoneNumber": "+2348012345671"
     },
     {
       "id": "u2",
       "name": "Bob Smith",
-      "role": "member"
+      "role": "member",
+      "email": "bob.smith@example.com",
+      "password": "bob123",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/2.jpg",
+      "status": "active",
+      "createdAt": "2024-01-03T11:00:00Z",
+      "lastLogin": "2025-06-07T14:20:00Z",
+      "bio": "Frontend Developer",
+      "phoneNumber": "+2348012345672"
+    },
+    {
+      "id": "u3",
+      "name": "Chidera Obi",
+      "role": "member",
+      "email": "chidera.obi@example.com",
+      "password": "chidera123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/3.jpg",
+      "status": "active",
+      "createdAt": "2024-02-10T10:30:00Z",
+      "lastLogin": "2025-06-06T11:45:00Z",
+      "bio": "UX Designer at Engineering Team",
+      "phoneNumber": "+2348012345673"
+    },
+    {
+      "id": "u4",
+      "name": "David Okafor",
+      "role": "admin",
+      "email": "david.okafor@example.com",
+      "password": "david123",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/4.jpg",
+      "status": "active",
+      "createdAt": "2024-03-15T09:45:00Z",
+      "lastLogin": "2025-06-05T17:00:00Z",
+      "bio": "Engineering Lead",
+      "phoneNumber": "+2348012345674"
+    },
+    {
+      "id": "u5",
+      "name": "Ella Musa",
+      "role": "member",
+      "email": "ella.musa@example.com",
+      "password": "ella123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/5.jpg",
+      "status": "inactive",
+      "createdAt": "2024-04-01T12:00:00Z",
+      "lastLogin": "2025-05-28T08:30:00Z",
+      "bio": "Copywriter and SEO",
+      "phoneNumber": "+2348012345675"
+    },
+    {
+      "id": "u6",
+      "name": "Frank Emeka",
+      "role": "member",
+      "email": "frank.emeka@example.com",
+      "password": "frank123",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/6.jpg",
+      "status": "active",
+      "createdAt": "2024-05-20T15:20:00Z",
+      "lastLogin": "2025-06-06T12:10:00Z",
+      "bio": "QA Tester",
+      "phoneNumber": "+2348012345676"
+    },
+    {
+      "id": "u7",
+      "name": "Grace Eze",
+      "role": "admin",
+      "email": "grace.eze@example.com",
+      "password": "grace123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/7.jpg",
+      "status": "active",
+      "createdAt": "2024-06-05T08:15:00Z",
+      "lastLogin": "2025-06-08T10:00:00Z",
+      "bio": "Admin and HR",
+      "phoneNumber": "+2348012345677"
+    },
+    {
+      "id": "u8",
+      "name": "Henry Dike",
+      "role": "member",
+      "email": "henry.dike@example.com",
+      "password": "henry123",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/8.jpg",
+      "status": "active",
+      "createdAt": "2024-06-08T07:50:00Z",
+      "lastLogin": "2025-06-08T08:55:00Z",
+      "bio": "Backend Developer",
+      "phoneNumber": "+2348012345678"
     }
   ],
   "workspaces": [
@@ -34,289 +128,15 @@
       ]
     },
     {
-      "id": "ws1749461779283",
-      "name": "trial",
-      "description": "describusdjksbd",
-      "createdAt": "2025-06-09T09:36:19.283Z",
-      "owner": {
-        "id": "sdcsdcsdc",
-        "name": "obinna",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "sdcsdcsdc",
-          "name": "obinna",
-          "role": "admin"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749463128729",
-      "name": "asas",
-      "description": "asasa",
-      "createdAt": "2025-06-09T09:58:48.729Z",
-      "owner": {
-        "id": "sxasxa",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "asxasx",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749463138368",
-      "name": "asasx",
-      "description": "asxasx",
-      "createdAt": "2025-06-09T09:58:58.368Z",
-      "owner": {
-        "id": "asxa",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "asxasx",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464648983",
-      "name": "sdcsdc",
-      "description": "sdcsdc",
-      "createdAt": "2025-06-09T10:24:08.983Z",
-      "owner": {
-        "id": "sdcsdc",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464916945",
-      "name": "scsdc",
-      "description": "zkncln",
-      "createdAt": "2025-06-09T10:28:36.945Z",
-      "owner": {
-        "id": "kncklnz",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464925361",
-      "name": "kjadbckbad",
-      "description": "jacjkbask",
-      "createdAt": "2025-06-09T10:28:45.361Z",
-      "owner": {
-        "id": "lkancman",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464933474",
-      "name": "kjabcjkba",
-      "description": "jbackjba",
-      "createdAt": "2025-06-09T10:28:53.474Z",
-      "owner": {
-        "id": "kjbakcba",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464940978",
-      "name": "ahksbckabs",
-      "description": "jabjcab",
-      "createdAt": "2025-06-09T10:29:00.978Z",
-      "owner": {
-        "id": "acma",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464948779",
-      "name": "akjsbckabs",
-      "description": "kjabscjkabs",
-      "createdAt": "2025-06-09T10:29:08.779Z",
-      "owner": {
-        "id": "kjabsjabsc",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464955740",
-      "name": "kahschab",
-      "description": "kabscba",
-      "createdAt": "2025-06-09T10:29:15.740Z",
-      "owner": {
-        "id": "jbasbahcj",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464964288",
-      "name": "ajkbckjab",
-      "description": "jbacjbckja",
-      "createdAt": "2025-06-09T10:29:24.288Z",
-      "owner": {
-        "id": "jbasjkcbaks",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749464983225",
-      "name": "aaaaaaaaaaaaaa",
-      "description": "aaaaaaaaaaaaaaaaaaaaaaa",
-      "createdAt": "2025-06-09T10:29:43.225Z",
-      "owner": {
-        "id": "aaaaaaaaaaaaaa",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749465316964",
-      "name": "ppppppppppppppp",
-      "description": "ppppppppppppppp",
-      "createdAt": "2025-06-09T10:35:16.965Z",
-      "owner": {
-        "id": "pppppppp",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "pppppppppppp",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749465966628",
-      "name": "dczdczd",
-      "description": "zdczdczd",
-      "createdAt": "2025-06-09T10:46:06.628Z",
-      "owner": {
-        "id": "czdczdc",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
-    },
-    {
-      "id": "ws1749465971251",
-      "name": "zdczdcz",
-      "description": "dczdczdc",
-      "createdAt": "2025-06-09T10:46:11.251Z",
-      "owner": {
-        "id": "zdczdczdc",
-        "name": "Placeholder Name",
-        "role": "admin"
-      },
-      "members": [
-        {
-          "id": "",
-          "name": "Member",
-          "role": "member"
-        }
-      ],
-      "projects": []
+      "id": "ws1749478536257",
+      "name": "Test",
+      "description": "trial and error",
+      "createdAt": "2025-06-09T14:15:36.257Z",
+      "ownerId": "u4",
+      "memberIds": [
+        "u3",
+        "u5"
+      ]
     }
   ],
   "projects": [

@@ -6,13 +6,14 @@ import Authentication from "./pages/Authentication/Authentication";
 import UserProfileSettings from "./pages/UserProfileSetting/UserProfileSettings";
 import Rootlayout from "./components/Rootlayout/Rootlayout";
 import WorkspacesList from "./pages/WorkSpaces/WorkspacesList/WorkspacesList";
-import Workspace from "./pages/WorkSpaces/Workspace/Workspace";
+import WorkspaceItem from "./pages/WorkSpaces/WorkspaceItem/WorkspaceItem";
 import Project from "./pages/WorkSpaces/Project/Project";
 import TaskDetail from "./pages/WorkSpaces/TaskDetail/TaskDetail";
 import AddEditTask from "./pages/WorkSpaces/AddEditTask/AddEditTask";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import ProjectLayout from "./components/ProjectLayout/ProjectLayout";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import ProjectList from "./components/ProjectList/ProjectList";
 
 function App() {
 
@@ -31,7 +32,8 @@ function App() {
           <Route path="/workspaces" element={<WorkspacesList />} />
 
           <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
-            <Route index element={<Workspace />}/>
+            <Route index element={<WorkspaceItem />} />
+            <Route path="projects" element={<ProjectList />} />
             <Route path="projects/:projectId" element={<ProjectLayout />}>
               <Route index element={<Project />} />
               <Route path="task/:taskId" element={<TaskDetail />} />

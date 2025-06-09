@@ -8,12 +8,13 @@ function WorkspaceLayout() {
     <div className={styles.wrapper}>
       <header className={styles.header}>
         <h2>Workspace: {workspaceId}</h2>
-        <nav>
-          <Link to={`/workspaces/${workspaceId}`}>Overview</Link> |{" "}
-          <Link to={`/workspaces/${workspaceId}/projects/p1`}>Project p1</Link> |{" "}
-          <Link to={`/workspaces/${workspaceId}/projects/p1/add-task`}>Add Task</Link>
+        <nav className={styles.nav}>
+          <Link to={`/workspaces/${workspaceId}`}>Overview</Link>
+          <Link to={`/workspaces/${workspaceId}/projects`}>View All Projects</Link>
+          <Link to={`/workspaces/${workspaceId}/projects/new`}>Add New Project</Link>
         </nav>
       </header>
+
       <main className={styles.main}>
         <Outlet />
       </main>

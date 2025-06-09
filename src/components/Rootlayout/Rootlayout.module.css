@@ -1,12 +1,13 @@
-body{
-  scrollbar-width: none;
+body, html {
+  overflow: hidden;
+  height: 100%;
 }
+
 
 .rootContainer {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  /* min-width: 100vw; */
 }
 
 .rootLayout {
@@ -32,6 +33,20 @@ body{
   padding: 20px;
   min-height: 0;
 }
+
+.pageContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pageContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pageContent::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
 
 .footerContainer {
   background-color: #f8f8f8;
