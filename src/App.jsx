@@ -10,10 +10,9 @@ import Workspace from "./pages/Workspaces/Workspace/Workspace";
 import Project from "./pages/Workspaces/Project/Project";
 import TaskDetail from "./pages/Workspaces/TaskDetail/TaskDetail";
 import AddEditTask from "./pages/Workspaces/AddEditTask/AddEditTask";
-
-import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import ProjectLayout from "./components/ProjectLayout/ProjectLayout";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 function App() {
 

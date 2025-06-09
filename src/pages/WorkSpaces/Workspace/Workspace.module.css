@@ -1,0 +1,23 @@
+/* src/pages/Workspaces/Workspace/Workspace.module.css */
+.container {
+    padding: 10px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .listItem {
+    margin-bottom: 8px;
+  }
+  
+  .listItem a {
+    color: #007acc;
+    text-decoration: none;
+  }
+  
+  .listItem a:hover {
+    text-decoration: underline;
+  }
+  

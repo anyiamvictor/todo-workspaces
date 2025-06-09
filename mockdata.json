@@ -1,95 +1,96 @@
 {
+  "users": [
+    {
+      "id": "u1",
+      "name": "Alice Johnson",
+      "role": "admin"
+    },
+    {
+      "id": "u2",
+      "name": "Bob Smith",
+      "role": "member"
+    }
+  ],
+
   "workspaces": [
     {
       "id": "ws1",
       "name": "Marketing Team",
-      "description": "Handles campaigns, branding, and social media engagement.",
-      "projects": [
-        {
-          "id": "p1",
-          "name": "Product Launch Q3",
-          "description": "Plan and execute the product launch for Q3.",
-          "tasks": [
-            { "id": "t1", "title": "Write press release", "status": "done" },
-            { "id": "t2", "title": "Create social media content", "status": "pending" },
-            { "id": "t3", "title": "Influencer outreach", "status": "in-progress" },
-            { "id": "t4", "title": "Email marketing setup", "status": "pending" }
-          ]
-        },
-        {
-          "id": "p2",
-          "name": "SEO Optimization",
-          "description": "Improve Google rankings for all major product pages.",
-          "tasks": [
-            { "id": "t5", "title": "Backlink audit", "status": "in-progress" },
-            { "id": "t6", "title": "Page speed optimization", "status": "pending" },
-            { "id": "t7", "title": "Fix broken links", "status": "done" }
-          ]
-        }
-      ]
+      "description": "Handles campaigns and branding",
+      "createdAt": "2024-01-01T09:00:00Z",
+      "ownerId": "u1",
+      "memberIds": ["u1", "u2"]
     },
     {
       "id": "ws2",
-      "name": "Development Team",
-      "description": "Responsible for product development and deployment.",
-      "projects": [
-        {
-          "id": "p3",
-          "name": "Bug Fix Sprint",
-          "description": "Resolve urgent production bugs and QA issues.",
-          "tasks": [
-            { "id": "t8", "title": "Fix registration bug", "status": "done" },
-            { "id": "t9", "title": "Database timeout fix", "status": "in-progress" },
-            { "id": "t10", "title": "Broken image links", "status": "pending" }
-          ]
-        },
-        {
-          "id": "p4",
-          "name": "New Feature: Dark Mode",
-          "description": "Implement dark mode toggle in the UI.",
-          "tasks": [
-            { "id": "t11", "title": "Toggle switch UI", "status": "done" },
-            { "id": "t12", "title": "Theme logic", "status": "in-progress" },
-            { "id": "t13", "title": "Accessibility testing", "status": "pending" }
-          ]
-        },
-        {
-          "id": "p5",
-          "name": "API Refactor",
-          "description": "Migrate all APIs to v2 standards.",
-          "tasks": [
-            { "id": "t14", "title": "Update endpoints", "status": "done" },
-            { "id": "t15", "title": "Test new routes", "status": "in-progress" }
-          ]
-        }
-      ]
+      "name": "Engineering Team",
+      "description": "Builds and maintains products",
+      "createdAt": "2024-03-01T10:00:00Z",
+      "ownerId": "u2",
+      "memberIds": ["u2"]
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "p1",
+      "name": "Product Launch Q3",
+      "description": "Execute launch plan",
+      "workspaceId": "ws1",
+      "startDate": "2024-06-01",
+      "endDate": "2024-09-30",
+      "status": "active",
+      "assignedUserIds": ["u1", "u2"]
     },
     {
-      "id": "ws3",
-      "name": "HR Department",
-      "description": "Employee onboarding, engagement, and welfare.",
-      "projects": [
-        {
-          "id": "p6",
-          "name": "Employee Survey",
-          "description": "Conduct quarterly employee satisfaction survey.",
-          "tasks": [
-            { "id": "t16", "title": "Create survey", "status": "done" },
-            { "id": "t17", "title": "Send invites", "status": "pending" },
-            { "id": "t18", "title": "Analyze results", "status": "pending" }
-          ]
-        },
-        {
-          "id": "p7",
-          "name": "Recruitment Drive",
-          "description": "Hire 5 new engineers for DevOps and backend.",
-          "tasks": [
-            { "id": "t19", "title": "Write job description", "status": "done" },
-            { "id": "t20", "title": "Shortlist applicants", "status": "in-progress" },
-            { "id": "t21", "title": "Schedule interviews", "status": "pending" }
-          ]
-        }
-      ]
+      "id": "p2",
+      "name": "New Website",
+      "description": "Revamp company website",
+      "workspaceId": "ws2",
+      "startDate": "2024-07-01",
+      "endDate": "2024-12-31",
+      "status": "pending",
+      "assignedUserIds": ["u2"]
+    }
+  ],
+
+  "tasks": [
+    {
+      "id": "t1",
+      "title": "Write press release",
+      "description": "Create and distribute a press release",
+      "projectId": "p1",
+      "status": "done",
+      "priority": "high",
+      "dueDate": "2024-07-15",
+      "assignedTo": "u2"
+    },
+    {
+      "id": "t2",
+      "title": "Design landing page",
+      "description": "Create UI for new landing page",
+      "projectId": "p2",
+      "status": "in-progress",
+      "priority": "medium",
+      "dueDate": "2024-09-01",
+      "assignedTo": "u2"
+    }
+  ],
+  
+  "comments": [
+    {
+      "id": "c1",
+      "taskId": "t1",
+      "userId": "u1",
+      "comment": "Make sure to highlight the main features.",
+      "createdAt": "2024-06-20T10:00:00Z"
+    },
+    {
+      "id": "c2",
+      "taskId": "t2",
+      "userId": "u2",
+      "comment": "Working on the mockups now.",
+      "createdAt": "2024-06-25T15:30:00Z"
     }
   ]
 }

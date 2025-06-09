@@ -1,15 +1,27 @@
 // src/pages/Workspaces/Workspace/Workspace.jsx
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import styles from "./Workspace.module.css";
+
 
 function Workspace() {
   const { workspaceId } = useParams();
+  const projects = mockProjectsByWorkspace[workspaceId] || [];
 
   return (
-    <div>
-      <h1>Workspace Overview</h1>
-      <p>This is the overview page for workspace <b>{workspaceId}</b>.</p>
-      {/* Add more workspace details here */}
+    <div className={styles.container}>
+      <h3>Projects in Workspace: {workspaceId}</h3>
+      {projects.length === 0 ? (
+        <p>No projects found.</p>
+      ) : (
+        <ul className={styles.list}>
+          {projects.map((project) => (
+            <li key={project.id} className={styles.listItem}>
+              <Link to={`projects/${project.id}`}>{project.name}</Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

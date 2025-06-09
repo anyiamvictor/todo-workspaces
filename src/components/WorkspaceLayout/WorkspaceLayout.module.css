@@ -1,0 +1,25 @@
+/* src/pages/Workspaces/WorkspaceLayout/WorkspaceLayout.module.css */
+.wrapper {
+    border: 2px solid #007acc;
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .header {
+    margin-bottom: 15px;
+  }
+  
+  .header nav a {
+    color: #007acc;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+  
+  .header nav a:hover {
+    text-decoration: underline;
+  }
+  
+  .main {
+    padding-top: 10px;
+  }
+  
