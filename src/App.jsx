@@ -31,7 +31,7 @@ function App() {
           <Route path="/workspaces" element={<WorkspacesList />} />
 
           <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
-            <Route index element={<Workspace />} />
+            <Route index element={<Workspace />}/>
             <Route path="projects/:projectId" element={<ProjectLayout />}>
               <Route index element={<Project />} />
               <Route path="task/:taskId" element={<TaskDetail />} />

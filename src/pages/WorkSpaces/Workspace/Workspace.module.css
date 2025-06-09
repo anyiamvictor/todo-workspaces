@@ -1,23 +1,29 @@
-/* src/pages/Workspaces/Workspace/Workspace.module.css */
 .container {
-    padding: 10px;
-  }
-  
-  .list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .listItem {
-    margin-bottom: 8px;
-  }
-  
-  .listItem a {
-    color: #007acc;
-    text-decoration: none;
-  }
-  
-  .listItem a:hover {
-    text-decoration: underline;
-  }
-  
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.header {
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.description {
+  color: #666;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.meta {
+  margin-top: 1rem;
+  color: #888;
+  font-size: 0.9rem;
+}

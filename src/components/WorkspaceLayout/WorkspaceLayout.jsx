@@ -1,5 +1,3 @@
-// src/pages/Workspaces/WorkspaceLayout/WorkspaceLayout.jsx
-import React from "react";
 import { Outlet, useParams, Link } from "react-router-dom";
 import styles from "./WorkspaceLayout.module.css";
 
