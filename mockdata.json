@@ -11,7 +11,6 @@
       "role": "member"
     }
   ],
-
   "workspaces": [
     {
       "id": "ws1",
@@ -19,7 +18,10 @@
       "description": "Handles campaigns and branding",
       "createdAt": "2024-01-01T09:00:00Z",
       "ownerId": "u1",
-      "memberIds": ["u1", "u2"]
+      "memberIds": [
+        "u1",
+        "u2"
+      ]
     },
     {
       "id": "ws2",
@@ -27,10 +29,296 @@
       "description": "Builds and maintains products",
       "createdAt": "2024-03-01T10:00:00Z",
       "ownerId": "u2",
-      "memberIds": ["u2"]
+      "memberIds": [
+        "u2"
+      ]
+    },
+    {
+      "id": "ws1749461779283",
+      "name": "trial",
+      "description": "describusdjksbd",
+      "createdAt": "2025-06-09T09:36:19.283Z",
+      "owner": {
+        "id": "sdcsdcsdc",
+        "name": "obinna",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "sdcsdcsdc",
+          "name": "obinna",
+          "role": "admin"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749463128729",
+      "name": "asas",
+      "description": "asasa",
+      "createdAt": "2025-06-09T09:58:48.729Z",
+      "owner": {
+        "id": "sxasxa",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "asxasx",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749463138368",
+      "name": "asasx",
+      "description": "asxasx",
+      "createdAt": "2025-06-09T09:58:58.368Z",
+      "owner": {
+        "id": "asxa",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "asxasx",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464648983",
+      "name": "sdcsdc",
+      "description": "sdcsdc",
+      "createdAt": "2025-06-09T10:24:08.983Z",
+      "owner": {
+        "id": "sdcsdc",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464916945",
+      "name": "scsdc",
+      "description": "zkncln",
+      "createdAt": "2025-06-09T10:28:36.945Z",
+      "owner": {
+        "id": "kncklnz",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464925361",
+      "name": "kjadbckbad",
+      "description": "jacjkbask",
+      "createdAt": "2025-06-09T10:28:45.361Z",
+      "owner": {
+        "id": "lkancman",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464933474",
+      "name": "kjabcjkba",
+      "description": "jbackjba",
+      "createdAt": "2025-06-09T10:28:53.474Z",
+      "owner": {
+        "id": "kjbakcba",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464940978",
+      "name": "ahksbckabs",
+      "description": "jabjcab",
+      "createdAt": "2025-06-09T10:29:00.978Z",
+      "owner": {
+        "id": "acma",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464948779",
+      "name": "akjsbckabs",
+      "description": "kjabscjkabs",
+      "createdAt": "2025-06-09T10:29:08.779Z",
+      "owner": {
+        "id": "kjabsjabsc",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464955740",
+      "name": "kahschab",
+      "description": "kabscba",
+      "createdAt": "2025-06-09T10:29:15.740Z",
+      "owner": {
+        "id": "jbasbahcj",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464964288",
+      "name": "ajkbckjab",
+      "description": "jbacjbckja",
+      "createdAt": "2025-06-09T10:29:24.288Z",
+      "owner": {
+        "id": "jbasjkcbaks",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749464983225",
+      "name": "aaaaaaaaaaaaaa",
+      "description": "aaaaaaaaaaaaaaaaaaaaaaa",
+      "createdAt": "2025-06-09T10:29:43.225Z",
+      "owner": {
+        "id": "aaaaaaaaaaaaaa",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749465316964",
+      "name": "ppppppppppppppp",
+      "description": "ppppppppppppppp",
+      "createdAt": "2025-06-09T10:35:16.965Z",
+      "owner": {
+        "id": "pppppppp",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "pppppppppppp",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749465966628",
+      "name": "dczdczd",
+      "description": "zdczdczd",
+      "createdAt": "2025-06-09T10:46:06.628Z",
+      "owner": {
+        "id": "czdczdc",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
+    },
+    {
+      "id": "ws1749465971251",
+      "name": "zdczdcz",
+      "description": "dczdczdc",
+      "createdAt": "2025-06-09T10:46:11.251Z",
+      "owner": {
+        "id": "zdczdczdc",
+        "name": "Placeholder Name",
+        "role": "admin"
+      },
+      "members": [
+        {
+          "id": "",
+          "name": "Member",
+          "role": "member"
+        }
+      ],
+      "projects": []
     }
   ],
-
   "projects": [
     {
       "id": "p1",
@@ -40,7 +328,10 @@
       "startDate": "2024-06-01",
       "endDate": "2024-09-30",
       "status": "active",
-      "assignedUserIds": ["u1", "u2"]
+      "assignedUserIds": [
+        "u1",
+        "u2"
+      ]
     },
     {
       "id": "p2",
@@ -50,10 +341,11 @@
       "startDate": "2024-07-01",
       "endDate": "2024-12-31",
       "status": "pending",
-      "assignedUserIds": ["u2"]
+      "assignedUserIds": [
+        "u2"
+      ]
     }
   ],
-
   "tasks": [
     {
       "id": "t1",
@@ -76,7 +368,6 @@
       "assignedTo": "u2"
     }
   ],
-  
   "comments": [
     {
       "id": "c1",

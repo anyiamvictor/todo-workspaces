@@ -1,8 +1,9 @@
 .container {
   padding: 2rem;
-  max-width: 800px;
+  max-width: 100%;
   margin: auto;
   font-family: system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 .heading {
@@ -13,19 +14,31 @@
 }
 
 .list {
-  list-style: none;
-  padding: 0;
+  display: flex;
+  /* width:100%; */
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap:wrap;
+  gap: 1rem;
+  padding: 1rem 0;
   margin: 0;
+  list-style: none;
+  /* overflow-x: auto;s */
+  /* scroll-snap-type: x mandatory; */
 }
 
 .listItem {
   background-color: #f9f9f9;
-  margin-bottom: 1rem;
+  flex: 0 0 auto;
+  width: 180px;
   border-radius: 8px;
   transition: box-shadow 0.2s ease;
   padding: 1rem;
   cursor: pointer;
-  border-left: 4px solid #007bff;
+  border: .9px solid #ff7b00;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  /* scroll-snap-align: start; */
+
 }
 
 .listItem:hover {
@@ -35,7 +48,7 @@
 
 .link {
   text-decoration: none;
-  color: #007bff;
+  color: #001aff;
   font-size: 1.2rem;
   font-weight: 500;
   display: block;
@@ -43,6 +56,27 @@
 }
 
 .description {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #555;
+}
+
+.addBtn {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Firefox */
+.list {
+  scrollbar-width: none; 
+}
+
+/* Chrome/Safari */
+.list::-webkit-scrollbar {
+  display: none;
 }
