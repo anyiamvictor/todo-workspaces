@@ -145,6 +145,18 @@
       "createdAt": "2025-06-09T14:28:06.937Z",
       "ownerId": "u4",
       "memberIds": []
+    },
+    {
+      "id": "ws1749567361138",
+      "name": "OvuaComp",
+      "description": "Testing to see if this works",
+      "createdAt": "2025-06-10T14:56:01.138Z",
+      "ownerId": "u7",
+      "memberIds": [
+        "u3",
+        "u6",
+        "u8"
+      ]
     }
   ],
   "projects": [
@@ -283,6 +295,16 @@
       "status": "pending",
       "assignedUserIds": [],
       "workspaceId": "ws1"
+    },
+    {
+      "id": "acbb",
+      "name": "OvuaComp brandinkg",
+      "description": "Responsible fo rthe branding of OvuaComp",
+      "startDate": "2025-06-10",
+      "endDate": "2025-06-28",
+      "status": "active",
+      "assignedUserIds": [],
+      "workspaceId": "ws1749567361138"
     }
   ],
   "tasks": [
@@ -385,6 +407,16 @@
       "priority": "medium",
       "dueDate": "2024-06-15",
       "assignedTo": "u4"
+    },
+    {
+      "id": "a2b4",
+      "title": "create company logo",
+      "description": "use canva or pixel",
+      "assignedTo": "",
+      "dueDate": "2025-06-12",
+      "status": "in-progress",
+      "priority": "medium",
+      "projectId": "acbb"
     }
   ],
   "comments": [

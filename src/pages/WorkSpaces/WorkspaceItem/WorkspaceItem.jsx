@@ -35,7 +35,7 @@ function WorkspaceItem() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>{workspace.name}</h2>
+        {/* <h2 className={styles.title}>{workspace.name}</h2> */}
         <p className={styles.description}>{workspace.description}</p>
         <p className={styles.meta}>
           Owner: {ownerName} | Created: {new Date(workspace.createdAt).toLocaleDateString()}

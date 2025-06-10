@@ -55,46 +55,59 @@ function WorkspaceLayout() {
     }
   };
 
+
+  // Check if the current path is a project detail page to enable hiding navlinks and use backbutton instead to navigate back. I tried refactoring the Routes but it was a longer process and I wanted to keep the current structure.
+  const isOnProjectDetail = location.pathname.match(
+    new RegExp(`^/workspaces/${workspaceId}/projects/[^/]+$`)
+  );
+  
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
-        <h2>Workspace: {workspaceId}</h2>
+        <h2>Workspace: {workspace ? workspace.name : "Loading..."}</h2>
+  
         <nav className={styles.nav}>
-          <NavLink
-            to={`/workspaces/${workspaceId}`}
-            end
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Overview
-          </NavLink>
-
-          <NavLink
-            to={`/workspaces/${workspaceId}/projects`}
-            className={() => {
-              const path = location.pathname;
-              const base = `/workspaces/${workspaceId}/projects`;
-              const isActive = path.startsWith(base) && !path.endsWith("/new");
-              return isActive
-                ? `${styles.link} ${styles.active}`
-                : styles.link;
-            }}
-          >
-            View All Projects
-          </NavLink>
-
-          <NavLink
-            to={`/workspaces/${workspaceId}/projects/new`}
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Add New Project
-          </NavLink>
+          {!isOnProjectDetail && (  <>
+              <NavLink
+                to={`/workspaces/${workspaceId}`}
+                end
+                className={({ isActive }) =>
+                  isActive ? `${styles.link} ${styles.active}` : styles.link
+                }
+              >
+                Overview
+              </NavLink>
+  
+              <NavLink
+                to={`/workspaces/${workspaceId}/projects`}
+                className={() => {
+                  const path = location.pathname;
+                  const base = `/workspaces/${workspaceId}/projects`;
+                  const isActive =
+                    path.startsWith(base) &&
+                    !path.endsWith("/new") &&
+                    !path.match(/\/projects\/[^/]+$/);
+                  return isActive
+                    ? `${styles.link} ${styles.active}`
+                    : styles.link;
+                }}
+              >
+                View All Projects
+              </NavLink>
+  
+              <NavLink
+                to={`/workspaces/${workspaceId}/projects/new`}
+                className={({ isActive }) =>
+                  isActive ? `${styles.link} ${styles.active}` : styles.link
+                }
+              >
+                Add New Project
+              </NavLink>
+            </>
+          )}
         </nav>
       </header>
-
+  
       <main className={styles.main}>
         <Outlet />
         {showAddProjectModal && workspace && (
@@ -107,6 +120,7 @@ function WorkspaceLayout() {
       </main>
     </div>
   );
+  
 }
 
 export default WorkspaceLayout;

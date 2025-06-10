@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import AddEditTaskModal from "../AddEditTaskModal/AddEditTaskModal";
+import { useState, useEffect } from "react";;
 import styles from "./Project.module.css";
+import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskModal";
+import BackButton from "../../../components/BackButton/BackButton";
 
 function Project() {
   const { projectId } = useParams();
@@ -10,6 +11,9 @@ function Project() {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const [projectName, setProjectName] = useState("");
+
+
 
   const fetchTasks = async () => {
     try {
@@ -24,8 +28,20 @@ function Project() {
     }
   };
 
+  const fetchProject = async () => {
+    try {
+      const res = await fetch(`http://localhost:3001/projects/${projectId}`);
+      if (!res.ok) throw new Error("Failed to fetch project");
+      const data = await res.json();
+      setProjectName(data.name);
+    } catch (err) {
+      console.error("Error fetching project:", err);
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
+    fetchProject();
   }, [projectId]);
 
   const handleDone = async (taskId) => {
@@ -57,15 +73,22 @@ function Project() {
 
   return (
     <div className={styles.projectContainer}>
-      <h1>Project Overview</h1>
-      <p>This is the overview page for project <b>{projectId}</b>.</p>
+      <h3>{projectName || "Loading..."}</h3>
+      <p>Available Tasks:</p>
+
+      {/* <p>This is the overview page for project <b>{projectId}</b>.</p> */}
+
+      <div className={styles.btns}>
 
       <button className={styles.addTaskBtn} onClick={() => {
         setEditingTask(null);
         setShowModal(true);
       }}>
         + Add Task
-      </button>
+        </button>
+        
+        <BackButton />
+        </div>
 
       {loading ? <p>Loading...</p> : error ? <p>{error}</p> : (
         <ul className={styles.taskList}>
