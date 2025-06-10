@@ -1,0 +1,64 @@
+.projectContainer {
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .addTaskBtn {
+    background-color: #007bff;
+    color: white;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .addTaskBtn:hover {
+    background-color: #0056b3;
+  }
+  
+  .taskList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .taskItem {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #fafafa;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .taskItem h3 {
+    margin: 0 0 0.5rem;
+  }
+  
+  .taskItem p {
+    margin: 0.3rem 0;
+  }
+  
+  .taskActions {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .taskActions button {
+    background-color: #e9ecef;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .taskActions button:hover {
+    background-color: #ced4da;
+  }
+  

@@ -9,7 +9,7 @@ import WorkspacesList from "./pages/WorkSpaces/WorkspacesList/WorkspacesList";
 import WorkspaceItem from "./pages/WorkSpaces/WorkspaceItem/WorkspaceItem";
 import Project from "./pages/WorkSpaces/Project/Project";
 import TaskDetail from "./pages/WorkSpaces/TaskDetail/TaskDetail";
-import AddEditTask from "./pages/WorkSpaces/AddEditTask/AddEditTask";
+import AddEditTask from "./pages/WorkSpaces/AddEditTaskModal/AddEditTaskModal";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import ProjectLayout from "./components/ProjectLayout/ProjectLayout";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";

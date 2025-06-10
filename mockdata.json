@@ -275,12 +275,13 @@
       ]
     },
     {
-      "id": "7229",
+      "id": "a06b",
       "name": "sdcsd",
-      "description": "sdcsdc",
-      "startDate": "2025-06-05",
-      "endDate": "2025-07-11",
+      "description": "fdfdf",
+      "startDate": "2025-06-10",
+      "endDate": "2025-06-21",
       "status": "pending",
+      "assignedUserIds": [],
       "workspaceId": "ws1"
     }
   ],
@@ -304,6 +305,86 @@
       "priority": "medium",
       "dueDate": "2024-09-01",
       "assignedTo": "u2"
+    },
+    {
+      "id": "t3",
+      "title": "Develop backend API",
+      "description": "Implement authentication and user routes",
+      "projectId": "p1",
+      "status": "not-started",
+      "priority": "high",
+      "dueDate": "2024-08-10",
+      "assignedTo": "u1"
+    },
+    {
+      "id": "t4",
+      "title": "Fix mobile responsiveness",
+      "description": "Ensure all pages are mobile-friendly",
+      "projectId": "p2",
+      "status": "in-progress",
+      "priority": "low",
+      "dueDate": "2024-09-20",
+      "assignedTo": "u3"
+    },
+    {
+      "id": "t5",
+      "title": "Conduct usability test",
+      "description": "Test new UI with users and gather feedback edited",
+      "projectId": "p3",
+      "status": "completed",
+      "priority": "medium",
+      "dueDate": "2024-10-01",
+      "assignedTo": "u4"
+    },
+    {
+      "id": "t6",
+      "title": "Integrate payment gateway",
+      "description": "Add support for Stripe and PayPal",
+      "projectId": "p1",
+      "status": "in-review",
+      "priority": "high",
+      "dueDate": "2024-07-30",
+      "assignedTo": "u5"
+    },
+    {
+      "id": "t7",
+      "title": "Set up CI/CD pipeline",
+      "description": "Automate build and deployment process",
+      "projectId": "p4",
+      "status": "not-started",
+      "priority": "high",
+      "dueDate": "2024-11-15",
+      "assignedTo": "u1"
+    },
+    {
+      "id": "t8",
+      "title": "Write unit tests",
+      "description": "Cover core components with unit tests",
+      "projectId": "p2",
+      "status": "done",
+      "priority": "medium",
+      "dueDate": "2024-06-20",
+      "assignedTo": "u2"
+    },
+    {
+      "id": "t9",
+      "title": "Update documentation",
+      "description": "Document new features and setup instructions",
+      "projectId": "p3",
+      "status": "in-progress",
+      "priority": "low",
+      "dueDate": "2024-08-05",
+      "assignedTo": "u3"
+    },
+    {
+      "id": "t10",
+      "title": "Client feedback review",
+      "description": "Review client feedback from last sprint",
+      "projectId": "p4",
+      "status": "done",
+      "priority": "medium",
+      "dueDate": "2024-06-15",
+      "assignedTo": "u4"
     }
   ],
   "comments": [

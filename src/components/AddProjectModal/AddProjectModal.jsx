@@ -10,7 +10,7 @@ function AddProjectModal({ onClose, onSubmit, defaultData }) {
     startDate: "",
     endDate: "",
     status: "pending",
-    assignedUserIds: defaultData.assignedUserIds || [],
+    assignedUserIds:  [],
   });
 
   const handleChange = (e) => {

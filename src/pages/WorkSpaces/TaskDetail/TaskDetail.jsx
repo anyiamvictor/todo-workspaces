@@ -9,6 +9,7 @@ function TaskDetail() {
     <div>
       <h1>Task Detail</h1>
       <p>Details for task <b>{taskId}</b>.</p>
+      
       {/* Show task details and status here */}
     </div>
   );

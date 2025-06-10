@@ -101,7 +101,7 @@ function WorkspaceLayout() {
           <AddProjectModal
             onClose={() => navigate(-1)}
             onSubmit={handleAddProject}
-            defaultData={{ assignedUserIds: workspace.assignedUserIds }}
+            defaultData={{ assignedUserIds: [] }}
           />
         )}
       </main>
