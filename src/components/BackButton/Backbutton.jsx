@@ -10,7 +10,7 @@ function BackButton() {
 
   return (
     <button onClick={handleBack} className={styles.backButton}>
-      ← Back
+      Go Back
     </button>
   );
 }

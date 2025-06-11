@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./WorkspacesList.module.css";
 import WorkspaceModal from "../../../components/WorkspaceModal/WorkspaceModal";
@@ -8,7 +8,7 @@ function WorkspacesList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchWorkspaces = async () => {
@@ -36,9 +36,9 @@ function WorkspacesList() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(workspace),
       });
-  
+
       if (!response.ok) throw new Error("Failed to add workspace");
-  
+
       const added = await response.json();
       setWorkspaces((prev) => [...prev, added]);
       setShowModal(false);
@@ -48,6 +48,10 @@ function WorkspacesList() {
     }
   };
 
+  const filteredWorkspaces = workspaces.filter((ws) =>
+    ws.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) return <p>Loading workspaces...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -55,14 +59,22 @@ function WorkspacesList() {
     <div className={styles.container}>
       <h2 className={styles.heading}>Workspaces</h2>
 
-      {
+      <div className={styles.wrkspctop}>
         <button className={styles.addBtn} onClick={() => setShowModal(true)}>
           + Add Workspace
         </button>
-      }
+
+        <input
+          type="text"
+          placeholder="Search workspaces..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+        />
+      </div>
 
       <ul className={styles.list}>
-        {workspaces.map((workspace) => (
+        {filteredWorkspaces.map((workspace) => (
           <li key={workspace.id} className={styles.listItem}>
             <Link to={`/workspaces/${workspace.id}`} className={styles.link}>
               {workspace.name}

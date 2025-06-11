@@ -103,7 +103,73 @@
       "lastLogin": "2025-06-08T08:55:00Z",
       "bio": "Backend Developer",
       "phoneNumber": "+2348012345678"
+    },
+    {
+      "id": "u9",
+      "name": "Ijeoma Nwosu",
+      "role": "member",
+      "email": "ijeoma.nwosu@example.com",
+      "password": "ijeoma123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/9.jpg",
+      "status": "active",
+      "createdAt": "2024-07-01T10:00:00Z",
+      "lastLogin": "2025-06-10T09:00:00Z",
+      "bio": "Content Strategist",
+      "phoneNumber": "+2348012345679"
+    },
+    {
+      "id": "u10",
+      "name": "Kelvin Uche",
+      "role": "member",
+      "email": "kelvin.uche@example.com",
+      "password": "kelvin123",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/10.jpg",
+      "status": "inactive",
+      "createdAt": "2024-08-01T09:30:00Z",
+      "lastLogin": "2025-06-01T08:20:00Z",
+      "bio": "Tech Support",
+      "phoneNumber": "+2348012345680"
+    },
+    {
+      "id": "u11",
+      "name": "Linda Osei",
+      "role": "member",
+      "email": "linda.osei@example.com",
+      "password": "linda123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/11.jpg",
+      "status": "active",
+      "createdAt": "2024-09-10T12:15:00Z",
+      "lastLogin": "2025-06-10T10:10:00Z",
+      "bio": "Sales Executive",
+      "phoneNumber": "+2348012345681"
+    },
+    {
+      "id": "u12",
+      "name": "Michael Adebayo",
+      "role": "admin",
+      "email": "michael.adebayo@example.com",
+      "password": "michael123",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/12.jpg",
+      "status": "active",
+      "createdAt": "2024-10-15T11:45:00Z",
+      "lastLogin": "2025-06-11T11:11:00Z",
+      "bio": "Operations Lead",
+      "phoneNumber": "+2348012345682"
+    },
+    {
+      "id": "u13",
+      "name": "Ngozi Bello",
+      "role": "member",
+      "email": "ngozi.bello@example.com",
+      "password": "ngozi123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/13.jpg",
+      "status": "active",
+      "createdAt": "2024-11-05T14:00:00Z",
+      "lastLogin": "2025-06-11T12:45:00Z",
+      "bio": "Intern",
+      "phoneNumber": "+2348012345683"
     }
+
   ],
   "workspaces": [
     {
@@ -135,7 +201,9 @@
       "ownerId": "u4",
       "memberIds": [
         "u3",
-        "u5"
+        "u5",
+        "u13"
+
       ]
     },
     {
@@ -144,7 +212,10 @@
       "description": "cadc",
       "createdAt": "2025-06-09T14:28:06.937Z",
       "ownerId": "u4",
-      "memberIds": []
+      "memberIds": [
+        "u13"
+
+      ]
     },
     {
       "id": "ws1749567361138",
@@ -155,7 +226,8 @@
       "memberIds": [
         "u3",
         "u6",
-        "u8"
+        "u8",
+        "u13"
       ]
     }
   ],
@@ -170,7 +242,9 @@
       "status": "active",
       "assignedUserIds": [
         "u1",
-        "u2"
+        "u2",
+        "u13"
+
       ]
     },
     {
@@ -182,7 +256,9 @@
       "endDate": "2024-12-31",
       "status": "pending",
       "assignedUserIds": [
-        "u2"
+        "u2",
+        "u13"
+        
       ]
     },
     {
@@ -194,7 +270,9 @@
       "endDate": "2024-10-15",
       "status": "active",
       "assignedUserIds": [
-        "u1"
+        "u1",
+        "u13"
+
       ]
     },
     {
@@ -207,7 +285,9 @@
       "status": "completed",
       "assignedUserIds": [
         "u2",
-        "u3"
+        "u3",
+        "u13"
+
       ]
     },
     {
@@ -326,7 +406,8 @@
       "status": "in-progress",
       "priority": "medium",
       "dueDate": "2024-09-01",
-      "assignedTo": "u2"
+      "assignedTo":  "u13"
+
     },
     {
       "id": "t3",
@@ -356,7 +437,8 @@
       "status": "completed",
       "priority": "medium",
       "dueDate": "2024-10-01",
-      "assignedTo": "u4"
+      "assignedTo":    "u13"
+
     },
     {
       "id": "t6",

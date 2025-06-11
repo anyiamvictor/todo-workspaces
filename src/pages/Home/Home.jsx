@@ -1,15 +1,24 @@
-function HomePage() {
+import { useNavigate } from "react-router-dom";
+import styles from "./Home.module.css";
+
+function Home() {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <header>
-        <nav>
-          <a href="/auth">Login</a>  {/* Login link */}
-          <a href="/">Home</a>
-        </nav>
+    <div className={styles.home}>
+      <header className={styles.header}>
+        <h1>Welcome to TaskBoard</h1>
+        <p>Collaborate with your team. Manage workspaces, projects, and tasks efficiently.</p>
       </header>
-      {/* rest of homepage content */}
+
+      <section className={styles.authSection}>
+        <h2>Get Started</h2>
+        <div className={styles.authButtons}>
+          <button onClick={() => navigate("/auth?mode=auth")}>Login/SignUp</button>
+        </div>
+      </section>
     </div>
   );
 }
 
-export default HomePage;
+export default Home;

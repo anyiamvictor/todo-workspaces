@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -15,34 +17,41 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ProjectList from "./components/ProjectList/ProjectList";
 
 function App() {
-
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Authentication />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Authentication />} />
 
-        {/* Private routes inside root layout */}
-        <Route element={<Rootlayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/userprofile" element={<UserProfileSettings />} />
-
-          <Route path="/workspaces" element={<WorkspacesList />} />
-
-          <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
-            <Route index element={<WorkspaceItem />} />
-            <Route path="projects" element={<ProjectList />} />
-            <Route path="projects/:projectId" element={<Project />}>
-              <Route path="task/:taskId" element={<TaskDetail />} />
-              <Route path="add-task" element={<AddEditTask />} />
+          {/* Protected routes */}
+          <Route
+            element={
+              <ProtectedRoute>
+                <Rootlayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/userprofile" element={<UserProfileSettings />} />
+            <Route path="/workspaces" element={<WorkspacesList />} />
+            <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
+              <Route index element={<WorkspaceItem />} />
+              <Route path="projects" element={<ProjectList />} />
+              <Route path="projects/:projectId" element={<Project />}>
+                <Route path="task/:taskId" element={<TaskDetail />} />
+                <Route path="add-task" element={<AddEditTask />} />
+              </Route>
             </Route>
           </Route>
+
+          {/* Catch-all for undefined routes */}
           <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  )
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
