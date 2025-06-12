@@ -15,6 +15,10 @@ import AddEditTask from "./components/AddEditTaskModal/AddEditTaskModal";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ProjectList from "./components/ProjectList/ProjectList";
+import Admin from "./pages/Admin/Admin";
+import RoleProtectedRoute from "./components/RoleProtectedoute";
+import Registration from "./pages/Registration/Registration";
+
 
 function App() {
   return (
@@ -24,6 +28,20 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Authentication />} />
+
+          <Route
+            path="/admin/:groupId"
+            element={
+              <RoleProtectedRoute allowedRoles={["admin"]}>
+                <Admin />
+              </RoleProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/register"
+            element={ <Registration/> }
+          />
 
           {/* Protected routes */}
           <Route

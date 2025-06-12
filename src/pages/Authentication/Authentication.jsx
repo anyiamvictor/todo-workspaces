@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "./Authentication.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import BackButton from "../../components/BackButton/BackButton";
@@ -15,13 +15,16 @@ function Authentication() {
     name: "",
     email: "",
     password: "",
-    role: "member", // default role
+    role: "member",
+    phone: "",
+    bio: "",
   });
+  
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (user) return <Navigate to="/dashboard" replace />;
 
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -37,13 +40,21 @@ function Authentication() {
       const users = await res.json();
 
       if (isLogin) {
-        const matchedUser = users.find((u) => u.password === formData.password);
+        const matchedUser = users.find(
+          (u) => u.email === formData.email && u.password === formData.password
+        );
+        
         if (matchedUser) {
-          login(matchedUser);
-          navigate("/dashboard");
+          login(matchedUser)          
+          if (matchedUser.role === "admin") {
+            navigate(`/admin/${matchedUser.groupId}`);
+          } else {
+            navigate("/dashboard");
+          }
         } else {
           setError("Invalid email or password.");
         }
+        
       } else {
         if (users.length > 0) {
           setError("Email already exists.");
@@ -53,15 +64,17 @@ function Authentication() {
             email: formData.email,
             password: formData.password,
             role: formData.role,
+            phone: formData.phone,
+            bio: formData.bio,
             createdAt: new Date().toISOString(),
             status: "active",
           };
-
+          
           const createRes = await fetch("http://localhost:3001/users", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser),
-          });
+          })
 
           if (createRes.ok) {
             login(newUser);
@@ -80,35 +93,60 @@ function Authentication() {
 
   return (
     <div className={styles.authPage}>
-      <BackButton />
+      {/* <BackButton /> */}
       <h2>{isLogin ? "Login to Your Account" : "Create a New Account"}</h2>
 
       <form className={styles.authForm} onSubmit={handleSubmit}>
         {error && <div className={styles.errorMessage}>{error}</div>}
 
         {!isLogin && (
-          <>
-            <div className={styles.formGroup}>
-              <label>Full Name</label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+  <>
+    <div className={styles.formGroup}>
+      <label>Full Name</label>
+      <input
+        type="text"
+        name="name"
+        placeholder="Enter your full name"
+        value={formData.name}
+        onChange={handleChange}
+        required
+      />
+    </div>
 
-            <div className={styles.formGroup}>
-              <label>Select Role</label>
-              <select name="role" value={formData.role} onChange={handleChange} required>
-                <option value="member">Member</option>
-                <option value="supervisor">Supervisor</option>
-              </select>
-            </div>
-          </>
-        )}
+    <div className={styles.formGroup}>
+      <label>Phone Number</label>
+      <input
+        type="tel"
+        name="phone"
+        placeholder="Enter your phone number"
+        value={formData.phone}
+        onChange={handleChange}
+        required
+      />
+    </div>
+
+    <div className={styles.formGroup}>
+      <label>Bio</label>
+      <textarea
+        name="bio"
+        placeholder="Write a short bio"
+        value={formData.bio}
+        onChange={handleChange}
+        rows={3}
+        required
+      />
+    </div>
+
+    <div className={styles.formGroup}>
+      <label>Select Role</label>
+      <select name="role" value={formData.role} onChange={handleChange} required>
+        <option value="member">Member</option>
+        <option value="supervisor">Supervisor</option>
+      </select>
+    </div>
+  </>
+)}
+
 
         <div className={styles.formGroup}>
           <label>Email</label>

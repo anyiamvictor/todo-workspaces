@@ -5,11 +5,9 @@ function ProtectedRoute({ children }) {
   const { user } = useAuth();
 
   if (!user) {
-    // Redirect to auth page if not logged in
     return <Navigate to="/auth" replace />;
   }
 
-  // Render the protected component if authenticated
   return children;
 }
 

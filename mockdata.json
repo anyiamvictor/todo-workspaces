@@ -4,172 +4,117 @@
       "id": "u1",
       "name": "Alice Johnson",
       "role": "admin",
-      "email": "alice.johnson@example.com",
-      "password": "alice123",
+      "email": "jack@example.com",
+      "password": "leaves",
       "avatarUrl": "https://randomuser.me/api/portraits/women/1.jpg",
       "status": "active",
       "createdAt": "2024-01-01T08:00:00Z",
       "lastLogin": "2025-06-08T09:30:00Z",
       "bio": "Project Manager at Marketing Team",
-      "phoneNumber": "+2348012345671"
+      "phoneNumber": "+2348012345671",
+      "groupId": "g1"
     },
     {
       "id": "u2",
-      "name": "Bob Smith",
-      "role": "member",
-      "email": "bob.smith@example.com",
+      "name": "Bob Supervisor",
+      "role": "supervisor",
+      "email": "bob.supervisor@example.com",
       "password": "bob123",
       "avatarUrl": "https://randomuser.me/api/portraits/men/2.jpg",
       "status": "active",
-      "createdAt": "2024-01-03T11:00:00Z",
-      "lastLogin": "2025-06-07T14:20:00Z",
-      "bio": "Frontend Developer",
-      "phoneNumber": "+2348012345672"
+      "createdAt": "2024-01-05T09:15:00Z",
+      "lastLogin": "2025-06-10T11:20:00Z",
+      "bio": "Team Lead for Operations",
+      "phoneNumber": "+2348012345672",
+      "groupId": "g1"
     },
     {
       "id": "u3",
-      "name": "Chidera Obi",
+      "name": "Charlie Member",
       "role": "member",
-      "email": "chidera.obi@example.com",
-      "password": "chidera123",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/3.jpg",
+      "email": "charlie.member@example.com",
+      "password": "charlie123",
+      "avatarUrl": "https://randomuser.me/api/portraits/men/3.jpg",
       "status": "active",
-      "createdAt": "2024-02-10T10:30:00Z",
-      "lastLogin": "2025-06-06T11:45:00Z",
-      "bio": "UX Designer at Engineering Team",
-      "phoneNumber": "+2348012345673"
+      "createdAt": "2024-01-10T10:30:00Z",
+      "lastLogin": "2025-06-11T08:00:00Z",
+      "bio": "Junior Analyst",
+      "phoneNumber": "+2348012345673",
+      "groupId": "g1"
     },
     {
       "id": "u4",
-      "name": "David Okafor",
+      "name": "Diana Admin",
       "role": "admin",
-      "email": "david.okafor@example.com",
-      "password": "david123",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/4.jpg",
+      "email": "diana.admin@example.com",
+      "password": "diana123",
+      "avatarUrl": "https://randomuser.me/api/portraits/women/4.jpg",
       "status": "active",
-      "createdAt": "2024-03-15T09:45:00Z",
-      "lastLogin": "2025-06-05T17:00:00Z",
-      "bio": "Engineering Lead",
-      "phoneNumber": "+2348012345674"
+      "createdAt": "2024-02-01T08:45:00Z",
+      "lastLogin": "2025-06-09T14:25:00Z",
+      "bio": "Technical Manager for Development",
+      "phoneNumber": "+2348012345674",
+      "groupId": "g2"
     },
     {
       "id": "u5",
-      "name": "Ella Musa",
-      "role": "member",
-      "email": "ella.musa@example.com",
-      "password": "ella123",
+      "name": "Eve Supervisor",
+      "role": "supervisor",
+      "email": "eve.supervisor@example.com",
+      "password": "eve123",
       "avatarUrl": "https://randomuser.me/api/portraits/women/5.jpg",
-      "status": "inactive",
-      "createdAt": "2024-04-01T12:00:00Z",
-      "lastLogin": "2025-05-28T08:30:00Z",
-      "bio": "Copywriter and SEO",
-      "phoneNumber": "+2348012345675"
+      "status": "active",
+      "createdAt": "2024-02-15T12:00:00Z",
+      "lastLogin": "2025-06-10T16:10:00Z",
+      "bio": "Operations Coordinator",
+      "phoneNumber": "+2348012345675",
+      "groupId": "g2"
     },
     {
       "id": "u6",
-      "name": "Frank Emeka",
+      "name": "Frank Member",
       "role": "member",
-      "email": "frank.emeka@example.com",
+      "email": "frank.member@example.com",
       "password": "frank123",
       "avatarUrl": "https://randomuser.me/api/portraits/men/6.jpg",
       "status": "active",
-      "createdAt": "2024-05-20T15:20:00Z",
-      "lastLogin": "2025-06-06T12:10:00Z",
-      "bio": "QA Tester",
-      "phoneNumber": "+2348012345676"
+      "createdAt": "2024-03-01T07:30:00Z",
+      "lastLogin": "2025-06-12T07:45:00Z",
+      "bio": "Support Team Member",
+      "phoneNumber": "+2348012345676",
+      "groupId": "g2"
     },
     {
-      "id": "u7",
-      "name": "Grace Eze",
+      "id": "u-4f71cc47-0be3-4343-b1d9-a1ff6c2f14de",
+      "name": "obinna anyiam",
+      "email": "anyiamvictor@gmail.com",
+      "password": "leaves",
+      "phoneNumber": "07013723537",
+      "bio": "tech guru",
       "role": "admin",
-      "email": "grace.eze@example.com",
-      "password": "grace123",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/7.jpg",
       "status": "active",
-      "createdAt": "2024-06-05T08:15:00Z",
-      "lastLogin": "2025-06-08T10:00:00Z",
-      "bio": "Admin and HR",
-      "phoneNumber": "+2348012345677"
-    },
-    {
-      "id": "u8",
-      "name": "Henry Dike",
-      "role": "member",
-      "email": "henry.dike@example.com",
-      "password": "henry123",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/8.jpg",
-      "status": "active",
-      "createdAt": "2024-06-08T07:50:00Z",
-      "lastLogin": "2025-06-08T08:55:00Z",
-      "bio": "Backend Developer",
-      "phoneNumber": "+2348012345678"
-    },
-    {
-      "id": "u9",
-      "name": "Ijeoma Nwosu",
-      "role": "member",
-      "email": "ijeoma.nwosu@example.com",
-      "password": "ijeoma123",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/9.jpg",
-      "status": "active",
-      "createdAt": "2024-07-01T10:00:00Z",
-      "lastLogin": "2025-06-10T09:00:00Z",
-      "bio": "Content Strategist",
-      "phoneNumber": "+2348012345679"
-    },
-    {
-      "id": "u10",
-      "name": "Kelvin Uche",
-      "role": "member",
-      "email": "kelvin.uche@example.com",
-      "password": "kelvin123",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/10.jpg",
-      "status": "inactive",
-      "createdAt": "2024-08-01T09:30:00Z",
-      "lastLogin": "2025-06-01T08:20:00Z",
-      "bio": "Tech Support",
-      "phoneNumber": "+2348012345680"
-    },
-    {
-      "id": "u11",
-      "name": "Linda Osei",
-      "role": "member",
-      "email": "linda.osei@example.com",
-      "password": "linda123",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/11.jpg",
-      "status": "active",
-      "createdAt": "2024-09-10T12:15:00Z",
-      "lastLogin": "2025-06-10T10:10:00Z",
-      "bio": "Sales Executive",
-      "phoneNumber": "+2348012345681"
-    },
-    {
-      "id": "u12",
-      "name": "Michael Adebayo",
-      "role": "admin",
-      "email": "michael.adebayo@example.com",
-      "password": "michael123",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/12.jpg",
-      "status": "active",
-      "createdAt": "2024-10-15T11:45:00Z",
-      "lastLogin": "2025-06-11T11:11:00Z",
-      "bio": "Operations Lead",
-      "phoneNumber": "+2348012345682"
-    },
-    {
-      "id": "u13",
-      "name": "Ngozi Bello",
-      "role": "member",
-      "email": "ngozi.bello@example.com",
-      "password": "ngozi123",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/13.jpg",
-      "status": "active",
-      "createdAt": "2024-11-05T14:00:00Z",
-      "lastLogin": "2025-06-11T12:45:00Z",
-      "bio": "Intern",
-      "phoneNumber": "+2348012345683"
+      "createdAt": "2025-06-12T15:51:42.533Z",
+      "lastLogin": null,
+      "groupId": "g-7d02bd74-dd77-40e9-a882-e9d281042062",
+      "avatarUrl": null
     }
-
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Team Alpha",
+      "adminId": "u1"
+    },
+    {
+      "id": "g2",
+      "name": "Team Beta",
+      "adminId": "u4"
+    },
+    {
+      "id": "g-7d02bd74-dd77-40e9-a882-e9d281042062",
+      "name": "ovuacomp",
+      "adminId": "u-4f71cc47-0be3-4343-b1d9-a1ff6c2f14de"
+    }
   ],
   "workspaces": [
     {
@@ -181,340 +126,98 @@
       "memberIds": [
         "u1",
         "u2"
-      ]
+      ],
+      "groupId": "g2"
     },
     {
       "id": "ws2",
-      "name": "Engineering Team",
-      "description": "Builds and maintains products",
-      "createdAt": "2024-03-01T10:00:00Z",
-      "ownerId": "u2",
+      "name": "Sales Team",
+      "description": "Responsible for client acquisition and revenue growth",
+      "createdAt": "2024-01-02T10:00:00Z",
+      "ownerId": "u5",
       "memberIds": [
-        "u2"
-      ]
-    },
-    {
-      "id": "ws1749478536257",
-      "name": "Test",
-      "description": "trial and error",
-      "createdAt": "2025-06-09T14:15:36.257Z",
-      "ownerId": "u4",
-      "memberIds": [
-        "u3",
         "u5",
-        "u13"
-
-      ]
-    },
-    {
-      "id": "ws1749479286937",
-      "name": "xzd",
-      "description": "cadc",
-      "createdAt": "2025-06-09T14:28:06.937Z",
-      "ownerId": "u4",
-      "memberIds": [
-        "u13"
-
-      ]
-    },
-    {
-      "id": "ws1749567361138",
-      "name": "OvuaComp",
-      "description": "Testing to see if this works",
-      "createdAt": "2025-06-10T14:56:01.138Z",
-      "ownerId": "u7",
-      "memberIds": [
-        "u3",
-        "u6",
-        "u8",
-        "u13"
-      ]
+        "u6"
+      ],
+      "groupId": "g-7d02bd74-dd77-40e9-a882-e9d281042062"
     }
   ],
   "projects": [
     {
       "id": "p1",
-      "name": "Product Launch Q3",
-      "description": "Execute launch plan",
+      "name": "Website Launch",
+      "description": "Launch the new company website with marketing pages.",
       "workspaceId": "ws1",
-      "startDate": "2024-06-01",
-      "endDate": "2024-09-30",
-      "status": "active",
+      "startDate": "2025-06-01",
+      "endDate": "2025-07-01",
+      "status": "in-progress",
       "assignedUserIds": [
-        "u1",
-        "u2",
-        "u13"
-
+        "u3"
       ]
     },
     {
       "id": "p2",
-      "name": "New Website",
-      "description": "Revamp company website",
+      "name": "Client Outreach Campaign",
+      "description": "Reach out to potential B2B clients and partners.",
       "workspaceId": "ws2",
-      "startDate": "2024-07-01",
-      "endDate": "2024-12-31",
-      "status": "pending",
-      "assignedUserIds": [
-        "u2",
-        "u13"
-        
-      ]
-    },
-    {
-      "id": "p3",
-      "name": "Marketing Campaign",
-      "description": "Launch new ad campaign on social media",
-      "workspaceId": "ws1",
-      "startDate": "2024-08-01",
-      "endDate": "2024-10-15",
-      "status": "active",
-      "assignedUserIds": [
-        "u1",
-        "u13"
-
-      ]
-    },
-    {
-      "id": "p4",
-      "name": "Team Training",
-      "description": "Organize internal upskilling sessions",
-      "workspaceId": "ws2",
-      "startDate": "2024-06-15",
-      "endDate": "2024-07-30",
-      "status": "completed",
-      "assignedUserIds": [
-        "u2",
-        "u3",
-        "u13"
-
-      ]
-    },
-    {
-      "id": "p5",
-      "name": "Client Onboarding",
-      "description": "Onboard 3 new enterprise clients",
-      "workspaceId": "ws1",
-      "startDate": "2024-07-10",
-      "endDate": "2024-08-30",
-      "status": "pending",
-      "assignedUserIds": [
-        "u1",
-        "u3"
-      ]
-    },
-    {
-      "id": "p6",
-      "name": "Security Audit",
-      "description": "Conduct Q4 security audit",
-      "workspaceId": "ws3",
-      "startDate": "2024-09-01",
-      "endDate": "2024-09-30",
-      "status": "pending",
-      "assignedUserIds": [
-        "u4"
-      ]
-    },
-    {
-      "id": "p7",
-      "name": "API Integration",
-      "description": "Integrate new payment gateway API",
-      "workspaceId": "ws2",
-      "startDate": "2024-08-01",
-      "endDate": "2024-10-01",
-      "status": "active",
-      "assignedUserIds": [
-        "u2",
-        "u4"
-      ]
-    },
-    {
-      "id": "p8",
-      "name": "Data Migration",
-      "description": "Migrate data to new cloud provider",
-      "workspaceId": "ws3",
-      "startDate": "2024-07-15",
-      "endDate": "2024-09-15",
-      "status": "active",
-      "assignedUserIds": [
-        "u3"
-      ]
-    },
-    {
-      "id": "p9",
-      "name": "UX Improvements",
-      "description": "Redesign user onboarding flow",
-      "workspaceId": "ws1",
-      "startDate": "2024-06-20",
-      "endDate": "2024-07-31",
-      "status": "completed",
-      "assignedUserIds": [
-        "u1",
-        "u2",
-        "u3"
-      ]
-    },
-    {
-      "id": "p10",
-      "name": "Inventory Sync",
-      "description": "Build real-time sync with supplier database",
-      "workspaceId": "ws2",
-      "startDate": "2024-08-10",
-      "endDate": "2024-11-20",
-      "status": "pending",
-      "assignedUserIds": [
-        "u2"
-      ]
-    },
-    {
-      "id": "a06b",
-      "name": "sdcsd",
-      "description": "fdfdf",
       "startDate": "2025-06-10",
-      "endDate": "2025-06-21",
-      "status": "pending",
-      "assignedUserIds": [],
-      "workspaceId": "ws1"
-    },
-    {
-      "id": "acbb",
-      "name": "OvuaComp brandinkg",
-      "description": "Responsible fo rthe branding of OvuaComp",
-      "startDate": "2025-06-10",
-      "endDate": "2025-06-28",
-      "status": "active",
-      "assignedUserIds": [],
-      "workspaceId": "ws1749567361138"
+      "endDate": "2025-07-15",
+      "status": "not-started",
+      "assignedUserIds": [
+        "u6"
+      ]
     }
   ],
   "tasks": [
     {
       "id": "t1",
-      "title": "Write press release",
-      "description": "Create and distribute a press release",
-      "projectId": "p1",
-      "status": "done",
+      "title": "Design Homepage",
+      "description": "Create a responsive homepage layout.",
       "priority": "high",
-      "dueDate": "2024-07-15",
-      "assignedTo": "u2"
+      "dueDate": "2025-06-15",
+      "status": "approved",
+      "projectId": "p1",
+      "assignedUserId": "u3"
     },
     {
       "id": "t2",
-      "title": "Design landing page",
-      "description": "Create UI for new landing page",
-      "projectId": "p2",
-      "status": "in-progress",
+      "title": "Set Up Hosting",
+      "description": "Choose hosting and deploy staging version.",
       "priority": "medium",
-      "dueDate": "2024-09-01",
-      "assignedTo":  "u13"
-
+      "dueDate": "2025-06-20",
+      "status": "completed",
+      "projectId": "p1",
+      "assignedUserId": "u3"
     },
     {
       "id": "t3",
-      "title": "Develop backend API",
-      "description": "Implement authentication and user routes",
-      "projectId": "p1",
-      "status": "not-started",
+      "title": "Draft Email Templates",
+      "description": "Prepare outreach email drafts for review.",
       "priority": "high",
-      "dueDate": "2024-08-10",
-      "assignedTo": "u1"
+      "dueDate": "2025-06-25",
+      "status": "completed",
+      "projectId": "p2",
+      "assignedUserId": "u6"
     },
     {
       "id": "t4",
-      "title": "Fix mobile responsiveness",
-      "description": "Ensure all pages are mobile-friendly",
-      "projectId": "p2",
-      "status": "in-progress",
+      "title": "Compile Client List",
+      "description": "Get contacts from LinkedIn and CRM export.",
       "priority": "low",
-      "dueDate": "2024-09-20",
-      "assignedTo": "u3"
-    },
-    {
-      "id": "t5",
-      "title": "Conduct usability test",
-      "description": "Test new UI with users and gather feedback edited",
-      "projectId": "p3",
-      "status": "completed",
-      "priority": "medium",
-      "dueDate": "2024-10-01",
-      "assignedTo":    "u13"
-
-    },
-    {
-      "id": "t6",
-      "title": "Integrate payment gateway",
-      "description": "Add support for Stripe and PayPal",
-      "projectId": "p1",
-      "status": "in-review",
-      "priority": "high",
-      "dueDate": "2024-07-30",
-      "assignedTo": "u5"
-    },
-    {
-      "id": "t7",
-      "title": "Set up CI/CD pipeline",
-      "description": "Automate build and deployment process",
-      "projectId": "p4",
-      "status": "not-started",
-      "priority": "high",
-      "dueDate": "2024-11-15",
-      "assignedTo": "u1"
-    },
-    {
-      "id": "t8",
-      "title": "Write unit tests",
-      "description": "Cover core components with unit tests",
-      "projectId": "p2",
-      "status": "done",
-      "priority": "medium",
-      "dueDate": "2024-06-20",
-      "assignedTo": "u2"
-    },
-    {
-      "id": "t9",
-      "title": "Update documentation",
-      "description": "Document new features and setup instructions",
-      "projectId": "p3",
+      "dueDate": "2025-06-28",
       "status": "in-progress",
-      "priority": "low",
-      "dueDate": "2024-08-05",
-      "assignedTo": "u3"
+      "projectId": "p2",
+      "assignedUserId": "u6"
     },
     {
-      "id": "t10",
-      "title": "Client feedback review",
-      "description": "Review client feedback from last sprint",
-      "projectId": "p4",
-      "status": "done",
-      "priority": "medium",
-      "dueDate": "2024-06-15",
-      "assignedTo": "u4"
-    },
-    {
-      "id": "a2b4",
-      "title": "create company logo",
-      "description": "use canva or pixel",
-      "assignedTo": "",
+      "id": "c1f8",
+      "title": "rgfdr",
+      "description": "dfvdfvdf",
+      "assignedTo": "dfv",
       "dueDate": "2025-06-12",
       "status": "in-progress",
       "priority": "medium",
-      "projectId": "acbb"
-    }
-  ],
-  "comments": [
-    {
-      "id": "c1",
-      "taskId": "t1",
-      "userId": "u1",
-      "comment": "Make sure to highlight the main features.",
-      "createdAt": "2024-06-20T10:00:00Z"
-    },
-    {
-      "id": "c2",
-      "taskId": "t2",
-      "userId": "u2",
-      "comment": "Working on the mockups now.",
-      "createdAt": "2024-06-25T15:30:00Z"
+      "projectId": "p1"
     }
   ]
 }
