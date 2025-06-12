@@ -1,6 +1,13 @@
 body, html {
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100%;
+  scrollbar-width: none;
+}
+
+/* For vertical scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* Optional: no background */
 }
 
 

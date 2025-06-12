@@ -85,35 +85,80 @@
       "groupId": "g2"
     },
     {
-      "id": "u-4f71cc47-0be3-4343-b1d9-a1ff6c2f14de",
+      "id": "u-a5adab62-b61c-4e83-b9d5-0846668e97d4",
       "name": "obinna anyiam",
       "email": "anyiamvictor@gmail.com",
       "password": "leaves",
       "phoneNumber": "07013723537",
-      "bio": "tech guru",
+      "bio": "techhhie",
       "role": "admin",
       "status": "active",
-      "createdAt": "2025-06-12T15:51:42.533Z",
+      "createdAt": "2025-06-12T17:18:37.672Z",
       "lastLogin": null,
-      "groupId": "g-7d02bd74-dd77-40e9-a882-e9d281042062",
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
       "avatarUrl": null
+    },
+    {
+      "id": "u-9de56aab-6604-4ce7-9c54-aad71ac3a5d1",
+      "name": "Victor Anyiam",
+      "email": "obinnavictor@gmail.com",
+      "password": "leaves",
+      "phoneNumber": "07013723537",
+      "bio": "mee",
+      "role": "member",
+      "status": "inactive",
+      "createdAt": "2025-06-12T17:22:49.222Z",
+      "lastLogin": null,
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+    },
+    {
+      "id": "u-41aaa9bd-df26-4aad-9dda-bbe61334ebd7",
+      "name": "Hannah Johnson",
+      "email": "hj@gmail.com",
+      "password": "leaves",
+      "phoneNumber": "07030040340",
+      "bio": "my bio",
+      "role": "member",
+      "status": "active",
+      "createdAt": "2025-06-12T17:24:30.860Z",
+      "lastLogin": null,
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+    },
+    {
+      "id": "u-ae9dd0ae-cb14-40ef-a7f5-e1d8b7059544",
+      "name": "obi",
+      "email": "obinnavictors@gmail.com",
+      "password": "leaves",
+      "phoneNumber": "07013723537",
+      "bio": "sdsd",
+      "role": "member",
+      "status": "active",
+      "createdAt": "2025-06-12T17:48:02.829Z",
+      "lastLogin": null,
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
     }
   ],
   "groups": [
     {
       "id": "g1",
       "name": "Team Alpha",
-      "adminId": "u1"
+      "adminId": "u1",
+      "inviteCode": "alpha-2024"
     },
     {
       "id": "g2",
       "name": "Team Beta",
-      "adminId": "u4"
+      "adminId": "u4",
+      "inviteCode": "beta-2024"
     },
     {
-      "id": "g-7d02bd74-dd77-40e9-a882-e9d281042062",
+      "id": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
       "name": "ovuacomp",
-      "adminId": "u-4f71cc47-0be3-4343-b1d9-a1ff6c2f14de"
+      "adminId": "u-a5adab62-b61c-4e83-b9d5-0846668e97d4",
+      "inviteCode": "jesus"
     }
   ],
   "workspaces": [
@@ -166,58 +211,300 @@
       "assignedUserIds": [
         "u6"
       ]
+    },
+    {
+      "id": "p3",
+      "name": "Design System Overhaul",
+      "description": "Redesign components and update style guide.",
+      "workspaceId": "ws1",
+      "startDate": "2025-06-15",
+      "endDate": "2025-07-10",
+      "status": "in-progress",
+      "assignedUserIds": [
+        "u7",
+        "u8"
+      ]
+    },
+    {
+      "id": "p4",
+      "name": "Feature Rollout v2.0",
+      "description": "Implement new features based on roadmap.",
+      "workspaceId": "ws2",
+      "startDate": "2025-06-18",
+      "endDate": "2025-07-25",
+      "status": "not-started",
+      "assignedUserIds": [
+        "u9",
+        "u10"
+      ]
+    },
+    {
+      "id": "p5",
+      "name": "Support Knowledge Base",
+      "description": "Create internal documentation for support team.",
+      "workspaceId": "ws1",
+      "startDate": "2025-06-12",
+      "endDate": "2025-06-30",
+      "status": "in-progress",
+      "assignedUserIds": [
+        "u11",
+        "u12"
+      ]
+    },
+    {
+      "id": "p6",
+      "name": "Bug Regression Testing",
+      "description": "Ensure previous bugs are not reappearing in the build.",
+      "workspaceId": "ws2",
+      "startDate": "2025-06-14",
+      "endDate": "2025-06-28",
+      "status": "in-review",
+      "assignedUserIds": [
+        "u13",
+        "u14"
+      ]
     }
   ],
   "tasks": [
     {
-      "id": "t1",
-      "title": "Design Homepage",
-      "description": "Create a responsive homepage layout.",
+      "id": "t37",
+      "title": "Setup GitHub Repo",
+      "description": "Initialize repo and add collaborators.",
+      "priority": "medium",
+      "dueDate": "2025-06-13",
+      "status": "in-progress",
+      "projectId": "p1",
+      "assignedUserId": "u3"
+    },
+    {
+      "id": "t38",
+      "title": "Build Navigation Bar",
+      "description": "Create responsive nav for all devices.",
+      "priority": "high",
+      "dueDate": "2025-06-16",
+      "status": "in-progress",
+      "projectId": "p1",
+      "assignedUserId": "u3"
+    },
+    {
+      "id": "t39",
+      "title": "Write Homepage Copy",
+      "description": "Craft persuasive text for landing page.",
+      "priority": "low",
+      "dueDate": "2025-06-18",
+      "status": "not-started",
+      "projectId": "p1",
+      "assignedUserId": "u3"
+    },
+    {
+      "id": "t40",
+      "title": "Launch Beta Version",
+      "description": "Push live to staging environment.",
+      "priority": "high",
+      "dueDate": "2025-06-21",
+      "status": "not-started",
+      "projectId": "p1",
+      "assignedUserId": "u3"
+    },
+    {
+      "id": "t41",
+      "title": "Generate Leads List",
+      "description": "Gather contacts from CRM and LinkedIn.",
+      "priority": "medium",
+      "dueDate": "2025-06-14",
+      "status": "in-progress",
+      "projectId": "p2",
+      "assignedUserId": "u6"
+    },
+    {
+      "id": "t42",
+      "title": "Design Email Templates",
+      "description": "Create 3 variants for testing.",
+      "priority": "high",
+      "dueDate": "2025-06-16",
+      "status": "not-started",
+      "projectId": "p2",
+      "assignedUserId": "u6"
+    },
+    {
+      "id": "t43",
+      "title": "Schedule Outreach Emails",
+      "description": "Use Mailchimp to schedule batches.",
+      "priority": "medium",
+      "dueDate": "2025-06-19",
+      "status": "not-started",
+      "projectId": "p2",
+      "assignedUserId": "u6"
+    },
+    {
+      "id": "t44",
+      "title": "Monitor Bounce Rates",
+      "description": "Track and clean bad addresses.",
+      "priority": "low",
+      "dueDate": "2025-06-23",
+      "status": "not-started",
+      "projectId": "p2",
+      "assignedUserId": "u6"
+    },
+    {
+      "id": "t45",
+      "title": "List Current Components",
+      "description": "Audit and document all reused elements.",
+      "priority": "medium",
+      "dueDate": "2025-06-13",
+      "status": "in-progress",
+      "projectId": "p3",
+      "assignedUserId": "u7"
+    },
+    {
+      "id": "t46",
+      "title": "Standardize Typography",
+      "description": "Define font scale and sizes.",
       "priority": "high",
       "dueDate": "2025-06-15",
-      "status": "approved",
-      "projectId": "p1",
-      "assignedUserId": "u3"
+      "status": "not-started",
+      "projectId": "p3",
+      "assignedUserId": "u8"
     },
     {
-      "id": "t2",
-      "title": "Set Up Hosting",
-      "description": "Choose hosting and deploy staging version.",
+      "id": "t47",
+      "title": "Document Components",
+      "description": "Add Storybook pages with examples.",
       "priority": "medium",
-      "dueDate": "2025-06-20",
-      "status": "completed",
-      "projectId": "p1",
-      "assignedUserId": "u3"
+      "dueDate": "2025-06-17",
+      "status": "not-started",
+      "projectId": "p3",
+      "assignedUserId": "u7"
     },
     {
-      "id": "t3",
-      "title": "Draft Email Templates",
-      "description": "Prepare outreach email drafts for review.",
+      "id": "t48",
+      "title": "Setup Theme Switcher",
+      "description": "Allow users to toggle light/dark mode.",
       "priority": "high",
-      "dueDate": "2025-06-25",
-      "status": "completed",
-      "projectId": "p2",
-      "assignedUserId": "u6"
+      "dueDate": "2025-06-20",
+      "status": "not-started",
+      "projectId": "p3",
+      "assignedUserId": "u8"
     },
     {
-      "id": "t4",
-      "title": "Compile Client List",
-      "description": "Get contacts from LinkedIn and CRM export.",
-      "priority": "low",
-      "dueDate": "2025-06-28",
-      "status": "in-progress",
-      "projectId": "p2",
-      "assignedUserId": "u6"
+      "id": "t49",
+      "title": "Develop User Preferences",
+      "description": "Let users control email and theme settings.",
+      "priority": "high",
+      "dueDate": "2025-06-14",
+      "status": "not-started",
+      "projectId": "p4",
+      "assignedUserId": "u9"
     },
     {
-      "id": "c1f8",
-      "title": "rgfdr",
-      "description": "dfvdfvdf",
-      "assignedTo": "dfv",
+      "id": "t50",
+      "title": "Implement Feature Flags",
+      "description": "Toggle new features with backend flags.",
+      "priority": "medium",
+      "dueDate": "2025-06-17",
+      "status": "not-started",
+      "projectId": "p4",
+      "assignedUserId": "u10"
+    },
+    {
+      "id": "t51",
+      "title": "Collect Beta Feedback",
+      "description": "Send post-rollout survey to testers.",
+      "priority": "medium",
+      "dueDate": "2025-06-21",
+      "status": "not-started",
+      "projectId": "p4",
+      "assignedUserId": "u10"
+    },
+    {
+      "id": "t52",
+      "title": "Fix Reported Bugs",
+      "description": "Resolve issues from internal testing.",
+      "priority": "high",
+      "dueDate": "2025-06-24",
+      "status": "not-started",
+      "projectId": "p4",
+      "assignedUserId": "u9"
+    },
+    {
+      "id": "t53",
+      "title": "Review User Feedback",
+      "description": "Analyze app store reviews and support tickets.",
+      "priority": "medium",
       "dueDate": "2025-06-12",
       "status": "in-progress",
+      "projectId": "p5",
+      "assignedUserId": "u11"
+    },
+    {
+      "id": "t54",
+      "title": "Sketch New Layouts",
+      "description": "Design Figma wireframes for mobile.",
+      "priority": "high",
+      "dueDate": "2025-06-14",
+      "status": "not-started",
+      "projectId": "p5",
+      "assignedUserId": "u12"
+    },
+    {
+      "id": "t55",
+      "title": "Refactor Navigation",
+      "description": "Simplify tab and drawer navigation.",
       "priority": "medium",
-      "projectId": "p1"
+      "dueDate": "2025-06-16",
+      "status": "not-started",
+      "projectId": "p5",
+      "assignedUserId": "u11"
+    },
+    {
+      "id": "t56",
+      "title": "Update Color Scheme",
+      "description": "Make theme consistent with branding.",
+      "priority": "low",
+      "dueDate": "2025-06-18",
+      "status": "not-started",
+      "projectId": "p5",
+      "assignedUserId": "u12"
+    },
+    {
+      "id": "t57",
+      "title": "Design Onboarding Flow",
+      "description": "Map user steps and screens.",
+      "priority": "high",
+      "dueDate": "2025-06-13",
+      "status": "not-started",
+      "projectId": "p6",
+      "assignedUserId": "u13"
+    },
+    {
+      "id": "t58",
+      "title": "Write Welcome Emails",
+      "description": "Automate email sequences for new users.",
+      "priority": "medium",
+      "dueDate": "2025-06-15",
+      "status": "not-started",
+      "projectId": "p6",
+      "assignedUserId": "u14"
+    },
+    {
+      "id": "t59",
+      "title": "Track Signup Metrics",
+      "description": "Monitor funnel conversion rates.",
+      "priority": "medium",
+      "dueDate": "2025-06-17",
+      "status": "not-started",
+      "projectId": "p6",
+      "assignedUserId": "u13"
+    },
+    {
+      "id": "t60",
+      "title": "Add Tooltips & Hints",
+      "description": "Help users understand UI faster.",
+      "priority": "low",
+      "dueDate": "2025-06-19",
+      "status": "not-started",
+      "projectId": "p6",
+      "assignedUserId": "u14"
     }
   ]
 }
