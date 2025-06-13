@@ -132,7 +132,7 @@ const [updatingInviteCode, setUpdatingInviteCode] = useState(false);
       <h1 className={styles.adminHeader}>Admin Panel for {group?.name}</h1>
       <p className={styles.adminWelcome}>Welcome, {user.name}!</p>
 
-      <section className={styles.section}>
+      <section className={styles.inviteCode}>
   <h2>Group Invite Code</h2>
   <p>This code is required by new users to join your group.</p>
   <input

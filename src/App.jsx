@@ -1,34 +1,36 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext/AuthContext";
+
 import ProtectedRoute from "./components/ProtectedRoute";
+import RoleProtectedRoute from "./components/RoleProtectedoute";
 
 import Home from "./pages/Home/Home";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import Authentication from "./pages/Authentication/Authentication";
+import Registration from "./pages/Registration/Registration";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import UserProfileSettings from "./pages/UserProfileSetting/UserProfileSettings";
-import Rootlayout from "./components/Rootlayout/Rootlayout";
 import WorkspacesList from "./pages/WorkSpaces/WorkspacesList/WorkspacesList";
 import WorkspaceItem from "./pages/WorkSpaces/WorkspaceItem/WorkspaceItem";
+import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
+import ProjectList from "./components/ProjectList/ProjectList";
 import Project from "./pages/WorkSpaces/Project/Project";
 import TaskDetail from "./pages/WorkSpaces/TaskDetail/TaskDetail";
 import AddEditTask from "./components/AddEditTaskModal/AddEditTaskModal";
-import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
-import ProjectList from "./components/ProjectList/ProjectList";
+import Rootlayout from "./components/Rootlayout/Rootlayout";
 import Admin from "./pages/Admin/Admin";
-import RoleProtectedRoute from "./components/RoleProtectedoute";
-import Registration from "./pages/Registration/Registration";
-
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
-          {/* Public routes */}
+          {/* Public */}
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Authentication />} />
+          <Route path="/register" element={<Registration />} />
 
+          {/* Admin Protected */}
           <Route
             path="/admin/:groupId"
             element={
@@ -38,12 +40,7 @@ function App() {
             }
           />
 
-          <Route
-            path="/register"
-            element={ <Registration/> }
-          />
-
-          {/* Protected routes */}
+          {/* General Protected */}
           <Route
             element={
               <ProtectedRoute>
@@ -64,11 +61,11 @@ function App() {
             </Route>
           </Route>
 
-          {/* Catch-all for undefined routes */}
+          {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

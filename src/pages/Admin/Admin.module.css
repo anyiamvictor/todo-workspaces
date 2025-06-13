@@ -77,14 +77,15 @@ button:nth-child(4) {
   color: white;
 }
 
-.section input {
+.inviteCode input {
   margin-top: 8px;
+  margin-bottom: 8px;
   padding: 6px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 250px;
 }
-.section button {
+.inviteCode button {
   margin-left: 8px;
   padding: 6px 12px;
 }
