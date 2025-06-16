@@ -1,47 +1,218 @@
-/* ProjectList.module.css */
-
-.container {
-  padding: 2rem;
-  max-width: 700px;
-  margin: 0 auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-.heading {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.statusMessage {
-  font-size: 1rem;
-  color: #777;
-  text-align: center;
-  padding: 1rem;
-}
-
 .projectList {
-  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
   padding: 0;
   margin: 0;
 }
 
 .projectItem {
-  margin-bottom: 1rem;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  list-style: none; /* Just in case you're still using <li> */
 }
 
+.projectItem:hover {
+  background-color: #eef6fb;
+  transform: translateY(-2px);
+}
+
+
 .projectLink {
-  display: flex;
-  padding: 0.8rem 1rem;
-  background-color: #f7f7f7;
-  border-radius: 8px;
-  color: #333;
+  display: block;
+  padding: 1rem;
+  color: inherit;
   text-decoration: none;
+}
+
+.projectTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.projectName {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2d3748;
+  word-break: break-word;
+}
+
+.projectMeta {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: #4a5568;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.projectMeta span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.deleteButton {
+  background: white !important;
+  border: none;
+  font-size: 1.2rem;
+  color: #e53e3e;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.deleteButton:hover {
+  transform: scale(1.2);
+  color: #c53030;
+}
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal Box */
+.modal {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.confirmButton {
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.projectLink:hover {
+.confirmButton:hover {
+  background-color: #c53030;
+}
+
+.cancelButton {
+  background-color: #edf2f7;
+  color: #333;
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover {
   background-color: #e2e8f0;
+}
+
+.taskProgress {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.progressBarContainer {
+  height: 8px;
+  background-color: #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  cursor: help;
+}
+
+.progressBar {
+  height: 100%;
+  transition: width 0.4s ease, background-color 0.3s ease;
+  border-radius: 6px;
+}
+
+
+.progressText {
+  font-size: 0.8rem;
+  color: #2d3748;
+}
+
+.projectItem {
+  position: relative; /* required for ::after to position absolutely */
+  overflow: hidden;   /* optional, keeps overlay contained */
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  list-style: none;
+}
+
+/* This stays below everything and shows the overlay color */
+.projectItem::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 0;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.completed::after {
+  background-color: #38a169;
+  opacity: 0.12;
+}
+
+.pending::after {
+  background-color: #000000;
+  opacity: .2;
+}
+
+
+
+/* These are necessary so `styles.completed` and `styles.pending` actually resolve */
+.completed {}
+.pending {}
+
+
+/* Optional fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

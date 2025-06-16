@@ -19,11 +19,68 @@
 .description {
   color: #666;
   font-size: 1rem;
-  margin-top: 0.5rem;
+  
 }
 
 .meta {
-  margin-top: 1rem;
+  margin-top: 10rem;
   color: #888;
   font-size: 0.9rem;
+}
+
+.memberSection {
+  margin-top: 1rem;
+}
+
+.memberList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.memberName {
+  font-weight: 500;
+}
+
+.memberId {
+  margin-left: 4px;
+  color: #666;
+  font-size: 0.75rem;
+}
+
+.addMembersButton {
+  margin-top: 0.5rem;
+  background: #2563eb !important;
+  color: white !important;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.addMembersButton:hover {
+  background: #1d4ed8;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #ddd;
 }

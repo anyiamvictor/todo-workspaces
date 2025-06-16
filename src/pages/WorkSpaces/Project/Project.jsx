@@ -1,11 +1,16 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";;
+import { useState, useEffect } from "react";
 import styles from "./Project.module.css";
 import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskModal";
 import BackButton from "../../../components/BackButton/BackButton";
 import TaskItem from "../../../components/TaskItem/TaskItem";
+import { updateProjectStatus } from "../../../components/UpdateProjectStatus";
 
+
+//im suppose to refactor this componnet sothat all TAskItem related login goes to the TaskItem component
 function Project() {
+  console.log("Project component mounted");
+
   const { projectId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +18,20 @@ function Project() {
   const [showModal, setShowModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [projectName, setProjectName] = useState("");
+  const [users, setUsers] = useState([]);
 
+ useEffect(() => {
+  fetchTasks();
+  fetchProject();
+  fetchUsers();
+
+   const interval = setInterval(() => {
+    console.log("helllllo")
+    fetchTasks();
+  }, 1000); // every seconds
+
+  return () => clearInterval(interval); // cleanup when unmounting
+}, [projectId]);
 
 
   const fetchTasks = async () => {
@@ -22,6 +40,7 @@ function Project() {
       if (!res.ok) throw new Error("Failed to fetch tasks");
       const data = await res.json();
       setTasks(data);
+      updateProjectStatus(projectId);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -40,26 +59,63 @@ function Project() {
     }
   };
 
-  useEffect(() => {
-    fetchTasks();
-    fetchProject();
-  }, [projectId]);
-
-  const handleDone = async (taskId) => {
-    await fetch(`http://localhost:3001/tasks/${taskId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "completed" }),
-    });
-    fetchTasks();
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/users");
+      if (!res.ok) throw new Error("Failed to fetch users");
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+    }
   };
 
-  const handleApprove = async (taskId) => {
+  const getUserNameById = (id) => {
+    const user = users.find((u) => u.id === id);
+    return user ? user.name : "Unknown";
+  };
+
+  const handleDone = async (taskId, user) => {
+    const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
+    const task = await res.json();
+    if (task.doneClicked) return;
+    const updatedLog = [
+      ...(task.completedLog || []),
+      {
+        userId: user.id,
+        userName: user.name,
+        timestamp: new Date().toISOString()
+      }
+    ];
     await fetch(`http://localhost:3001/tasks/${taskId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "approved" }),
+      body: JSON.stringify({
+        status: "completed",
+        doneClicked: true,
+        completedLog: updatedLog
+      })
     });
+  
+    fetchTasks();
+  };
+  
+  const handleApprove = async (taskId) => {
+    const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
+    const task = await res.json();
+    const latestUser =
+      task.completedLog && task.completedLog.length > 0
+        ? task.completedLog[task.completedLog.length - 1]
+        : null;
+    await fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        status: "approved",
+        completedBy: latestUser, 
+      }),
+    });
+  
     fetchTasks();
   };
 
@@ -67,46 +123,55 @@ function Project() {
     await fetch(`http://localhost:3001/tasks/${taskId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "in-progress" }),
+      body: JSON.stringify({
+        status: "pending",
+        doneClicked: false // re-enable done button
+      })
     });
+  
     fetchTasks();
   };
+  
 
   return (
     <div className={styles.projectContainer}>
       <h3>{projectName || "Loading..."}</h3>
       <p>Available Tasks:</p>
 
-      {/* <p>This is the overview page for project <b>{projectId}</b>.</p> */}
-
       <div className={styles.btns}>
-
-      <button className={styles.addTaskBtn} onClick={() => {
-        setEditingTask(null);
-        setShowModal(true);
-      }}>
-        + Add Task
+        <button
+          className={styles.addTaskBtn}
+          onClick={() => {
+            setEditingTask(null);
+            setShowModal(true);
+          }}
+        >
+          + Add Task
         </button>
-        
-        <BackButton />
-        </div>
 
-      {loading ? <p>Loading...</p> : error ? <p>{error}</p> : (
-    <ul className={styles.taskList}>
-    {tasks.map((task) => (
-      <TaskItem
-        key={task.id}
-        task={task}
-        onDone={handleDone}
-        onApprove={handleApprove}
-        onReject={handleReject}
-        onEdit={(t) => {
-          setEditingTask(t);
-          setShowModal(true);
-        }}
-      />
-    ))}
-  </ul>
+        <BackButton />
+      </div>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <ul className={styles.taskList}>
+          {tasks.map((task) => (
+            <TaskItem
+              key={task.id}
+              task={{ ...task, assignedToName: getUserNameById(task.assignedTo) }}
+              onDone={handleDone}
+              onApprove={handleApprove}
+              onReject={handleReject}
+              onEdit={(t) => {
+                setEditingTask(t);
+                setShowModal(true);
+              }}
+            />
+          ))}
+        </ul>
       )}
 
       {showModal && (

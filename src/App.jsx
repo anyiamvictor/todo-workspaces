@@ -18,7 +18,7 @@ import AddEditTask from "./components/AddEditTaskModal/AddEditTaskModal";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Rootlayout from "./components/Rootlayout/Rootlayout";
 import Admin from "./pages/Admin/Admin";
-import TaskDetail from "./pages/WorkSpaces/TaskDetail/TaskDetail";
+import TaskItem from "./components/TaskItem/TaskItem";
 
 function App() {
   return (
@@ -55,7 +55,7 @@ function App() {
               <Route index element={<WorkspaceItem />} />
               <Route path="projects" element={<ProjectList />} />
               <Route path="projects/:projectId" element={<Project />}>
-                <Route path="task/:taskId" element={<TaskDetail />} />
+                <Route path="task/:taskId" element={<TaskItem />} />
                 <Route path="add-task" element={<AddEditTask />} />
               </Route>
             </Route>

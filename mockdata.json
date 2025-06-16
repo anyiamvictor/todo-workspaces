@@ -1,683 +1,204 @@
 {
   "users": [
     {
-      "id": "u1",
-      "name": "Alice Johnson",
-      "role": "admin",
-      "email": "jack@example.com",
-      "password": "leaves",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/1.jpg",
-      "status": "active",
-      "createdAt": "2024-01-01T08:00:00Z",
-      "lastSeen": "2025-06-08T09:30:00Z",
-      "bio": "Project Manager at Marketing Team",
-      "phoneNumber": "+2348012345671",
-      "groupId": "g1",
-      "isOnline": false,
-      "sessionToken": null
-    },
-    {
-      "id": "u2",
-      "name": "Bob Supervisor",
-      "role": "supervisor",
-      "email": "bob.supervisor@example.com",
-      "password": "bob123",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/2.jpg",
-      "status": "active",
-      "createdAt": "2024-01-05T09:15:00Z",
-      "lastSeen": "2025-06-10T11:20:00Z",
-      "bio": "Team Lead for Operations",
-      "phoneNumber": "+2348012345672",
-      "groupId": "g1",
-      "isOnline": false,
-      "sessionToken": null
-    },
-    {
-      "id": "u3",
-      "name": "Charlie Member",
-      "role": "member",
-      "email": "charlie.member@example.com",
-      "password": "charlie123",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/3.jpg",
-      "status": "active",
-      "createdAt": "2024-01-10T10:30:00Z",
-      "lastSeen": "2025-06-11T08:00:00Z",
-      "bio": "Junior Analyst",
-      "phoneNumber": "+2348012345673",
-      "groupId": "g1",
-      "isOnline": false,
-      "sessionToken": null
-    },
-    {
-      "id": "u4",
-      "name": "Diana Admin",
-      "role": "admin",
-      "email": "diana.admin@example.com",
-      "password": "diana123",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/4.jpg",
-      "status": "active",
-      "createdAt": "2024-02-01T08:45:00Z",
-      "lastSeen": "2121-06-10T01:24:37.207Z",
-      "bio": "Technical Manager for Development",
-      "phoneNumber": "+2348012345674",
-      "groupId": "g2",
-      "isOnline": true,
-      "sessionToken": "78f46a5f-90d9-46b3-88a4-bd3e7dc062d7"
-    },
-    {
-      "id": "u5",
-      "name": "Eve Supervisor",
-      "role": "supervisor",
-      "email": "eve.supervisor@example.com",
-      "password": "eve123",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/5.jpg",
-      "status": "active",
-      "createdAt": "2024-02-15T12:00:00Z",
-      "lastSeen": "2121-06-10T01:16:57.186Z",
-      "bio": "Operations Coordinator",
-      "phoneNumber": "+2348012345675",
-      "groupId": "g2",
-      "isOnline": true,
-      "sessionToken": "b4054134-79e9-4ab4-abf5-f75ff92fb9b1"
-    },
-    {
-      "id": "u6",
-      "name": "Frank Member",
-      "role": "member",
-      "email": "frank.member@example.com",
-      "password": "frank123",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/6.jpg",
-      "status": "active",
-      "createdAt": "2024-03-01T07:30:00Z",
-      "lastSeen": "2121-06-10T01:25:07.912Z",
-      "bio": "Support Team Member",
-      "phoneNumber": "+2348012345676",
-      "groupId": "g2",
-      "isOnline": true,
-      "sessionToken": "8598a502-12c1-424f-aa5a-efccc9f516be"
-    },
-    {
-      "id": "u-a5adab62-b61c-4e83-b9d5-0846668e97d4",
+      "id": "u-86337105-0a7e-48e5-b88c-e57f42b296fb",
       "name": "obinna anyiam",
-      "email": "anyiamvictor@gmail.com",
+      "email": "admin@admin.com",
       "password": "leaves",
       "phoneNumber": "07013723537",
-      "bio": "techhhie",
+      "bio": "Tech company",
       "role": "admin",
       "status": "active",
-      "createdAt": "2025-06-12T17:18:37.672Z",
-      "lastSeen": "2121-06-09T23:30:07.576Z",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
+      "createdAt": "2025-06-14T22:25:40.485Z",
+      "lastLogin": null,
+      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
       "avatarUrl": null,
-      "isOnline": false,
-      "sessionToken": null
+      "isOnline": true,
+      "sessionToken": "475086b6-97de-4ecc-ae22-3e4062f013b8",
+      "lastSeen": "2025-06-14T22:27:26.080Z",
+      "workspaceCount": 7
     },
     {
-      "id": "u-9de56aab-6604-4ce7-9c54-aad71ac3a5d1",
-      "name": "Victor Anyiam",
-      "email": "obinnavictor@gmail.com",
-      "password": "leaves",
-      "phoneNumber": "07013723537",
-      "bio": "mee",
-      "role": "member",
-      "status": "active",
-      "createdAt": "2025-06-12T17:22:49.222Z",
-      "lastSeen": "2025-06-13T09:28:55.542Z",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
-      "isOnline": false,
-      "sessionToken": null
-    },
-    {
-      "id": "u-41aaa9bd-df26-4aad-9dda-bbe61334ebd7",
+      "id": "u-de69e77d-14de-4266-8e05-344716697673",
       "name": "Hannah Johnson",
-      "email": "hj@gmail.com",
-      "password": "leaves",
+      "email": "hj@hj.com",
+      "password": "hj",
       "phoneNumber": "07030040340",
-      "bio": "my bio",
-      "role": "member",
-      "status": "active",
-      "createdAt": "2025-06-12T17:24:30.860Z",
-      "lastSeen": "2025-06-13T09:32:01.511Z",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
-      "isOnline": false,
-      "sessionToken": null
-    },
-    {
-      "id": "u-ae9dd0ae-cb14-40ef-a7f5-e1d8b7059544",
-      "name": "obi",
-      "email": "obinnavictors@gmail.com",
-      "password": "leaves",
-      "phoneNumber": "07013723537",
-      "bio": "sdsd",
-      "role": "member",
-      "status": "active",
-      "createdAt": "2025-06-12T17:48:02.829Z",
-      "lastSeen": null,
-      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
-      "isOnline": false,
-      "sessionToken": null
-    },
-    {
-      "id": "u-21d9d730-d1bc-4eec-9cc9-15d299be4c62",
-      "name": "aa",
-      "email": "aa@a.com",
-      "password": "leaves",
-      "phoneNumber": "07013723537",
-      "bio": "aa",
+      "bio": "tech girl",
       "role": "member",
       "status": "active",
       "isOnline": false,
-      "sessionToken": null,
-      "createdAt": "2025-06-13T08:22:46.704Z",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
-      "lastSeen": "2121-06-09T23:36:51.125Z"
-    },
-    {
-      "id": "u-8c1694c5-6a64-48d3-ae1c-6dcef6fe7613",
-      "name": "gigo",
-      "email": "gigo@gigo.com",
-      "password": "leaves",
-      "phoneNumber": "07013723537",
-      "bio": "gigo",
-      "role": "supervisor",
-      "status": "active",
-      "isOnline": false,
-      "createdAt": "2025-06-13T10:59:28.651Z",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
-      "sessionToken": null,
-      "lastSeen": "2025-06-13T12:00:24.969Z"
-    },
-    {
-      "id": "u-b6e0f51d-6eea-4062-b535-20d648c535b4",
-      "name": "new",
-      "email": "new@new.com",
-      "password": "new",
-      "phoneNumber": "07013723537",
-      "bio": "new user",
-      "role": "member",
-      "status": "active",
-      "isOnline": false,
-      "createdAt": "2121-06-10T00:51:27.284Z",
+      "createdAt": "2025-06-14T22:27:00.267Z",
       "lastLogin": null,
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g2",
+      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
       "sessionToken": null,
-      "lastSeen": "2121-06-10T01:24:24.519Z"
+      "lastSeen": "2025-06-16T16:12:54.919Z",
+      "workspaceCount": 7
+    },
+    {
+      "id": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+      "name": "obi",
+      "email": "obi@obi.com",
+      "password": "obi",
+      "phoneNumber": "07013723537",
+      "bio": "obinna",
+      "role": "member",
+      "status": "active",
+      "isOnline": true,
+      "createdAt": "2025-06-14T22:32:16.087Z",
+      "lastLogin": null,
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
+      "sessionToken": "e70859f2-7db1-4a47-8adc-02693743c9e4",
+      "lastSeen": "2025-06-16T17:08:38.872Z",
+      "workspaceCount": 6
     }
   ],
   "groups": [
     {
-      "id": "g1",
-      "name": "Team Alpha",
-      "adminId": "u1",
-      "inviteCode": "alpha-2024"
-    },
-    {
-      "id": "g2",
-      "name": "Team Beta",
-      "adminId": "u4",
-      "inviteCode": "beta-2024"
-    },
-    {
-      "id": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416",
+      "id": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
       "name": "ovuacomp",
-      "adminId": "u-a5adab62-b61c-4e83-b9d5-0846668e97d4",
+      "adminId": "u-86337105-0a7e-48e5-b88c-e57f42b296fb",
       "inviteCode": "jesus"
     }
   ],
   "workspaces": [
     {
-      "id": "ws1",
-      "name": "Marketing Team",
-      "description": "Handles campaigns and branding",
-      "createdAt": "2024-01-01T09:00:00Z",
-      "ownerId": "u1",
+      "id": "ws1749940096796",
+      "name": "testing",
+      "description": "testig 123",
+      "createdAt": "2025-06-14T22:28:16.796Z",
+      "ownerId": "u-de69e77d-14de-4266-8e05-344716697673",
       "memberIds": [
-        "u1",
-        "u2"
+        "u-de69e77d-14de-4266-8e05-344716697673"
       ],
-      "groupId": "g2"
+      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7"
     },
     {
-      "id": "ws2",
-      "name": "Sales Team",
-      "description": "Responsible for client acquisition and revenue growth",
-      "createdAt": "2024-01-02T10:00:00Z",
-      "ownerId": "u5",
+      "id": "ws1750090158836",
+      "name": "tedt",
+      "description": "tedting counts",
+      "createdAt": "2025-06-16T16:09:18.836Z",
+      "ownerId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
       "memberIds": [
-        "u5",
-        "u6"
+        "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+        "u-de69e77d-14de-4266-8e05-344716697673",
+        "u-86337105-0a7e-48e5-b88c-e57f42b296fb"
       ],
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
+      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7"
     },
     {
-      "id": "ws1749815647193",
-      "name": "dcsdcs",
-      "description": "sdcsd",
-      "createdAt": "2025-06-13T11:54:07.193Z",
-      "ownerId": "u1",
+      "id": "ws1750093727620",
+      "name": "sdvcd",
+      "description": "sdvsdvs",
+      "createdAt": "2025-06-16T17:08:47.620Z",
+      "ownerId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
       "memberIds": [
-        "u6"
+        "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+        "u-86337105-0a7e-48e5-b88c-e57f42b296fb"
       ],
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
-    },
-    {
-      "id": "ws1749816097473",
-      "name": "dcsdcsdcsdscsdcs",
-      "description": "sdcscscscsdcSDCS",
-      "createdAt": "2025-06-13T12:01:37.473Z",
-      "ownerId": "u2",
-      "memberIds": [
-        "u3"
-      ],
-      "groupId": "g-8ab04cc2-d053-4118-8bbb-57a09ff56416"
-    },
-    {
-      "id": "ws4778958054561",
-      "name": "admin tes",
-      "description": "admin",
-      "createdAt": "2121-06-10T00:20:54.561Z",
-      "ownerId": "u4",
-      "memberIds": [],
-      "groupId": "g2"
-    },
-    {
-      "id": "ws4778958290901",
-      "name": "Eva",
-      "description": "eva tester",
-      "createdAt": "2121-06-10T00:24:50.901Z",
-      "ownerId": "u5",
-      "memberIds": [],
-      "groupId": "g2"
-    },
-    {
-      "id": "ws4778961934324",
-      "name": "rfank",
-      "description": "frank\n",
-      "createdAt": "2121-06-10T01:25:34.324Z",
-      "ownerId": "u6",
-      "memberIds": [
-        "u4",
-        "u5",
-        "u6",
-        "u-b6e0f51d-6eea-4062-b535-20d648c535b4"
-      ],
-      "groupId": "g2"
+      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7"
     }
   ],
   "projects": [
     {
-      "id": "p1",
-      "name": "Website Launch",
-      "description": "Launch the new company website with marketing pages.",
-      "workspaceId": "ws1",
-      "startDate": "2025-06-01",
-      "endDate": "2025-07-01",
-      "status": "in-progress",
-      "assignedUserIds": [
-        "u3"
-      ]
-    },
-    {
-      "id": "p2",
-      "name": "Client Outreach Campaign",
-      "description": "Reach out to potential B2B clients and partners.",
-      "workspaceId": "ws2",
-      "startDate": "2025-06-10",
-      "endDate": "2025-07-15",
-      "status": "not-started",
-      "assignedUserIds": [
-        "u6"
-      ]
-    },
-    {
-      "id": "p3",
-      "name": "Design System Overhaul",
-      "description": "Redesign components and update style guide.",
-      "workspaceId": "ws1",
-      "startDate": "2025-06-15",
-      "endDate": "2025-07-10",
-      "status": "in-progress",
-      "assignedUserIds": [
-        "u7",
-        "u8"
-      ]
-    },
-    {
-      "id": "p4",
-      "name": "Feature Rollout v2.0",
-      "description": "Implement new features based on roadmap.",
-      "workspaceId": "ws2",
-      "startDate": "2025-06-18",
-      "endDate": "2025-07-25",
-      "status": "not-started",
-      "assignedUserIds": [
-        "u9",
-        "u10"
-      ]
-    },
-    {
-      "id": "p5",
-      "name": "Support Knowledge Base",
-      "description": "Create internal documentation for support team.",
-      "workspaceId": "ws1",
-      "startDate": "2025-06-12",
-      "endDate": "2025-06-30",
-      "status": "in-progress",
-      "assignedUserIds": [
-        "u11",
-        "u12"
-      ]
-    },
-    {
-      "id": "p6",
-      "name": "Bug Regression Testing",
-      "description": "Ensure previous bugs are not reappearing in the build.",
-      "workspaceId": "ws2",
-      "startDate": "2025-06-14",
-      "endDate": "2025-06-28",
-      "status": "in-review",
-      "assignedUserIds": [
-        "u13",
-        "u14"
-      ]
-    },
-    {
-      "id": "4ba8",
-      "name": "fvdfdf",
-      "description": "dfvdfvdfvdfvdf",
-      "startDate": "2121-06-04",
-      "endDate": "2121-06-20",
-      "status": "pending",
-      "assignedUserIds": [],
-      "workspaceId": "ws1749816097473"
-    },
-    {
-      "id": "92f7",
-      "name": "timber and caliber",
-      "description": "timtim",
-      "startDate": "2121-06-04",
-      "endDate": "2121-06-13",
-      "status": "pending",
-      "assignedUserIds": [],
-      "workspaceId": "ws4778958290901"
-    },
-    {
-      "id": "dc72",
-      "name": "trial",
-      "description": "asasxas",
-      "startDate": "2121-06-10",
-      "endDate": "2121-06-27",
-      "status": "pending",
-      "assignedUserIds": [],
-      "workspaceId": "ws4778961934324"
+      "id": "3203",
+      "name": "project hannah",
+      "description": "describing project hannah",
+      "endDate": "2025-06-14",
+      "status": "active",
+      "workspaceId": "ws1749940096796",
+      "createdBy": "u-de69e77d-14de-4266-8e05-344716697673",
+      "createdAt": "2025-06-14"
     }
   ],
   "tasks": [
     {
-      "id": "t37",
-      "title": "Setup GitHub Repo",
-      "description": "Initialize repo and add collaborators.",
-      "priority": "medium",
-      "dueDate": "2025-06-13",
-      "status": "in-progress",
-      "projectId": "p1",
-      "assignedUserId": "u3"
-    },
-    {
-      "id": "t38",
-      "title": "Build Navigation Bar",
-      "description": "Create responsive nav for all devices.",
-      "priority": "high",
-      "dueDate": "2025-06-16",
-      "status": "in-progress",
-      "projectId": "p1",
-      "assignedUserId": "u3"
-    },
-    {
-      "id": "t39",
-      "title": "Write Homepage Copy",
-      "description": "Craft persuasive text for landing page.",
-      "priority": "low",
+      "id": "9551",
+      "title": "as",
+      "description": "ascas",
+      "assignedTo": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
       "dueDate": "2025-06-18",
-      "status": "not-started",
-      "projectId": "p1",
-      "assignedUserId": "u3"
-    },
-    {
-      "id": "t41",
-      "title": "Generate Leads List",
-      "description": "Gather contacts from CRM and LinkedIn.",
+      "status": "pending",
       "priority": "medium",
-      "dueDate": "2025-06-14",
-      "status": "in-progress",
-      "projectId": "p2",
-      "assignedUserId": "u6"
+      "projectId": "3203",
+      "doneClicked": false,
+      "completedLog": [
+        {
+          "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+          "userName": "obi",
+          "timestamp": "2025-06-16T16:10:11.160Z"
+        },
+        {
+          "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+          "userName": "obi",
+          "timestamp": "2025-06-16T16:10:19.098Z"
+        }
+      ],
+      "completedBy": {
+        "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+        "userName": "obi",
+        "timestamp": "2025-06-16T16:10:11.160Z"
+      }
     },
     {
-      "id": "t42",
-      "title": "Design Email Templates",
-      "description": "Create 3 variants for testing.",
-      "priority": "high",
+      "id": "9f9a",
+      "title": "sds",
+      "description": "sdcs",
+      "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
       "dueDate": "2025-06-16",
-      "status": "not-started",
-      "projectId": "p2",
-      "assignedUserId": "u6"
-    },
-    {
-      "id": "t43",
-      "title": "Schedule Outreach Emails",
-      "description": "Use Mailchimp to schedule batches.",
+      "status": "pending",
       "priority": "medium",
-      "dueDate": "2025-06-19",
-      "status": "not-started",
-      "projectId": "p2",
-      "assignedUserId": "u6"
+      "projectId": "3203",
+      "doneClicked": false,
+      "completedLog": [
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-15T09:20:07.437Z"
+        }
+      ],
+      "completedBy": {
+        "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+        "userName": "Hannah Johnson",
+        "timestamp": "2025-06-15T09:20:07.437Z"
+      }
     },
     {
-      "id": "t44",
-      "title": "Monitor Bounce Rates",
-      "description": "Track and clean bad addresses.",
-      "priority": "low",
-      "dueDate": "2025-06-23",
-      "status": "not-started",
-      "projectId": "p2",
-      "assignedUserId": "u6"
-    },
-    {
-      "id": "t45",
-      "title": "List Current Components",
-      "description": "Audit and document all reused elements.",
-      "priority": "medium",
-      "dueDate": "2025-06-13",
-      "status": "in-progress",
-      "projectId": "p3",
-      "assignedUserId": "u7"
-    },
-    {
-      "id": "t46",
-      "title": "Standardize Typography",
-      "description": "Define font scale and sizes.",
-      "priority": "high",
-      "dueDate": "2025-06-15",
-      "status": "not-started",
-      "projectId": "p3",
-      "assignedUserId": "u8"
-    },
-    {
-      "id": "t47",
-      "title": "Document Components",
-      "description": "Add Storybook pages with examples.",
-      "priority": "medium",
-      "dueDate": "2025-06-17",
-      "status": "not-started",
-      "projectId": "p3",
-      "assignedUserId": "u7"
-    },
-    {
-      "id": "t48",
-      "title": "Setup Theme Switcher",
-      "description": "Allow users to toggle light/dark mode.",
-      "priority": "high",
-      "dueDate": "2025-06-20",
-      "status": "not-started",
-      "projectId": "p3",
-      "assignedUserId": "u8"
-    },
-    {
-      "id": "t49",
-      "title": "Develop User Preferences",
-      "description": "Let users control email and theme settings.",
-      "priority": "high",
-      "dueDate": "2025-06-14",
-      "status": "not-started",
-      "projectId": "p4",
-      "assignedUserId": "u9"
-    },
-    {
-      "id": "t50",
-      "title": "Implement Feature Flags",
-      "description": "Toggle new features with backend flags.",
-      "priority": "medium",
-      "dueDate": "2025-06-17",
-      "status": "not-started",
-      "projectId": "p4",
-      "assignedUserId": "u10"
-    },
-    {
-      "id": "t51",
-      "title": "Collect Beta Feedback",
-      "description": "Send post-rollout survey to testers.",
-      "priority": "medium",
-      "dueDate": "2025-06-21",
-      "status": "not-started",
-      "projectId": "p4",
-      "assignedUserId": "u10"
-    },
-    {
-      "id": "t52",
-      "title": "Fix Reported Bugs",
-      "description": "Resolve issues from internal testing.",
-      "priority": "high",
-      "dueDate": "2025-06-24",
-      "status": "not-started",
-      "projectId": "p4",
-      "assignedUserId": "u9"
-    },
-    {
-      "id": "t53",
-      "title": "Review User Feedback",
-      "description": "Analyze app store reviews and support tickets.",
-      "priority": "medium",
-      "dueDate": "2025-06-12",
-      "status": "in-progress",
-      "projectId": "p5",
-      "assignedUserId": "u11"
-    },
-    {
-      "id": "t54",
-      "title": "Sketch New Layouts",
-      "description": "Design Figma wireframes for mobile.",
-      "priority": "high",
-      "dueDate": "2025-06-14",
-      "status": "not-started",
-      "projectId": "p5",
-      "assignedUserId": "u12"
-    },
-    {
-      "id": "t55",
-      "title": "Refactor Navigation",
-      "description": "Simplify tab and drawer navigation.",
-      "priority": "medium",
-      "dueDate": "2025-06-16",
-      "status": "not-started",
-      "projectId": "p5",
-      "assignedUserId": "u11"
-    },
-    {
-      "id": "t56",
-      "title": "Update Color Scheme",
-      "description": "Make theme consistent with branding.",
-      "priority": "low",
+      "id": "e6cf",
+      "title": "test 2",
+      "description": "scxc xc",
+      "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
       "dueDate": "2025-06-18",
-      "status": "not-started",
-      "projectId": "p5",
-      "assignedUserId": "u12"
-    },
-    {
-      "id": "t57",
-      "title": "Design Onboarding Flow",
-      "description": "Map user steps and screens.",
-      "priority": "high",
-      "dueDate": "2025-06-13",
-      "status": "not-started",
-      "projectId": "p6",
-      "assignedUserId": "u13"
-    },
-    {
-      "id": "t58",
-      "title": "Write Welcome Emails",
-      "description": "Automate email sequences for new users.",
+      "status": "pending",
       "priority": "medium",
-      "dueDate": "2025-06-15",
-      "status": "not-started",
-      "projectId": "p6",
-      "assignedUserId": "u14"
+      "projectId": "3203",
+      "doneClicked": false,
+      "completedLog": [
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-15T09:21:50.916Z"
+        }
+      ],
+      "completedBy": {
+        "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+        "userName": "Hannah Johnson",
+        "timestamp": "2025-06-15T09:21:50.916Z"
+      }
     },
     {
-      "id": "t59",
-      "title": "Track Signup Metrics",
-      "description": "Monitor funnel conversion rates.",
-      "priority": "medium",
+      "id": "9162",
+      "title": "xcxcx",
+      "description": "ascxbnz",
+      "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
       "dueDate": "2025-06-17",
-      "status": "not-started",
-      "projectId": "p6",
-      "assignedUserId": "u13"
-    },
-    {
-      "id": "t60",
-      "title": "Add Tooltips & Hints",
-      "description": "Help users understand UI faster.",
-      "priority": "low",
-      "dueDate": "2025-06-19",
-      "status": "not-started",
-      "projectId": "p6",
-      "assignedUserId": "u14"
-    },
-    {
-      "id": "d65b",
-      "title": "fvdfv",
-      "description": "fvdfvd",
-      "assignedTo": "fdfvdfv",
-      "dueDate": "",
-      "status": "in-progress",
+      "status": "pending",
       "priority": "medium",
-      "projectId": "4ba8"
-    },
-    {
-      "id": "598e",
-      "title": "new try",
-      "description": "me",
-      "assignedTo": "u5",
-      "dueDate": "2121-06-10",
-      "status": "in-progress",
-      "priority": "medium",
-      "projectId": "92f7"
-    },
-    {
-      "id": "7ed8",
-      "title": "sxasx",
-      "description": "ZZxasdasasxas",
-      "assignedTo": "u6",
-      "dueDate": "2121-06-24",
-      "status": "in-progress",
-      "priority": "medium",
-      "projectId": "dc72"
+      "projectId": "3203",
+      "doneClicked": false,
+      "completedLog": []
     }
   ]
 }

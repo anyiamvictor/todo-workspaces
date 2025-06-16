@@ -8,9 +8,12 @@ const Dashboard = () => {
   const [workspaces, setWorkspaces] = useState([]);
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [showWorkspaceDetails, setShowWorkspaceDetails] = useState(false);
+const [showProjectDetails, setShowProjectDetails] = useState(false);
+
   const navigate = useNavigate();
   const {user,   logout } = useAuth();
-const currentUserId = user?.id;
+  const currentUserId = user?.id;
 
 
   useEffect(() => {
@@ -21,107 +24,166 @@ const currentUserId = user?.id;
           fetch('http://localhost:3001/workspaces'),
           fetch('http://localhost:3001/projects'),
           fetch('http://localhost:3001/tasks'),
-          
         ]);
-
+  
         const users = await usersRes.json();
         const allWorkspaces = await workspacesRes.json();
         const allProjects = await projectsRes.json();
         const allTasks = await tasksRes.json();
-        console.log("Fetched users:", users);
-        console.log("Current user ID:", currentUserId);
-
-
+  
         const currentUser = users.find((u) => String(u.id) === String(currentUserId));
         if (!currentUser) throw new Error('User not found');
+  
         setCurrentUser(currentUser);
-        
-
+  
         const userWorkspaces = allWorkspaces.filter(
           (w) => w.ownerId === currentUserId || w.memberIds.includes(currentUserId)
         );
-
         setWorkspaces(userWorkspaces);
-
-        const userProjects = allProjects.filter(
-          (p) => Array.isArray(p.assignedUserIds) && p.assignedUserIds.includes(currentUserId)
-        );
-        
+  
+        const userProjects = allProjects.filter((p) => p.createdBy === currentUserId);
         setProjects(userProjects);
-
-        const userTasks = allTasks.filter(
-          (t) => Array.isArray(t.assignedUserIds) && t.assignedUserIds.includes(currentUserId)
-        );
-        
+  
+        const userTasks = allTasks.filter((t) => {
+          if (Array.isArray(t.assignedTo)) {
+            return t.assignedTo.includes(currentUserId);
+          }
+          return t.assignedTo === currentUserId;
+        });
         setTasks(userTasks);
+  
       } catch (error) {
         console.error('Error loading dashboard:', error);
       }
     };
-
-    fetchData();
+  
+    fetchData(); // initial fetch
+  
+    const intervalId = setInterval(fetchData, 60000); // refresh every 1 minute
+  
+    return () => clearInterval(intervalId); // cleanup on unmount
   }, [currentUserId]);
+  
 
-  const getStatusCount = (status) =>
-    tasks.filter((t) => t.status === status).length;
+
 
   const handleLogout = () => {
     logout();
     navigate('/auth');
-  };
+  }
 
 
   return (
     <div className={styles.container}>
       <div className={styles.headerRow}>
         <div className={styles.nameimg}>
-        <h1 className={styles.title}>Welcome {currentUser?.name}</h1>
-        <div className={styles.avatar}>
-        <img
-            src={currentUser?.avatarUrl || '/default-avatar.png'}
-            alt="currentUser Avatar"
-          />
+          <h1 className={styles.title}>Welcome {currentUser?.name}</h1>
+          <div className={styles.avatar}>
+            <img
+              src={currentUser?.avatarUrl || "/default-avatar.png"}
+              alt="currentUser Avatar"
+            />
+          </div>
         </div>
-        </div>
-        
         <button className={styles.logoutButton} onClick={handleLogout}>
           Logout
         </button>
       </div>
-
   
       <div className={styles.cardGroup}>
+        {/* Workspaces Card */}
         <div className={styles.card}>
-          <h2>Workspaces</h2>
+          <h2>Your Workspaces</h2>
           <ul>
             {workspaces.map((w) => (
               <li key={w.id}>{w.name}</li>
             ))}
           </ul>
+          <button
+            className={styles.detailButton}
+            onClick={() => setShowWorkspaceDetails(!showWorkspaceDetails)}
+          >
+            {showWorkspaceDetails ? "Hide Details" : "Show Details"}
+          </button>
+          {showWorkspaceDetails && (
+            <div className={styles.detailSection}>
+              <h4>Owned Workspaces</h4>
+              <ul>
+                {workspaces
+                  .filter((w) => String(w.ownerId) === String(currentUserId))
+                  .map((w) => (
+                    <li key={w.id}>{w.name}</li>
+                  ))}
+              </ul>
+  
+              <h4>Member Workspaces</h4>
+              <ul>
+                {workspaces
+                  .filter((w) => String(w.ownerId) !== String(currentUserId))
+                  .map((w) => (
+                    <li key={w.id}>{w.name}</li>
+                  ))}
+              </ul>
+            </div>
+          )}
         </div>
-
+  
+        {/* Projects Card */}
         <div className={styles.card}>
-          <h2>Projects</h2>
+          <h2>Your Projects</h2>
           <ul>
             {projects.map((p) => (
               <li key={p.id}>{p.name}</li>
             ))}
           </ul>
+          <button
+            className={styles.detailButton}
+            onClick={() => setShowProjectDetails(!showProjectDetails)}
+          >
+            {showProjectDetails ? "Hide Details" : "Show Details"}
+          </button>
+          {showProjectDetails && (
+            <div className={styles.detailSection}>
+              <h4>Owned Projects</h4>
+              <ul>
+                {projects
+                  .filter((p) => String(p.createdBy) === String(currentUserId))
+                  .map((p) => (
+                    <li key={p.id}>{p.name}</li>
+                  ))}
+              </ul>
+  
+              <h4>Other Assigned Projects</h4>
+              <ul>
+                {projects
+                  .filter((p) => String(p.createdBy) !== String(currentUserId))
+                  .map((p) => (
+                    <li key={p.id}>{p.name}</li>
+                  ))}
+              </ul>
+            </div>
+          )}
         </div>
+  
+        {/* Task Summary */}
+      {/* Task Summary */}
+<div className={styles.card}>
+  <h2>Task Summary</h2>
+  <ul>
+    <li>Total Assigned Tasks: {currentUser?.totalAssignedTask || 0}</li>
+    <li>Completed Tasks: {currentUser?.completedCount || 0}</li>
+    <li>Approved Tasks: {currentUser?.approvedCount || 0}</li>
+    <li>Rejected Tasks: {currentUser?.rejectedCount || 0}</li>
+    <li>Workgroup Spaces: {currentUser?.totalWorkgroupSpaces || 0}</li>
+    <li>Projects Completed: {currentUser?.totalProjectsCompleted || 0}</li>
+  </ul>
+</div>
 
-        <div className={styles.card}>
-          <h2>Task Summary</h2>
-          <ul>
-            <li>Pending: {getStatusCount('pending')}</li>
-            <li>In Progress: {getStatusCount('in progress')}</li>
-            <li>Completed: {getStatusCount('completed')}</li>
-            <li>Approved: {getStatusCount('approved')}</li>
-            <li>Rejected: {getStatusCount('rejected')}</li>
-          </ul>
-        </div>
       </div>
     </div>
   );
+  
+  
 };
 
 export default Dashboard;

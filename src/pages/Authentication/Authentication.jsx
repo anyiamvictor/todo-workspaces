@@ -97,6 +97,14 @@ function Authentication() {
             lastLogin: null,
             avatarUrl: "https://randomuser.me/api/portraits/men/7.jpg",
             groupId: matchedGroup.id,
+            pending:0,
+            completedCount: 0,
+            rejectedCount: 0,
+            approvedCount: 0,
+            totalAssignedTask: 0,
+            workspaceCount: 0,
+            totalProjectsCompleted:0
+            
           };
 
           const createRes = await fetch("http://localhost:3001/users", {
@@ -122,7 +130,7 @@ function Authentication() {
           }
         }
       }
-    } catch (err) {
+    } catch (error) {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -237,7 +245,7 @@ function Authentication() {
             className={styles.submitButton}
             disabled={loading}
           >
-            Login
+         Connect
           </button>
         </form>
       </div>

@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import styles from "./AddProjectModal.module.css";
 
-function AddProjectModal({ onClose, onSubmit, defaultData }) {
+function AddProjectModal({ onClose, onSubmit }) {
     
     
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    startDate: "",
     endDate: "",
     status: "pending",
-    assignedUserIds:  [],
+    
   });
 
   const handleChange = (e) => {
@@ -20,7 +19,7 @@ function AddProjectModal({ onClose, onSubmit, defaultData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ ...formData, assignedUserIds: defaultData.assignedUserIds });
+    onSubmit({ ...formData });
   };
   
   return (
@@ -35,19 +34,26 @@ function AddProjectModal({ onClose, onSubmit, defaultData }) {
             onChange={handleChange}
             required
           />
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={formData.description}
-            onChange={handleChange}
-          />
-          <input
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            required
-          />
+
+          <div className={styles.textareaWrapper}>
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+              maxLength={200}
+            />
+            <small
+              style={{
+                color: 200 - formData.description.length < 50 ? 'red' : '#666'
+              }}
+            >
+              {200 - formData.description.length} characters remaining
+            </small>
+
+          </div>
+
           <input
             type="date"
             name="endDate"
@@ -70,6 +76,7 @@ function AddProjectModal({ onClose, onSubmit, defaultData }) {
             <button type="button" onClick={onClose}>Cancel</button>
           </div>
         </form>
+
       </div>
     </div>
   );

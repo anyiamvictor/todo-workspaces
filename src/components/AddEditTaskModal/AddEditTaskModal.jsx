@@ -12,7 +12,7 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
     description: "",
     assignedTo: null,
     dueDate: "",
-    status: "in-progress",
+    status: "pending",
     priority: "medium",
   });
 
@@ -156,8 +156,12 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
               value={formData.description}
               onChange={handleChange}
               required
+              maxLength={400}
             />
+            <small>{400 - formData.description.length} characters remaining</small>
+
           </label>
+
 
           <label>
             Assigned To:
@@ -192,14 +196,7 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
             </select>
           </label>
 
-          <label>
-            Status:
-            <select name="status" value={formData.status} onChange={handleChange}>
-              <option value="todo">To Do</option>
-              <option value="in-progress">In Progress</option>
-              <option value="done">Done</option>
-            </select>
-          </label>
+        
 
           <div className={styles.actions}>
             <button type="submit">{task ? "Update" : "Create"}</button>

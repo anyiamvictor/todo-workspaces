@@ -1,5 +1,6 @@
 import { Outlet, useParams, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext/AuthContext";
 import styles from "./WorkspaceLayout.module.css";
 import AddProjectModal from "../AddProjectModal/AddProjectModal";
 
@@ -7,30 +8,24 @@ function WorkspaceLayout() {
   const { workspaceId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const [users, setUsers] = useState([]);
   const [workspace, setWorkspace] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchWorkspace = async () => {
       try {
-        const [usersRes, workspaceRes] = await Promise.all([
-          fetch("http://localhost:3001/users"),
-          fetch(`http://localhost:3001/workspaces/${workspaceId}`)
-        ]);
-
-        const usersData = await usersRes.json();
-        const workspaceData = await workspaceRes.json();
-
-        setUsers(usersData);
-        setWorkspace(workspaceData);
+        const res = await fetch(`http://localhost:3001/workspaces/${workspaceId}`);
+        const data = await res.json();
+        setWorkspace(data);
       } catch (err) {
-        console.error("Failed to fetch workspace or users:", err);
+        console.error("Failed to fetch workspace:", err);
       }
     };
-
-    fetchData();
+  
+    fetchWorkspace();
   }, [workspaceId]);
+  
 
   const showAddProjectModal = location.pathname.endsWith("/projects/new");
 
@@ -39,6 +34,8 @@ function WorkspaceLayout() {
       const newProject = {
         ...projectData,
         workspaceId,
+        createdBy: user?.id || "Unknown",
+        createdAt: new Date().toISOString().split("T")[0]
       };
 
       const response = await fetch("http://localhost:3001/projects", {
@@ -55,19 +52,22 @@ function WorkspaceLayout() {
     }
   };
 
-
-  // Check if the current path is a project detail page to enable hiding navlinks and use backbutton instead to navigate back. I tried refactoring the Routes but it was a longer process and I wanted to keep the current structure.
+ 
+  
   const isOnProjectDetail = location.pathname.match(
     new RegExp(`^/workspaces/${workspaceId}/projects/[^/]+$`)
   );
-  
+
+ 
+
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
         <h2>Workspace: {workspace ? workspace.name : "Loading..."}</h2>
-  
+
         <nav className={styles.nav}>
-          {!isOnProjectDetail && (  <>
+          {!isOnProjectDetail && (
+            <>
               <NavLink
                 to={`/workspaces/${workspaceId}`}
                 end
@@ -77,7 +77,7 @@ function WorkspaceLayout() {
               >
                 Overview
               </NavLink>
-  
+
               <NavLink
                 to={`/workspaces/${workspaceId}/projects`}
                 className={() => {
@@ -94,7 +94,7 @@ function WorkspaceLayout() {
               >
                 View All Projects
               </NavLink>
-  
+
               <NavLink
                 to={`/workspaces/${workspaceId}/projects/new`}
                 className={({ isActive }) =>
@@ -107,20 +107,21 @@ function WorkspaceLayout() {
           )}
         </nav>
       </header>
-  
+
       <main className={styles.main}>
         <Outlet />
+
         {showAddProjectModal && workspace && (
           <AddProjectModal
             onClose={() => navigate(-1)}
             onSubmit={handleAddProject}
-            defaultData={{ assignedUserIds: [] }}
           />
         )}
+
+     
       </main>
     </div>
   );
-  
 }
 
 export default WorkspaceLayout;
