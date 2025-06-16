@@ -97,7 +97,7 @@ function Authentication() {
             lastLogin: null,
             avatarUrl: "https://randomuser.me/api/portraits/men/7.jpg",
             groupId: matchedGroup.id,
-            pending:0,
+            pendingCount:0,
             completedCount: 0,
             rejectedCount: 0,
             approvedCount: 0,

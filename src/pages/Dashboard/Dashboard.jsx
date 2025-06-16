@@ -166,18 +166,19 @@ const [showProjectDetails, setShowProjectDetails] = useState(false);
         </div>
   
         {/* Task Summary */}
-      {/* Task Summary */}
-<div className={styles.card}>
-  <h2>Task Summary</h2>
-  <ul>
-    <li>Total Assigned Tasks: {currentUser?.totalAssignedTask || 0}</li>
-    <li>Completed Tasks: {currentUser?.completedCount || 0}</li>
-    <li>Approved Tasks: {currentUser?.approvedCount || 0}</li>
-    <li>Rejected Tasks: {currentUser?.rejectedCount || 0}</li>
-    <li>Workgroup Spaces: {currentUser?.totalWorkgroupSpaces || 0}</li>
-    <li>Projects Completed: {currentUser?.totalProjectsCompleted || 0}</li>
-  </ul>
-</div>
+        {/* Task Summary */}
+        <div className={styles.card}>
+          <h2>Task Summary</h2>
+          <ul>
+            <li>Total Assigned Tasks: {currentUser?.totalAssignedTask || 0}</li>
+            <li>Pending: {currentUser?.pending || 0}</li>
+            <li>Completed Tasks: {currentUser?.completedCount || 0}</li>
+            <li>Approved Tasks: {currentUser?.approvedCount || 0}</li>
+            <li>Rejected Tasks: {currentUser?.rejectedCount || 0}</li>
+            <li>Workgroup Spaces: {currentUser?.totalWorkgroupSpaces || 0}</li>
+            <li>Projects Completed: {currentUser?.totalProjectsCompleted || 0}</li>
+          </ul>
+        </div>
 
       </div>
     </div>

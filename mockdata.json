@@ -13,10 +13,16 @@
       "lastLogin": null,
       "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
       "avatarUrl": null,
-      "isOnline": true,
-      "sessionToken": "475086b6-97de-4ecc-ae22-3e4062f013b8",
-      "lastSeen": "2025-06-14T22:27:26.080Z",
-      "workspaceCount": 7
+      "isOnline": false,
+      "sessionToken": "0451e2c1-76b7-4114-8f6a-0b3e1f496ddf",
+      "lastSeen": "2025-06-16T18:13:42.285Z",
+      "pendingCount": 0,
+      "completedCount": 0,
+      "rejectedCount": 0,
+      "approvedCount": 0,
+      "totalAssignedTask": 0,
+      "workspaceCount": 0,
+      "totalProjectsCompleted": 0
     },
     {
       "id": "u-de69e77d-14de-4266-8e05-344716697673",
@@ -33,8 +39,14 @@
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
       "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
       "sessionToken": null,
-      "lastSeen": "2025-06-16T16:12:54.919Z",
-      "workspaceCount": 7
+      "lastSeen": "2025-06-16T21:08:15.921Z",
+      "workspaceCount": 7,
+      "pendingCount": 1,
+      "completedCount": 7,
+      "rejectedCount": 5,
+      "approvedCount": 2,
+      "totalAssignedTask": 0,
+      "totalProjectsCompleted": 0
     },
     {
       "id": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
@@ -45,14 +57,44 @@
       "bio": "obinna",
       "role": "member",
       "status": "active",
-      "isOnline": true,
+      "isOnline": false,
       "createdAt": "2025-06-14T22:32:16.087Z",
       "lastLogin": null,
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
       "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
-      "sessionToken": "e70859f2-7db1-4a47-8adc-02693743c9e4",
-      "lastSeen": "2025-06-16T17:08:38.872Z",
-      "workspaceCount": 6
+      "sessionToken": null,
+      "lastSeen": "2025-06-16T17:53:43.928Z",
+      "workspaceCount": 7,
+      "pendingCount": 1,
+      "completedCount": 0,
+      "rejectedCount": 0,
+      "approvedCount": 0,
+      "totalAssignedTask": 0,
+      "totalProjectsCompleted": 0
+    },
+    {
+      "id": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+      "name": "candice",
+      "email": "candice@candice.com",
+      "password": "candice",
+      "phoneNumber": "233",
+      "bio": "notable candice",
+      "role": "member",
+      "status": "active",
+      "isOnline": true,
+      "createdAt": "2025-06-16T18:08:59.714Z",
+      "lastLogin": null,
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
+      "pendingCount": 0,
+      "completedCount": 10,
+      "rejectedCount": 11,
+      "approvedCount": 1,
+      "totalAssignedTask": 0,
+      "workspaceCount": 1,
+      "totalProjectsCompleted": 0,
+      "sessionToken": "6bcb8fcb-eeee-4d39-9900-2bdb1e890519",
+      "lastSeen": "2025-06-16T20:56:15.404Z"
     }
   ],
   "groups": [
@@ -71,7 +113,9 @@
       "createdAt": "2025-06-14T22:28:16.796Z",
       "ownerId": "u-de69e77d-14de-4266-8e05-344716697673",
       "memberIds": [
-        "u-de69e77d-14de-4266-8e05-344716697673"
+        "u-de69e77d-14de-4266-8e05-344716697673",
+        "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+        "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de"
       ],
       "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7"
     },
@@ -120,10 +164,10 @@
       "description": "ascas",
       "assignedTo": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
       "dueDate": "2025-06-18",
-      "status": "pending",
+      "status": "approved",
       "priority": "medium",
       "projectId": "3203",
-      "doneClicked": false,
+      "doneClicked": true,
       "completedLog": [
         {
           "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
@@ -134,13 +178,29 @@
           "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
           "userName": "obi",
           "timestamp": "2025-06-16T16:10:19.098Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:48:44.775Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:48:49.023Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:49:16.672Z"
         }
       ],
       "completedBy": {
-        "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-        "userName": "obi",
-        "timestamp": "2025-06-16T16:10:11.160Z"
-      }
+        "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+        "userName": "candice",
+        "timestamp": "2025-06-16T20:49:16.672Z"
+      },
+      "wasRejected": false
     },
     {
       "id": "9f9a",
@@ -148,22 +208,78 @@
       "description": "sdcs",
       "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
       "dueDate": "2025-06-16",
-      "status": "pending",
+      "status": "approved",
       "priority": "medium",
       "projectId": "3203",
-      "doneClicked": false,
+      "doneClicked": true,
       "completedLog": [
         {
           "userId": "u-de69e77d-14de-4266-8e05-344716697673",
           "userName": "Hannah Johnson",
           "timestamp": "2025-06-15T09:20:07.437Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:35:05.231Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:35:08.312Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:49:46.575Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:49:51.639Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:50:03.324Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:50:17.333Z"
+        },
+        {
+          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userName": "candice",
+          "timestamp": "2025-06-16T20:50:31.701Z"
+        },
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-16T20:51:00.967Z"
+        },
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-16T20:51:13.686Z"
+        },
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-16T20:51:18.621Z"
+        },
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-16T20:51:22.043Z"
         }
       ],
       "completedBy": {
         "userId": "u-de69e77d-14de-4266-8e05-344716697673",
         "userName": "Hannah Johnson",
-        "timestamp": "2025-06-15T09:20:07.437Z"
-      }
+        "timestamp": "2025-06-16T20:51:22.043Z"
+      },
+      "wasRejected": false
     },
     {
       "id": "e6cf",
@@ -171,22 +287,33 @@
       "description": "scxc xc",
       "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
       "dueDate": "2025-06-18",
-      "status": "pending",
+      "status": "approved",
       "priority": "medium",
       "projectId": "3203",
-      "doneClicked": false,
+      "doneClicked": true,
       "completedLog": [
         {
           "userId": "u-de69e77d-14de-4266-8e05-344716697673",
           "userName": "Hannah Johnson",
           "timestamp": "2025-06-15T09:21:50.916Z"
+        },
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-16T20:51:28.358Z"
+        },
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-16T20:51:33.095Z"
         }
       ],
       "completedBy": {
         "userId": "u-de69e77d-14de-4266-8e05-344716697673",
         "userName": "Hannah Johnson",
-        "timestamp": "2025-06-15T09:21:50.916Z"
-      }
+        "timestamp": "2025-06-16T20:51:33.095Z"
+      },
+      "wasRejected": false
     },
     {
       "id": "9162",
@@ -198,7 +325,15 @@
       "priority": "medium",
       "projectId": "3203",
       "doneClicked": false,
-      "completedLog": []
+      "completedLog": [
+        {
+          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-16T20:51:53.006Z"
+        }
+      ],
+      "wasRejected": true,
+      "assignedToName": "candice"
     }
   ]
 }

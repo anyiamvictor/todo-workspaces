@@ -70,8 +70,36 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
     setFormData((prev) => ({ ...prev, assignedTo: selectedOption }));
   };
 
+  const incrementPending = async (userId) => {
+    const res = await fetch(`http://localhost:3001/users/${userId}`);
+    const data = await res.json();
+    const newCount = (data.pendingCount || 0) + 1;
+
+    await fetch(`http://localhost:3001/users/${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pendingCount: newCount }),
+    });
+  };
+
+  const decrementPending = async (userId) => {
+    const res = await fetch(`http://localhost:3001/users/${userId}`);
+    const data = await res.json();
+    const newCount = Math.max((data.pendingCount || 0) - 1, 0);
+
+    await fetch(`http://localhost:3001/users/${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pendingCount: newCount }),
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const assignedId = formData.assignedTo?.value || "";
+    const prevAssignedId = task?.assignedTo;
+
     const url = task
       ? `http://localhost:3001/tasks/${task.id}`
       : "http://localhost:3001/tasks";
@@ -81,14 +109,27 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
     const payload = {
       ...formData,
       projectId,
-      assignedTo: formData.assignedTo?.value || "",
+      assignedTo: assignedId,
     };
 
-    await fetch(url, {
+    const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+
+    if (!res.ok) {
+      console.error("Error saving task");
+      return;
+    }
+
+    // Handle pendingCount
+    if (!task && assignedId) {
+      await incrementPending(assignedId);
+    } else if (task && assignedId !== prevAssignedId) {
+      if (prevAssignedId) await decrementPending(prevAssignedId);
+      if (assignedId) await incrementPending(assignedId);
+    }
 
     onSuccess();
   };
@@ -159,9 +200,7 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
               maxLength={400}
             />
             <small>{400 - formData.description.length} characters remaining</small>
-
           </label>
-
 
           <label>
             Assigned To:
@@ -195,8 +234,6 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
               <option value="high">High</option>
             </select>
           </label>
-
-        
 
           <div className={styles.actions}>
             <button type="submit">{task ? "Update" : "Create"}</button>

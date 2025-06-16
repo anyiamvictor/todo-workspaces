@@ -4,7 +4,8 @@ import styles from "./TaskItem.module.css";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
 
 
-function TaskItem({ task, onDone, onApprove, onReject, onEdit }) {
+
+function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) {
   
   const [showDescription, setShowDescription] = useState(false);
   const { user } = useAuth();
@@ -41,7 +42,7 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit }) {
   const { className: dueClass, label: dueLabel } = getDueDateInfo(task.dueDate);
 
   return (
-    <li className={styles.taskItem}>
+    <li className={`${styles.taskItem} ${task.status === "approved" ? styles.finalized : ""}`}>
       <div className={styles.taskContent}>
         
         <div>
@@ -66,10 +67,11 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit }) {
               </span>
             </div>
             <div className={styles.taskActions}>
-              <button onClick={() => onDone(task.id, user) }   disabled={task.doneClicked}>✅ Done</button>
-              <button onClick={() => onApprove(task.id)}>👍 Approve</button>
-              <button onClick={() => onReject(task.id)}>❌ Reject</button>
-              <button onClick={() => onEdit(task)}>✏️ Edit</button>
+              <button onClick={() => onDone(task.id, user) }   disabled={task.doneClicked}>✅ Submit for Review</button>
+              <button onClick={() => onApprove(task.id)} disabled = {task.status ==="approved"}> {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}</button>
+              <button onClick={() => onReject(task.id)} disabled={rejectDisabled || task.status === "approved"}>❌ Reject Submission</button>
+              <button onClick={() => onEdit(task) }  disabled={task.status === "approved"}>✏️ Edit</button>
+
             </div>
           </div>
         </div>

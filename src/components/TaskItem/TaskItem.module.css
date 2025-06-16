@@ -131,3 +131,8 @@ margin-left: 40px;
   display:flex;
   justify-content: center;
 }
+
+.finalized {
+  opacity: 0.5;
+  pointer-events: none;
+}

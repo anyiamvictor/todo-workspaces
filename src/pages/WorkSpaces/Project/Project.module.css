@@ -66,5 +66,46 @@
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
-
   }
+
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .feedbackModal {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+  }
+  
+  .feedbackModal p {
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .feedbackModal button {
+    padding: 0.5rem 1rem;
+    background-color: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .feedbackModal button:hover {
+    background-color: #2b6cb0;
+  }
+   

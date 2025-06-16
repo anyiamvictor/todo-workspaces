@@ -5,13 +5,13 @@ import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskMo
 import BackButton from "../../../components/BackButton/BackButton";
 import TaskItem from "../../../components/TaskItem/TaskItem";
 import { updateProjectStatus } from "../../../components/UpdateProjectStatus";
+import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 
 
-//im suppose to refactor this componnet sothat all TAskItem related login goes to the TaskItem component
 function Project() {
-  console.log("Project component mounted");
-
   const { projectId } = useParams();
+  const { user } = useAuth();
+
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,19 +20,17 @@ function Project() {
   const [projectName, setProjectName] = useState("");
   const [users, setUsers] = useState([]);
 
- useEffect(() => {
-  fetchTasks();
-  fetchProject();
-  fetchUsers();
 
-   const interval = setInterval(() => {
-    console.log("helllllo")
-    fetchTasks();
-  }, 1000); // every seconds
-
-  return () => clearInterval(interval); // cleanup when unmounting
-}, [projectId]);
-
+  useEffect(() => {
+    const loadAll = async () => {
+      await Promise.all([fetchTasks(), fetchProject(), fetchUsers()]);
+    };
+    loadAll();
+  
+    const interval = setInterval(fetchTasks, 1000);
+    return () => clearInterval(interval);
+  }, [projectId]);
+  
 
   const fetchTasks = async () => {
     try {
@@ -51,7 +49,6 @@ function Project() {
   const fetchProject = async () => {
     try {
       const res = await fetch(`http://localhost:3001/projects/${projectId}`);
-      if (!res.ok) throw new Error("Failed to fetch project");
       const data = await res.json();
       setProjectName(data.name);
     } catch (err) {
@@ -62,7 +59,6 @@ function Project() {
   const fetchUsers = async () => {
     try {
       const res = await fetch("http://localhost:3001/users");
-      if (!res.ok) throw new Error("Failed to fetch users");
       const data = await res.json();
       setUsers(data);
     } catch (err) {
@@ -75,69 +71,134 @@ function Project() {
     return user ? user.name : "Unknown";
   };
 
-  const handleDone = async (taskId, user) => {
+  const incrementUserField = async (userId, field) => {
+    const res = await fetch(`http://localhost:3001/users/${userId}`);
+    const userData = await res.json();
+    const newCount = (userData[field] || 0) + 1;
+
+    await fetch(`http://localhost:3001/users/${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ [field]: newCount }),
+    });
+  };
+
+  const decrementUserPending = async (userId) => {
+    const res = await fetch(`http://localhost:3001/users/${userId}`);
+    const userData = await res.json();
+    const current = userData.pendingCount || 0;
+    const newCount = current > 0 ? current - 1 : 0;
+
+    await fetch(`http://localhost:3001/users/${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pendingCount: newCount }),
+    });
+  };
+
+  const handleDone = async (taskId, currentUser) => {
     const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
     const task = await res.json();
     if (task.doneClicked) return;
+
     const updatedLog = [
       ...(task.completedLog || []),
       {
-        userId: user.id,
-        userName: user.name,
-        timestamp: new Date().toISOString()
-      }
+        userId: currentUser.id,
+        userName: currentUser.name,
+        timestamp: new Date().toISOString(),
+      },
     ];
+
     await fetch(`http://localhost:3001/tasks/${taskId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         status: "completed",
         doneClicked: true,
-        completedLog: updatedLog
-      })
+        wasRejected:false,
+        completedLog: updatedLog,
+
+      }),
     });
-  
+
+    // ✅ Always increment completed count of the person who clicked done
+    await incrementUserField(currentUser.id, "completedCount");
+
+    // ✅ Always decrement pending for the assigned user
+    await decrementUserPending(task.assignedTo);
+
     fetchTasks();
   };
-  
+
   const handleApprove = async (taskId) => {
     const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
     const task = await res.json();
+  
+    // Guard: Skip if already approved
+    if (task.status === "approved") return;
+  
     const latestUser =
       task.completedLog && task.completedLog.length > 0
         ? task.completedLog[task.completedLog.length - 1]
         : null;
+  
     await fetch(`http://localhost:3001/tasks/${taskId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         status: "approved",
-        completedBy: latestUser, 
+        completedBy: latestUser,
       }),
     });
+  
+    if (latestUser) {
+      await incrementUserField(latestUser.userId, "approvedCount");
+    }
   
     fetchTasks();
   };
 
+
   const handleReject = async (taskId) => {
+    const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
+    const task = await res.json();
+    console.log(task)
+  
+    const latestUser =
+      task.completedLog && task.completedLog.length > 0
+        ? task.completedLog[task.completedLog.length - 1]
+        : null;
+  
     await fetch(`http://localhost:3001/tasks/${taskId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         status: "pending",
-        doneClicked: false // re-enable done button
-      })
+        doneClicked: false,
+        wasRejected: true
+      }),
     });
+  
+    if (latestUser) {
+      await incrementUserField(latestUser.userId, "rejectedCount");
+  
+      // ✅ Restore pending for the assigned user
+      if (task.assignedTo) {
+        await incrementUserField(task.assignedTo, "pendingCount");
+      }
+    }
   
     fetchTasks();
   };
   
+  
 
   return (
     <div className={styles.projectContainer}>
-      <h3>{projectName || "Loading..."}</h3>
+          <h3>{projectName || "Loading..."}</h3>
       <p>Available Tasks:</p>
-
+  
       <div className={styles.btns}>
         <button
           className={styles.addTaskBtn}
@@ -148,10 +209,9 @@ function Project() {
         >
           + Add Task
         </button>
-
         <BackButton />
       </div>
-
+  
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -162,18 +222,19 @@ function Project() {
             <TaskItem
               key={task.id}
               task={{ ...task, assignedToName: getUserNameById(task.assignedTo) }}
-              onDone={handleDone}
-              onApprove={handleApprove}
-              onReject={handleReject}
+              onDone={() => handleDone(task.id, user)}
+              onApprove={() => handleApprove(task.id)}
+              onReject={() => handleReject(task.id)}
               onEdit={(t) => {
                 setEditingTask(t);
                 setShowModal(true);
               }}
+              rejectDisabled={task.wasRejected}
             />
           ))}
         </ul>
       )}
-
+  
       {showModal && (
         <AddEditTaskModal
           projectId={projectId}
@@ -187,6 +248,7 @@ function Project() {
       )}
     </div>
   );
+  
 }
 
 export default Project;
