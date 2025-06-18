@@ -171,3 +171,10 @@
   background-color: #6c757d;
   color: white;
 }
+
+.noWorkspacesMsg {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 1rem auto;
+}

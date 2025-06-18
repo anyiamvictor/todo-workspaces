@@ -1,0 +1,95 @@
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 16px;
+  }
+  
+  .profileHeader {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4299e1;
+  }
+  
+  .role {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .editBtn {
+    background-color: #4299e1;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .bio {
+    font-style: italic;
+    margin: 1rem 0;
+    color: #444;
+  }
+  
+  .bioInput {
+    width: 100%;
+    height: 80px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .saveBtn {
+    margin-top: 0.5rem;
+    background: green;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .editSection {
+    margin-bottom: 1rem;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .card {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: auto;
+    height: fit-content;
+  }
+  
+  .card h3 {
+    margin-bottom: 1rem;
+  }
+  
+  .card ul {
+    padding-left: 1rem;
+  }
+  
+  .card li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+  

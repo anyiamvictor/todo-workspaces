@@ -6,7 +6,7 @@ import BackButton from "../../../components/BackButton/BackButton";
 import TaskItem from "../../../components/TaskItem/TaskItem";
 import { updateProjectStatus } from "../../../components/UpdateProjectStatus";
 import { useAuth } from "../../../contexts/AuthContext/AuthContext";
-
+import { createNotifications } from "../../../components/createNotifications";
 
 function Project() {
   const { projectId } = useParams();
@@ -19,6 +19,8 @@ function Project() {
   const [editingTask, setEditingTask] = useState(null);
   const [projectName, setProjectName] = useState("");
   const [users, setUsers] = useState([]);
+  const [sortOption, setSortOption] = useState("default");
+
 
 
   useEffect(() => {
@@ -100,7 +102,7 @@ function Project() {
     const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
     const task = await res.json();
     if (task.doneClicked) return;
-
+  
     const updatedLog = [
       ...(task.completedLog || []),
       {
@@ -109,33 +111,36 @@ function Project() {
         timestamp: new Date().toISOString(),
       },
     ];
-
+  
     await fetch(`http://localhost:3001/tasks/${taskId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         status: "completed",
         doneClicked: true,
-        wasRejected:false,
+        wasRejected: false,
         completedLog: updatedLog,
-
       }),
     });
-
-    // ✅ Always increment completed count of the person who clicked done
+  
     await incrementUserField(currentUser.id, "completedCount");
-
-    // ✅ Always decrement pending for the assigned user
     await decrementUserPending(task.assignedTo);
-
     fetchTasks();
+  
+    // ✅ createNotifications added: Notify project owner
+    const projectRes = await fetch(`http://localhost:3001/projects/${projectId}`);
+    const project = await projectRes.json();
+  
+    await createNotifications({
+      userId: project.createdBy,
+      message: `A task was marked as done by ${currentUser.name} in '${project.name}'.`,
+    });
   };
-
+  
   const handleApprove = async (taskId) => {
     const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
     const task = await res.json();
   
-    // Guard: Skip if already approved
     if (task.status === "approved") return;
   
     const latestUser =
@@ -154,16 +159,20 @@ function Project() {
   
     if (latestUser) {
       await incrementUserField(latestUser.userId, "approvedCount");
+  
+      // ✅ createNotifications added: Notify user of approval
+      await createNotifications({
+        userId: latestUser.userId,
+        message: `Your task completion on '${task.title}' was approved.`,
+      });
     }
   
     fetchTasks();
   };
-
-
+  
   const handleReject = async (taskId) => {
     const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
     const task = await res.json();
-    console.log(task)
   
     const latestUser =
       task.completedLog && task.completedLog.length > 0
@@ -176,29 +185,33 @@ function Project() {
       body: JSON.stringify({
         status: "pending",
         doneClicked: false,
-        wasRejected: true
+        wasRejected: true,
       }),
     });
   
     if (latestUser) {
       await incrementUserField(latestUser.userId, "rejectedCount");
   
-      // ✅ Restore pending for the assigned user
       if (task.assignedTo) {
         await incrementUserField(task.assignedTo, "pendingCount");
       }
+  
+      // ✅ createNotifications added: Notify user of rejection
+      await createNotifications({
+        userId: latestUser.userId,
+        message: `Your task completion on '${task.title}' was rejected.`,
+      });
     }
   
     fetchTasks();
   };
   
   
-
   return (
     <div className={styles.projectContainer}>
-          <h3>{projectName || "Loading..."}</h3>
+      <h3>{projectName || "Loading..."}</h3>
       <p>Available Tasks:</p>
-  
+
       <div className={styles.btns}>
         <button
           className={styles.addTaskBtn}
@@ -211,30 +224,66 @@ function Project() {
         </button>
         <BackButton />
       </div>
-  
+
+      <div className={styles.sortControls}>
+        <label htmlFor="sort">Sort tasks by: </label>
+        <select
+          id="sort"
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+        >
+          <option value="default">Assigned to me (default)</option>
+          <option value="dueDate">Due Date (Soonest First)</option>
+          <option value="priority">Priority (High to Low)</option>
+        </select>
+      </div>
+
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
         <ul className={styles.taskList}>
-          {tasks.map((task) => (
-            <TaskItem
-              key={task.id}
-              task={{ ...task, assignedToName: getUserNameById(task.assignedTo) }}
-              onDone={() => handleDone(task.id, user)}
-              onApprove={() => handleApprove(task.id)}
-              onReject={() => handleReject(task.id)}
-              onEdit={(t) => {
-                setEditingTask(t);
-                setShowModal(true);
-              }}
-              rejectDisabled={task.wasRejected}
-            />
-          ))}
+          {
+         [...tasks]
+         .sort((a, b) => {
+           if (sortOption === "dueDate") {
+             return new Date(a.dueDate) - new Date(b.dueDate);
+           } else if (sortOption === "priority") {
+             const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+             return priorityOrder[a.priority] - priorityOrder[b.priority];
+           } else {
+             const aScore =
+               (a.assignedTo === user.id ? 0 : 2) +
+               (a.status === "pending" ? 0 : 1); // 0 = best, 1 = less important, 2 = least important
+             const bScore =
+               (b.assignedTo === user.id ? 0 : 2) +
+               (b.status === "pending" ? 0 : 1);
+       
+             return aScore - bScore;
+                }
+              })
+              .map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={{
+                    ...task,
+                    assignedToName: getUserNameById(task.assignedTo),
+                  }}
+                  onDone={() => handleDone(task.id, user)}
+                  onApprove={() => handleApprove(task.id)}
+                  onReject={() => handleReject(task.id)}
+                  onEdit={(t) => {
+                    setEditingTask(t);
+                    setShowModal(true);
+                  }}
+                  rejectDisabled={task.wasRejected}
+                />
+              ))
+          }
         </ul>
       )}
-  
+
       {showModal && (
         <AddEditTaskModal
           projectId={projectId}
@@ -248,6 +297,8 @@ function Project() {
       )}
     </div>
   );
+
+  
   
 }
 

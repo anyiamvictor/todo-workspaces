@@ -2,26 +2,24 @@ import React, { useState } from "react";
 import styles from "./AddProjectModal.module.css";
 
 function AddProjectModal({ onClose, onSubmit }) {
-    
-    
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     endDate: "",
-    status: "pending",
-    
+    status: "pending", // fixed status
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ ...formData });
+    // force status to "pending" on submit
+    onSubmit({ ...formData, status: "pending" });
   };
-  
+
   return (
     <div className={styles.modalBackdrop}>
       <div className={styles.modal}>
@@ -33,6 +31,7 @@ function AddProjectModal({ onClose, onSubmit }) {
             value={formData.name}
             onChange={handleChange}
             required
+            autoFocus
           />
 
           <div className={styles.textareaWrapper}>
@@ -46,14 +45,14 @@ function AddProjectModal({ onClose, onSubmit }) {
             />
             <small
               style={{
-                color: 200 - formData.description.length < 50 ? 'red' : '#666'
+                color: 200 - formData.description.length < 50 ? "red" : "#666",
               }}
             >
               {200 - formData.description.length} characters remaining
             </small>
-
           </div>
 
+          <label>Due Date:</label>
           <input
             type="date"
             name="endDate"
@@ -61,22 +60,14 @@ function AddProjectModal({ onClose, onSubmit }) {
             onChange={handleChange}
             required
           />
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-          >
-            <option value="pending">Pending</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-          </select>
 
           <div className={styles.actions}>
             <button type="submit">Save Project</button>
-            <button type="button" onClick={onClose}>Cancel</button>
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </form>
-
       </div>
     </div>
   );

@@ -1,31 +1,25 @@
 {
   "users": [
     {
-      "id": "u-86337105-0a7e-48e5-b88c-e57f42b296fb",
+      "id": "u-7fb622f8-640b-4754-8565-30840bf9b90f",
       "name": "obinna anyiam",
       "email": "admin@admin.com",
-      "password": "leaves",
+      "password": "admin",
       "phoneNumber": "07013723537",
-      "bio": "Tech company",
+      "bio": "Tech Boiz",
       "role": "admin",
       "status": "active",
-      "createdAt": "2025-06-14T22:25:40.485Z",
+      "createdAt": "2025-06-18T13:50:37.069Z",
       "lastLogin": null,
-      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
+      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
       "avatarUrl": null,
-      "isOnline": false,
-      "sessionToken": "0451e2c1-76b7-4114-8f6a-0b3e1f496ddf",
-      "lastSeen": "2025-06-16T18:13:42.285Z",
-      "pendingCount": 0,
-      "completedCount": 0,
-      "rejectedCount": 0,
-      "approvedCount": 0,
-      "totalAssignedTask": 0,
-      "workspaceCount": 0,
-      "totalProjectsCompleted": 0
+      "isOnline": true,
+      "sessionToken": "1b79dde4-6d21-46ba-884e-7b9c5729a9cf",
+      "lastSeen": "2025-06-18T14:18:30.244Z",
+      "workspaceCount": 5
     },
     {
-      "id": "u-de69e77d-14de-4266-8e05-344716697673",
+      "id": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
       "name": "Hannah Johnson",
       "email": "hj@hj.com",
       "password": "hj",
@@ -33,307 +27,239 @@
       "bio": "tech girl",
       "role": "member",
       "status": "active",
-      "isOnline": false,
-      "createdAt": "2025-06-14T22:27:00.267Z",
+      "isOnline": true,
+      "createdAt": "2025-06-18T13:55:01.129Z",
       "lastLogin": null,
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
-      "sessionToken": null,
-      "lastSeen": "2025-06-16T21:08:15.921Z",
-      "workspaceCount": 7,
-      "pendingCount": 1,
-      "completedCount": 7,
-      "rejectedCount": 5,
-      "approvedCount": 2,
-      "totalAssignedTask": 0,
-      "totalProjectsCompleted": 0
-    },
-    {
-      "id": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-      "name": "obi",
-      "email": "obi@obi.com",
-      "password": "obi",
-      "phoneNumber": "07013723537",
-      "bio": "obinna",
-      "role": "member",
-      "status": "active",
-      "isOnline": false,
-      "createdAt": "2025-06-14T22:32:16.087Z",
-      "lastLogin": null,
-      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
-      "sessionToken": null,
-      "lastSeen": "2025-06-16T17:53:43.928Z",
-      "workspaceCount": 7,
-      "pendingCount": 1,
-      "completedCount": 0,
-      "rejectedCount": 0,
+      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
+      "pendingCount": 0,
+      "completedCount": 1,
+      "rejectedCount": 1,
       "approvedCount": 0,
       "totalAssignedTask": 0,
-      "totalProjectsCompleted": 0
+      "workspaceCount": 3,
+      "totalProjectsCompleted": 0,
+      "sessionToken": "c7260e1d-b8e7-4447-8b65-46ae3855d194",
+      "lastSeen": "2025-06-18T14:04:55.009Z"
     },
     {
-      "id": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+      "id": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
       "name": "candice",
       "email": "candice@candice.com",
       "password": "candice",
-      "phoneNumber": "233",
-      "bio": "notable candice",
+      "phoneNumber": "07013723537",
+      "bio": "techie",
       "role": "member",
       "status": "active",
       "isOnline": true,
-      "createdAt": "2025-06-16T18:08:59.714Z",
+      "createdAt": "2025-06-18T13:56:33.021Z",
       "lastLogin": null,
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
+      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
       "pendingCount": 0,
-      "completedCount": 10,
-      "rejectedCount": 11,
+      "completedCount": 2,
+      "rejectedCount": 1,
       "approvedCount": 1,
-      "totalAssignedTask": 0,
-      "workspaceCount": 1,
+      "totalAssignedTask": 1,
+      "workspaceCount": 5,
       "totalProjectsCompleted": 0,
-      "sessionToken": "6bcb8fcb-eeee-4d39-9900-2bdb1e890519",
-      "lastSeen": "2025-06-16T20:56:15.404Z"
+      "sessionToken": "e2f76a85-d662-4dfc-b3c2-4f5d8e3ac422",
+      "lastSeen": "2025-06-18T14:20:31.549Z"
     }
   ],
   "groups": [
     {
-      "id": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7",
+      "id": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
       "name": "ovuacomp",
-      "adminId": "u-86337105-0a7e-48e5-b88c-e57f42b296fb",
+      "adminId": "u-7fb622f8-640b-4754-8565-30840bf9b90f",
+      "registrationDate": "2025-06-18",
       "inviteCode": "jesus"
     }
   ],
   "workspaces": [
     {
-      "id": "ws1749940096796",
-      "name": "testing",
-      "description": "testig 123",
-      "createdAt": "2025-06-14T22:28:16.796Z",
-      "ownerId": "u-de69e77d-14de-4266-8e05-344716697673",
+      "id": "ws1750256000897",
+      "name": "Marketing",
+      "description": "All marketting related task",
+      "createdAt": "2025-06-18T14:13:20.897Z",
+      "ownerId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
       "memberIds": [
-        "u-de69e77d-14de-4266-8e05-344716697673",
-        "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-        "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de"
+        "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+        "u-7fb622f8-640b-4754-8565-30840bf9b90f",
+        "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6"
       ],
-      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7"
-    },
-    {
-      "id": "ws1750090158836",
-      "name": "tedt",
-      "description": "tedting counts",
-      "createdAt": "2025-06-16T16:09:18.836Z",
-      "ownerId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-      "memberIds": [
-        "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-        "u-de69e77d-14de-4266-8e05-344716697673",
-        "u-86337105-0a7e-48e5-b88c-e57f42b296fb"
-      ],
-      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7"
-    },
-    {
-      "id": "ws1750093727620",
-      "name": "sdvcd",
-      "description": "sdvsdvs",
-      "createdAt": "2025-06-16T17:08:47.620Z",
-      "ownerId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-      "memberIds": [
-        "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-        "u-86337105-0a7e-48e5-b88c-e57f42b296fb"
-      ],
-      "groupId": "g-cc38f21e-090c-4dd3-9bf9-b8d5e7c7e2b7"
+      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f"
     }
   ],
   "projects": [
     {
-      "id": "3203",
-      "name": "project hannah",
-      "description": "describing project hannah",
-      "endDate": "2025-06-14",
-      "status": "active",
-      "workspaceId": "ws1749940096796",
-      "createdBy": "u-de69e77d-14de-4266-8e05-344716697673",
-      "createdAt": "2025-06-14"
+      "id": "4922",
+      "name": "Ogombo village",
+      "description": "Tasks to cover Ogombo vilage",
+      "endDate": "2025-06-20",
+      "status": "completed",
+      "workspaceId": "ws1750256000897",
+      "createdBy": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "createdAt": "2025-06-18"
     }
   ],
   "tasks": [
     {
-      "id": "9551",
-      "title": "as",
-      "description": "ascas",
-      "assignedTo": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
+      "id": "4daa",
+      "title": "Alhaja Street",
+      "description": "Go to all houses on alhaja street",
+      "assignedTo": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
       "dueDate": "2025-06-18",
       "status": "approved",
-      "priority": "medium",
-      "projectId": "3203",
+      "priority": "high",
+      "projectId": "4922",
+      "assignedToName": "candice",
+      "createdAt": "2025-06-18T14:19:57.388Z",
       "doneClicked": true,
+      "wasRejected": false,
       "completedLog": [
         {
-          "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-          "userName": "obi",
-          "timestamp": "2025-06-16T16:10:11.160Z"
+          "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+          "userName": "Hannah Johnson",
+          "timestamp": "2025-06-18T14:21:30.393Z"
         },
         {
-          "userId": "u-c1e6f0d5-c7af-4904-8e30-c56cd8801b3b",
-          "userName": "obi",
-          "timestamp": "2025-06-16T16:10:19.098Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
           "userName": "candice",
-          "timestamp": "2025-06-16T20:48:44.775Z"
+          "timestamp": "2025-06-18T14:24:02.408Z"
         },
         {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+          "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
           "userName": "candice",
-          "timestamp": "2025-06-16T20:48:49.023Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:49:16.672Z"
+          "timestamp": "2025-06-18T14:25:53.174Z"
         }
       ],
       "completedBy": {
-        "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
+        "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
         "userName": "candice",
-        "timestamp": "2025-06-16T20:49:16.672Z"
-      },
-      "wasRejected": false
+        "timestamp": "2025-06-18T14:25:53.174Z"
+      }
+    }
+  ],
+  "notifications": [
+    {
+      "id": "ed4b",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "You've been added to a new workspace: \"Marketing\"",
+      "seen": true,
+      "timestamp": "2025-06-18T14:13:20.929Z"
     },
     {
-      "id": "9f9a",
-      "title": "sds",
-      "description": "sdcs",
-      "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
-      "dueDate": "2025-06-16",
-      "status": "approved",
-      "priority": "medium",
-      "projectId": "3203",
-      "doneClicked": true,
-      "completedLog": [
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-15T09:20:07.437Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:35:05.231Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:35:08.312Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:49:46.575Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:49:51.639Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:50:03.324Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:50:17.333Z"
-        },
-        {
-          "userId": "u-81c76d8d-aa63-4aff-acda-68eb8da7e0de",
-          "userName": "candice",
-          "timestamp": "2025-06-16T20:50:31.701Z"
-        },
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-16T20:51:00.967Z"
-        },
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-16T20:51:13.686Z"
-        },
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-16T20:51:18.621Z"
-        },
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-16T20:51:22.043Z"
-        }
-      ],
-      "completedBy": {
-        "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-        "userName": "Hannah Johnson",
-        "timestamp": "2025-06-16T20:51:22.043Z"
-      },
-      "wasRejected": false
+      "id": "e952",
+      "userId": "u-7fb622f8-640b-4754-8565-30840bf9b90f",
+      "message": "You've been added to a new workspace: \"Marketing\"",
+      "seen": false,
+      "timestamp": "2025-06-18T14:13:20.931Z"
     },
     {
-      "id": "e6cf",
-      "title": "test 2",
-      "description": "scxc xc",
-      "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
-      "dueDate": "2025-06-18",
-      "status": "approved",
-      "priority": "medium",
-      "projectId": "3203",
-      "doneClicked": true,
-      "completedLog": [
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-15T09:21:50.916Z"
-        },
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-16T20:51:28.358Z"
-        },
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-16T20:51:33.095Z"
-        }
-      ],
-      "completedBy": {
-        "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-        "userName": "Hannah Johnson",
-        "timestamp": "2025-06-16T20:51:33.095Z"
-      },
-      "wasRejected": false
+      "id": "9874",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "You have a new task: 'Alhaja Street'",
+      "seen": true,
+      "timestamp": "2025-06-18T14:19:57.403Z"
     },
     {
-      "id": "9162",
-      "title": "xcxcx",
-      "description": "ascxbnz",
-      "assignedTo": "u-de69e77d-14de-4266-8e05-344716697673",
-      "dueDate": "2025-06-17",
-      "status": "pending",
-      "priority": "medium",
-      "projectId": "3203",
-      "doneClicked": false,
-      "completedLog": [
-        {
-          "userId": "u-de69e77d-14de-4266-8e05-344716697673",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-16T20:51:53.006Z"
-        }
-      ],
-      "wasRejected": true,
-      "assignedToName": "candice"
+      "id": "346c",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "You have been assigned a new task: 'Alhaja Street'",
+      "seen": true,
+      "timestamp": "2025-06-18T14:21:06.115Z"
+    },
+    {
+      "id": "b9d4",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:21:06.131Z"
+    },
+    {
+      "id": "2046",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "A task was marked as done by Hannah Johnson in 'Ogombo village'.",
+      "seen": true,
+      "timestamp": "2025-06-18T14:21:30.453Z"
+    },
+    {
+      "id": "eee7",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "Your task completion on 'Alhaja Street' was rejected.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:22:27.475Z"
+    },
+    {
+      "id": "b334",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "You have been assigned a new task: 'Alhaja Street'",
+      "seen": false,
+      "timestamp": "2025-06-18T14:23:48.827Z"
+    },
+    {
+      "id": "6a82",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:23:48.841Z"
+    },
+    {
+      "id": "0749",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "A task was marked as done by candice in 'Ogombo village'.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:24:02.609Z"
+    },
+    {
+      "id": "60fa",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "Your task completion on 'Alhaja Street' was rejected.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:24:44.416Z"
+    },
+    {
+      "id": "6844",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "You have been assigned a new task: 'Alhaja Street'",
+      "seen": false,
+      "timestamp": "2025-06-18T14:24:51.283Z"
+    },
+    {
+      "id": "0fe5",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:24:51.315Z"
+    },
+    {
+      "id": "5792",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "You have been assigned a new task: 'Alhaja Street'",
+      "seen": false,
+      "timestamp": "2025-06-18T14:25:44.527Z"
+    },
+    {
+      "id": "d3e5",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:25:44.543Z"
+    },
+    {
+      "id": "da29",
+      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "message": "A task was marked as done by candice in 'Ogombo village'.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:25:53.238Z"
+    },
+    {
+      "id": "9a98",
+      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
+      "message": "Your task completion on 'Alhaja Street' was approved.",
+      "seen": false,
+      "timestamp": "2025-06-18T14:26:08.024Z"
     }
   ]
 }

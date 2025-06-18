@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./WorkspaceModal.module.css";
 import MemberChecklistModal from "../MemberChecklistModal/MemberChecklistModal";
+import { createNotifications } from "../createNotifications";
 
 function WorkspaceModal({ user, onClose, onSubmit }) {
   const [users, setUsers] = useState([]);
@@ -34,40 +35,55 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
     .filter((u) => u.groupId === user.groupId && u.status === "active")
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const allMemberIds = [...new Set([user.id, ...selectedMemberIds])];
-    const newWorkspace = {
-      id: `ws${Date.now()}`,
-      name,
-      description,
-      createdAt: new Date().toISOString(),
-      ownerId: user.id,
-      memberIds: [...new Set([user.id, ...selectedMemberIds])],
-      groupId: user.groupId,
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const allMemberIds = [...new Set([user.id, ...selectedMemberIds])];
+    
+      const newWorkspace = {
+        id: `ws${Date.now()}`,
+        name,
+        description,
+        createdAt: new Date().toISOString(),
+        ownerId: user.id,
+        memberIds: allMemberIds,
+        groupId: user.groupId,
+      };
+    
+      try {
+        // Update workspace counts for all involved users
+        await Promise.all(
+          allMemberIds.map(async (memberId) => {
+            const res = await fetch(`http://localhost:3001/users/${memberId}`);
+            if (!res.ok) throw new Error("Failed to fetch user");
+    
+            const userData = await res.json();
+            const updatedCount = (userData.workspaceCount || 0) + 1;
+    
+            await fetch(`http://localhost:3001/users/${memberId}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ workspaceCount: updatedCount }),
+            });
+          })
+        );
+    
+        // 🔔 Notify only selected members (not the creator)
+        await Promise.all(
+          selectedMemberIds.map((memberId) =>
+            createNotifications({
+              userId: memberId,
+              message: `You've been added to a new workspace: "${name}"`,
+            })
+          )
+        );
+    
+        onSubmit(newWorkspace);
+      } catch (err) {
+        console.error("Error during workspace creation:", err);
+      }
     };
-
-    try {
-      await Promise.all(
-        allMemberIds.map(async (memberId) => {
-          const res = await fetch(`http://localhost:3001/users/${memberId}`);
-          if (!res.ok) throw new Error("Failed to fetch user");
-  
-          const userData = await res.json();
-          const updatedCount = (userData.workspaceCount || 0) + 1;
-  
-          await fetch(`http://localhost:3001/users/${memberId}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ workspaceCount: updatedCount }),
-          });
-        })
-      );
-    } catch (err) {
-      console.error("Error updating workspace counts:", err);
-    }
-    onSubmit(newWorkspace);
-  };
+    
+    
 
   if (loadingUsers) return <p>Loading users...</p>;
   if (errorUsers) return <p>Error loading users: {errorUsers}</p>;

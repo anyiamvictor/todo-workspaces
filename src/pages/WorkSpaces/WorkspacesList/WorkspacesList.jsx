@@ -134,22 +134,29 @@ function WorkspacesList() {
       </div>
 
       <ul className={styles.list}>
-        {filteredWorkspaces.map((workspace) => (
-          <li key={workspace.id} className={styles.listItem}>
-            <button
-              className={styles.deleteIconBtn}
-              onClick={() => requestDelete(workspace)}
-              title="Delete Workspace"
-            >
-              ✖️
-            </button>
-            <Link to={`/workspaces/${workspace.id}`} className={styles.link}>
-              {workspace.name}
-              <p className={styles.description}>{workspace.description}</p>
-            </Link>
-          </li>
-        ))}
+        {filteredWorkspaces.length === 0 ? (
+          <p className={styles.noWorkspacesMsg}>
+            No workspaces found. Click “+ Add Workspace” to get started.
+          </p>
+        ) : (
+          filteredWorkspaces.map((workspace) => (
+            <li key={workspace.id} className={styles.listItem}>
+              <button
+                className={styles.deleteIconBtn}
+                onClick={() => requestDelete(workspace)}
+                title="Delete Workspace"
+              >
+                ✖️
+              </button>
+              <Link to={`/workspaces/${workspace.id}`} className={styles.link}>
+                {workspace.name}
+                <p className={styles.description}>{workspace.description}</p>
+              </Link>
+            </li>
+          ))
+        )}
       </ul>
+
 
       {showModal && (
         <WorkspaceModal
@@ -162,26 +169,26 @@ function WorkspacesList() {
       {showConfirm && (
         <div className={styles.confirmBackdrop}>
           <div className={styles.confirmBox}>
-          {workspaceToDelete?.blocked ? (
-  <>
-    <p>You don’t have clearance to delete this workspace. Please contact the owner.</p>
-    <div className={styles.confirmActions}>
-      <button onClick={cancelDelete}>Okay</button>
-    </div>
-  </>
-) : (
-  <>
-    <p>
-      Are you sure you want to delete{" "}
-      <strong>{workspaceToDelete.name}</strong> and all associated
-      projects and tasks?
-    </p>
-    <div className={styles.confirmActions}>
-      <button onClick={confirmDelete}>Yes, Delete</button>
-      <button onClick={cancelDelete}>Cancel</button>
-    </div>
-  </>
-)}
+            {workspaceToDelete?.blocked ? (
+              <>
+                <p>You don’t have clearance to delete this workspace. Please contact the owner.</p>
+                <div className={styles.confirmActions}>
+                  <button onClick={cancelDelete}>Okay</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p>
+                  Are you sure you want to delete{" "}
+                  <strong>{workspaceToDelete.name}</strong> and all associated
+                  projects and tasks?
+                </p>
+                <div className={styles.confirmActions}>
+                  <button onClick={confirmDelete}>Yes, Delete</button>
+                  <button onClick={cancelDelete}>Cancel</button>
+                </div>
+              </>
+            )}
 
           </div>
         </div>

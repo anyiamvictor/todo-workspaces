@@ -59,18 +59,37 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
                 <strong>Assigned to:</strong>{" "}
                 {task.assignedToName || "Unassigned"}
               </span>
+              {task.createdAt && (
+  <span>
+    <strong>Created:</strong>{" "}
+    <span className={styles.createdDate}>
+      {new Date(task.createdAt).toLocaleDateString()}
+    </span>
+  </span>
+)}
+
               <span>
                 <strong>Due:</strong>{" "}
                 <span className={`${styles.dueDate} ${dueClass}`}>
                   {dueLabel} ({new Date(task.dueDate).toLocaleDateString()})
                 </span>
               </span>
+           
+                <span>
+                  <strong>Priority:</strong>{" "}
+                  <span className={`${styles.priority} ${styles[`priority-${task.priority.toLowerCase()}`]}`}>
+                    {task.priority}
+                  </span>
+                </span>
+   
+           
+              
             </div>
             <div className={styles.taskActions}>
-              <button onClick={() => onDone(task.id, user) }   disabled={task.doneClicked}>✅ Submit for Review</button>
-              <button onClick={() => onApprove(task.id)} disabled = {task.status ==="approved"}> {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}</button>
+              <button onClick={() => onDone(task.id, user)} disabled={task.doneClicked}>✅ Submit for Review</button>
+              <button onClick={() => onApprove(task.id)} disabled={task.status === "approved"}> {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}</button>
               <button onClick={() => onReject(task.id)} disabled={rejectDisabled || task.status === "approved"}>❌ Reject Submission</button>
-              <button onClick={() => onEdit(task) }  disabled={task.status === "approved"}>✏️ Edit</button>
+              <button onClick={() => onEdit(task)} disabled={task.status === "approved"}>✏️ Edit</button>
 
             </div>
           </div>

@@ -136,3 +136,24 @@ margin-left: 40px;
   opacity: 0.5;
   pointer-events: none;
 }
+
+.priority {
+  font-weight: bold;
+}
+
+.priority-high {
+  color: #e53e3e; /* Red */
+}
+
+.priority-medium {
+  color: #dd6b20; /* Orange */
+}
+
+.priority-low {
+  color: #38a169; /* Green */
+}
+
+.createdDate {
+  color: #555;
+  font-style: italic;
+}

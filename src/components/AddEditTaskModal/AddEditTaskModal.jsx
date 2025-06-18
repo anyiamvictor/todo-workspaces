@@ -2,10 +2,16 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import styles from "./AddEditTaskModal.module.css";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import {createNotifications} from "../createNotifications"
+
+
+
 
 function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
   const { user } = useAuth();
   const [groupUsers, setGroupUsers] = useState([]);
+  const [projectCreatedAt, setProjectCreatedAt] = useState("");
+const [projectEndDate, setProjectEndDate] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -16,6 +22,24 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
     priority: "medium",
   });
 
+  useEffect(() => {
+    async function fetchProject() {
+      try {
+        const res = await fetch(`http://localhost:3001/projects/${projectId}`);
+        const data = await res.json();
+        setProjectCreatedAt(data.createdAt);
+        setProjectEndDate(data.endDate); // if this exists
+      } catch (err) {
+        console.error("Failed to fetch project:", err);
+      }
+    }
+  
+    if (projectId) {
+      fetchProject();
+    }
+  }, [projectId]);
+  
+  
   useEffect(() => {
     if (task) {
       setFormData({
@@ -46,7 +70,7 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
             label: u.name,
             avatarUrl: u.avatarUrl,
             isOnline: u.isOnline,
-            isDisabled: !u.isOnline,
+            Online: u.isOnline,
           }))
           .sort((a, b) => Number(b.isOnline) - Number(a.isOnline));
 
@@ -66,6 +90,7 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  
   const handleSelectChange = (selectedOption) => {
     setFormData((prev) => ({ ...prev, assignedTo: selectedOption }));
   };
@@ -94,45 +119,129 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
     });
   };
 
+  const incrementAssignedCount = async (userId) => {
+    const res = await fetch(`http://localhost:3001/users/${userId}`);
+    const data = await res.json();
+    const newCount = (data.totalAssignedTask || 0) + 1;
+  
+    await fetch(`http://localhost:3001/users/${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ totalAssignedTask: newCount }),
+    });
+  };
+  
+  const decrementAssignedCount = async (userId) => {
+    const res = await fetch(`http://localhost:3001/users/${userId}`);
+    const data = await res.json();
+    const newCount = Math.max((data.totalAssignedTask || 0) - 1, 0);
+  
+    await fetch(`http://localhost:3001/users/${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ totalAssignedTask: newCount }),
+    });
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const assignedId = formData.assignedTo?.value || "";
     const prevAssignedId = task?.assignedTo;
-
+    const dueDate = formData.dueDate;
+  
+    // Validate due date
+    if (dueDate) {
+      const due = new Date(dueDate);
+      const start = new Date(projectCreatedAt);
+  
+      if (projectCreatedAt && !isNaN(start) && due < start) {
+        alert("❌ Due date cannot be before the project start date.");
+        return;
+      }
+  
+      if (projectEndDate) {
+        const end = new Date(projectEndDate);
+        if (!isNaN(end) && due > end) {
+          alert("❌ Due date cannot be after the project end date.");
+          return;
+        }
+      }
+    }
+  
     const url = task
       ? `http://localhost:3001/tasks/${task.id}`
       : "http://localhost:3001/tasks";
-
+  
     const method = task ? "PUT" : "POST";
-
+  
     const payload = {
       ...formData,
       projectId,
       assignedTo: assignedId,
+      assignedToName: formData.assignedTo?.label || "Unassigned",
+      ...(task ? {} : { createdAt: new Date().toISOString() })
     };
+    
+    
+  
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+// Notify new assignee if it's a new task
+if (!task && assignedId) {
+  await createNotifications({
+    userId: assignedId,
+    message: `You have a new task: '${formData.title}'`,
+  });
+}
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+// Notify if reassigned
+if (task && prevAssignedId && assignedId !== prevAssignedId) {
+  await createNotifications({
+    userId: assignedId,
+    message: `You have been assigned a new task: '${formData.title}'`,
+  });
 
-    if (!res.ok) {
-      console.error("Error saving task");
-      return;
+  await createNotifications({
+    userId: prevAssignedId,
+    message: `Your task '${formData.title}' has been reassigned to someone else.`,
+  });
+}
+
+
+      if (!res.ok) {
+        console.error("Error saving task");
+        return;
+      }
+  
+   // Handle pendingCount and totalAssignedTask updates
+if (!task && assignedId) {
+  await incrementPending(assignedId);
+  await incrementAssignedCount(assignedId);
+} else if (task && assignedId !== prevAssignedId) {
+  if (prevAssignedId) {
+    await decrementPending(prevAssignedId);
+    await decrementAssignedCount(prevAssignedId);
+  }
+  if (assignedId) {
+    await incrementPending(assignedId);
+    await incrementAssignedCount(assignedId);
+  }
+      }
+
+      
+    
+      onSuccess();
+    } catch (error) {
+      console.error("Submission failed:", error);
     }
-
-    // Handle pendingCount
-    if (!task && assignedId) {
-      await incrementPending(assignedId);
-    } else if (task && assignedId !== prevAssignedId) {
-      if (prevAssignedId) await decrementPending(prevAssignedId);
-      if (assignedId) await incrementPending(assignedId);
-    }
-
-    onSuccess();
   };
+  
 
   const customStyles = {
     option: (provided, state) => ({
@@ -212,7 +321,6 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
               styles={customStyles}
               formatOptionLabel={formatOptionLabel}
               isClearable
-              isOptionDisabled={(option) => option.isDisabled}
             />
           </label>
 
@@ -223,7 +331,11 @@ function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
               name="dueDate"
               value={formData.dueDate}
               onChange={handleChange}
+              min={projectCreatedAt}
+              max={projectEndDate}
+              required
             />
+
           </label>
 
           <label>

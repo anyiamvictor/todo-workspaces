@@ -8,7 +8,7 @@ import Home from "./pages/Home/Home";
 import Authentication from "./pages/Authentication/Authentication";
 import Registration from "./pages/Registration/Registration";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import UserProfileSettings from "./pages/UserProfileSetting/UserProfileSettings";
+import UserProfile from "./pages/UserProfile/UserProfile";
 import WorkspacesList from "./pages/WorkSpaces/WorkspacesList/WorkspacesList";
 import WorkspaceItem from "./pages/WorkSpaces/WorkspaceItem/WorkspaceItem";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
@@ -49,7 +49,7 @@ function App() {
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/userprofile" element={<UserProfileSettings />} />
+            <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/workspaces" element={<WorkspacesList />} />
             <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
               <Route index element={<WorkspaceItem />} />

@@ -109,3 +109,10 @@
     background-color: #2b6cb0;
   }
    
+  .sortControls {
+    margin: 1rem 0;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  

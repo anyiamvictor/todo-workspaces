@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
 import styles from "./Registration.module.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 function Registration() {
   const { login } = useAuth();
@@ -18,6 +20,8 @@ function Registration() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,20 +45,20 @@ function Registration() {
       const newGroupId = `g-${crypto.randomUUID()}`;
 
       const adminId = `u-${crypto.randomUUID()}`;
-        const newUser = {
-            id: adminId,
-            name: form.adminName,
-            email: form.email,
-            password: form.password,
-            phoneNumber: form.phoneNumber,
-            bio: form.bio,
-            role: "admin",
-            status: "active",
-            createdAt: new Date().toISOString(),
-            lastLogin: null,
-            groupId: newGroupId,
-            avatarUrl: null
-        };
+      const newUser = {
+        id: adminId,
+        name: form.adminName,
+        email: form.email,
+        password: form.password,
+        phoneNumber: form.phoneNumber,
+        bio: form.bio,
+        role: "admin",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        lastLogin: null,
+        groupId: newGroupId,
+        avatarUrl: null
+      };
 
       const createUser = await fetch("http://localhost:3001/users", {
         method: "POST",
@@ -68,6 +72,7 @@ function Registration() {
         id: newGroupId,
         name: form.companyName,
         adminId: adminId,
+        registrationDate: new Date().toLocaleDateString("en-CA")
       };
 
       const createGroup = await fetch("http://localhost:3001/groups", {
@@ -124,17 +129,25 @@ function Registration() {
             required
           />
         </div>
-
         <div className={styles.formGroup}>
           <label>Password</label>
-          <input
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
+          <div className={styles.passwordWrapper}>
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+            <span
+              className={styles.eyeIcon}
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
         </div>
+
 
         <div className={styles.formGroup}>
           <label>Phone</label>
