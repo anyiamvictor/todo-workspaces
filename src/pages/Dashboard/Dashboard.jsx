@@ -114,7 +114,7 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.rightControls}>
-          <button onClick={toggleNotifications} className={styles.bellButton}>
+          <button onClick={toggleNotifications}   className={`${styles.bellButton} ${notifications.some(n => !n.seen) ? styles.hasUnread : ''}`}>
             🔔
             {notifications.some((n) => !n.seen) && (
               <span className={styles.notificationDot} />
@@ -128,7 +128,7 @@ const Dashboard = () => {
       </div>
 
       {showNotifications && (
-        <div className={styles.notificationsDropdown}>
+        <div className={`${styles.notificationDropdown} ${showNotifications ? styles.show : ""}`}>
           <h4>Notifications</h4>
           <ul>
             {notifications.length > 0 ? (
@@ -162,14 +162,20 @@ const Dashboard = () => {
           </button>
           {showWorkspaceDetails && (
             <div className={styles.detailSection}>
-              <h4>Owned Workspaces</h4>
-              <ul>
-                {workspaces
-                  .filter((w) => String(w.ownerId) === String(currentUserId))
-                  .map((w) => (
-                    <li key={w.id}>{w.name}</li>
-                  ))}
-              </ul>
+
+              {user.role === "supervisor" && (
+                <>
+                  <h4>Owned Workspaces</h4>
+                  <ul>
+                    {workspaces
+                      .filter((w) => String(w.ownerId) === String(currentUserId))
+                      .map((w) => (
+                        <li key={w.id}>{w.name}</li>
+                      ))}
+                  </ul>
+                </>
+              )}
+
 
               <h4>Member Workspaces</h4>
               <ul>
@@ -184,7 +190,7 @@ const Dashboard = () => {
         </div>
 
         {/* Projects Card */}
-        <div className={styles.card}>
+        {user.role === "supervisor" && <div className={styles.card}>
           <h2>Your Projects</h2>
           <ul>
             {projects.map((p) => (
@@ -209,7 +215,7 @@ const Dashboard = () => {
               </ul>
             </div>
           )}
-        </div>
+        </div>}
 
         {/* Task Summary */}
         <div className={styles.card}>

@@ -209,10 +209,6 @@ function Project() {
     fetchTasks();
   };
 
-
-  
-  
-  
   return (
     <div className={styles.projectContainer}>
       <h3>{projectName || "Loading..."}</h3>

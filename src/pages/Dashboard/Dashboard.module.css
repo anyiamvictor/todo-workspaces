@@ -92,79 +92,152 @@
 }
 
 /* === NOTIFICATION STYLES === */
-
 .rightControls {
   display: flex;
   align-items: center;
   position: relative;
 }
-
+/* Notification Bell Button */
 .bellButton {
   background: none;
   border: none;
   cursor: pointer;
   position: relative;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   margin-right: 1rem;
+  color: #555;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.badge,
+.bellButton:hover {
+  transform: scale(1.2) rotate(-5deg);
+  color: #222;
+}
+
+/* 🔔 Animate only when there's unread */
+.hasUnread {
+  animation: bellIdle 2.5s infinite;
+}
+
+@keyframes bellIdle {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(10deg); }
+  40% { transform: rotate(-8deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
+/* Subtle bounce effect
+@keyframes bellIdle {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(10deg); }
+  40% { transform: rotate(-8deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+} */
+
+/* Notification Red Dot */
 .notificationDot {
   position: absolute;
-  top: -4px;
-  right: -6px;
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 6px;
-  font-size: 0.7rem;
+  top: 3px;
+  right: 5px;
   width: 10px;
   height: 10px;
+  background-color: #ff3b3f;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: pulseDot 1.3s infinite ease-in-out;
 }
 
+@keyframes pulseDot {
+  0% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+}
+
+/* Notification Dropdown Panel */
 .notificationDropdown {
   position: absolute;
-  top: 2.5rem;
-  right: 0;
-  background: white;
-  border: 1px solid #ddd;
-  padding: 0.75rem;
-  width: 250px;
-  max-height: 300px;
+  top: 5.7rem;
+  right: 20rem;
+  background: #ffffff;
+  border-radius: 10px;
+  width: 280px;
+  max-height: 320px;
   overflow-y: auto;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 999;
-  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e2e2e2;
+  opacity: 0;
+  transform: translateY(-15px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1000;
 }
 
+.notificationDropdown.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+/* Header */
 .notificationDropdown h4 {
-  margin: 0 0 0.5rem;
   font-size: 1rem;
-  color: #333;
+  font-weight: 600;
+  color: #2b2b2b;
+  margin: 0 0 0.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.4rem;
 }
 
+/* List Styling */
 .notificationDropdown ul {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .notificationDropdown li {
-  font-size: 0.9rem;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #eee;
-  color: #444;
+  font-size: 0.93rem;
+  padding: 0.6rem 0.4rem;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #333;
+  background: transparent;
+  transition: background 0.25s;
+}
+
+.notificationDropdown li:hover {
+  background-color: #f9f9f9;
 }
 
 .notificationDropdown li:last-child {
   border-bottom: none;
 }
 
+/* Unread Indicator */
 .unreadDot {
-  display: inline-block;
-  margin-left: 6px;
   width: 8px;
   height: 8px;
   background-color: #ff3b3f;
   border-radius: 50%;
+  margin-left: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 0 4px rgba(255, 59, 63, 0.6);
 }

@@ -11,7 +11,7 @@
       "status": "active",
       "isOnline": false,
       "createdAt": "2025-06-18T23:35:31.427Z",
-      "lastLogin": "2025-06-19T21:51:34.070Z",
+      "lastLogin": "2025-06-19T22:09:50.088Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "pendingCount": 0,
@@ -21,7 +21,7 @@
       "totalAssignedTask": 0,
       "workspaceCount": 2,
       "totalProjectsCompleted": 0,
-      "lastSeen": "2025-06-19T21:53:36.554Z",
+      "lastSeen": "2025-06-19T22:24:57.380Z",
       "sessionToken": null
     },
     {
@@ -59,10 +59,10 @@
       "status": "active",
       "isOnline": true,
       "createdAt": "2025-06-19T00:58:19.162Z",
-      "lastLogin": "2025-06-19T22:06:47.513Z",
+      "lastLogin": "2025-06-19T22:36:51.316Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
-      "pendingCount": 1,
+      "pendingCount": 0,
       "completedCount": 2,
       "rejectedCount": 1,
       "approvedCount": 1,
@@ -70,7 +70,7 @@
       "workspaceCount": 2,
       "totalProjectsCompleted": 0,
       "sessionToken": null,
-      "lastSeen": "2025-06-19T22:06:45.631Z"
+      "lastSeen": "2025-06-19T22:36:49.662Z"
     },
     {
       "id": "u-31c04421-9617-4dab-b1d7-1d54fa578ecd",
@@ -102,21 +102,21 @@
       "name": "Obinna anyiam",
       "phoneNumber": "",
       "bio": "sss",
-      "role": "supervisor",
+      "role": "member",
       "status": "active",
       "isOnline": true,
       "createdAt": "2025-06-19T20:51:40.206Z",
-      "lastLogin": "2025-06-19T22:06:56.696Z",
+      "lastLogin": "2025-06-19T22:22:53.401Z",
       "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIgVt79PMI_rSVG4Db-1ci5rYlYD7WVnR66ahwz28ZDQ-L2Nl7K=s96-c",
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "pendingCount": 0,
-      "completedCount": 0,
+      "completedCount": 1,
       "rejectedCount": 0,
       "approvedCount": 0,
       "totalAssignedTask": 0,
       "workspaceCount": 1,
       "totalProjectsCompleted": 0,
-      "lastSeen": "2025-06-19T22:06:54.717Z"
+      "lastSeen": "2025-06-19T22:09:59.374Z"
     }
   ],
   "groups": [
@@ -223,18 +223,23 @@
       "description": "hi",
       "assignedTo": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
       "dueDate": "2025-06-20",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "projectId": "ce06",
       "assignedToName": "Unassigned",
       "createdAt": "2025-06-19T18:10:59.107Z",
-      "doneClicked": false,
-      "wasRejected": true,
+      "doneClicked": true,
+      "wasRejected": false,
       "completedLog": [
         {
           "userId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
           "userName": "obi",
           "timestamp": "2025-06-19T18:15:35.454Z"
+        },
+        {
+          "userId": "u-c328639d-8637-4507-ac15-7c4673a2a567",
+          "userName": "Obinna anyiam",
+          "timestamp": "2025-06-19T22:28:36.526Z"
         }
       ]
     },
@@ -336,7 +341,7 @@
       "id": "b04f",
       "userId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
       "message": "You have a new task: 'hello'",
-      "seen": false,
+      "seen": true,
       "timestamp": "2025-06-19T18:10:59.127Z"
     },
     {
@@ -350,7 +355,7 @@
       "id": "812f",
       "userId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
       "message": "Your task completion on 'hello' was rejected.",
-      "seen": false,
+      "seen": true,
       "timestamp": "2025-06-19T18:15:39.653Z"
     },
     {
@@ -399,7 +404,7 @@
       "id": "24fa",
       "userId": "u-c328639d-8637-4507-ac15-7c4673a2a567",
       "message": "You've been added to a new workspace: \"ogombo\"",
-      "seen": false,
+      "seen": true,
       "timestamp": "2025-06-19T21:56:08.111Z"
     },
     {
@@ -415,6 +420,13 @@
       "message": "You have a new task: 'npm install'",
       "seen": false,
       "timestamp": "2025-06-19T21:56:34.636Z"
+    },
+    {
+      "id": "801e",
+      "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "message": "A task was marked as done by Obinna anyiam in 'fire base set up'.",
+      "seen": false,
+      "timestamp": "2025-06-19T22:28:36.588Z"
     }
   ]
 }
