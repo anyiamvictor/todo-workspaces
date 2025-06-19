@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import {
   onAuthStateChanged,
@@ -13,153 +14,95 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pendingGoogleUser, setPendingGoogleUser] = useState(null);
+  const [showInvitePrompt, setShowInvitePrompt] = useState(false);
   const navigate = useNavigate();
 
   const SESSION_KEY = "loggedInUser";
-  const TOKEN_KEY = "sessionToken";
-  const SESSION_TOKEN_KEY = "localSessionToken";
 
-  const getLocalSessionId = () => {
-    let token = sessionStorage.getItem(SESSION_TOKEN_KEY);
-    if (!token) {
-      token = crypto.randomUUID();
-      sessionStorage.setItem(SESSION_TOKEN_KEY, token);
-    }
-    return token;
-  };
-  
-  const LOCAL_SESSION_ID = getLocalSessionId();
-  
+  const googleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        try {
-          const res = await fetch(
-            `http://localhost:3001/users?uid=${firebaseUser.uid}`
-          );
-          const data = await res.json();
-          const dbUser = data[0];
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const firebaseUser = result.user;
 
-          if (!dbUser || dbUser.status !== "active") {
-            await logout("Your account is inactive.");
-            return;
-          }
+      const res = await fetch(`http://localhost:3001/users?uid=${firebaseUser.uid}`);
+      const dbUsers = await res.json();
 
-          // Check existing session token to enforce single session
-          if (dbUser.sessionToken && dbUser.sessionToken !== LOCAL_SESSION_ID) {
-            await logout(
-              "You were logged out because your account was signed in elsewhere."
-            );
-            return;
-          }
+      if (dbUsers.length > 0) {
+        const user = dbUsers[0];
 
-          // Update sessionToken, online status, and lastLogin timestamp in DB
-          await fetch(`http://localhost:3001/users/${dbUser.id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              sessionToken: LOCAL_SESSION_ID,
-              isOnline: true,
-              lastLogin: new Date().toISOString(),
-            }),
-          });
-
-          // Store user and token in sessionStorage
-          sessionStorage.setItem(SESSION_KEY, JSON.stringify(dbUser));
-          sessionStorage.setItem(TOKEN_KEY, LOCAL_SESSION_ID);
-
-          setUser({ ...dbUser, firebaseUser });
-        } catch (err) {
-          console.error("User fetch failed:", err);
-          await logout("Session verification failed.");
+        if (user.status !== "active") {
+          alert("Your account is not yet activated.");
+          await signOut(auth);
+          return;
         }
+
+        sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+        navigate(user.role === "admin" ? `/admin/${user.groupId}` : "/dashboard", { replace: true });
       } else {
-        setUser(null);
-        sessionStorage.clear();
+        setPendingGoogleUser(firebaseUser);
+        setShowInvitePrompt(true);
+      }
+    } catch (error) {
+      console.error("Google Sign-In failed:", error);
+      alert("Google login failed. Please try again.");
+    }
+  };
+
+  const completeGoogleSignup = async (inviteCode, bio) => {
+    if (!pendingGoogleUser) return;
+
+    try {
+      const res = await fetch(`http://localhost:3001/groups?inviteCode=${inviteCode}`);
+      const matchedGroups = await res.json();
+      if (matchedGroups.length === 0) {
+        throw new Error("Invalid invite code.");
       }
 
-      setLoading(false);
-    });
+      const group = matchedGroups[0];
 
-    return () => unsubscribe();
-  }, []);
+      const newUser = {
+        id: `u-${crypto.randomUUID()}`,
+        uid: pendingGoogleUser.uid,
+        email: pendingGoogleUser.email,
+        name: pendingGoogleUser.displayName || "",
+        phoneNumber: pendingGoogleUser.phoneNumber || "",
+        bio,
+        role: "member",
+        status: "inactive",
+        isOnline: false,
+        createdAt: new Date().toISOString(),
+        lastLogin: null,
+        avatarUrl: pendingGoogleUser.photoURL || "https://randomuser.me/api/portraits/men/7.jpg",
+        groupId: group.id,
+        pendingCount: 0,
+        completedCount: 0,
+        rejectedCount: 0,
+        approvedCount: 0,
+        totalAssignedTask: 0,
+        workspaceCount: 0,
+        totalProjectsCompleted: 0,
+      };
 
-  // Inactivity logout after 15 min of no activity
-  useEffect(() => {
-    if (!user) return;
+      await fetch("http://localhost:3001/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
 
-    let timer;
-    const resetTimer = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        logout("You’ve been logged out due to inactivity.");
-      }, 15 * 60 * 1000);
-    };
+      alert("Google account registered. Please wait for admin approval.");
+      setPendingGoogleUser(null);
+      setShowInvitePrompt(false);
+      await logout();
+    } catch (error) {
+      console.error("Google user registration failed:", error);
+      alert(error.message || "Something went wrong. Please try again.");
+    }
+  };
 
-    const events = ["mousemove", "keydown", "click", "scroll"];
-    events.forEach((e) => window.addEventListener(e, resetTimer));
-    resetTimer();
-
-    return () => {
-      events.forEach((e) => window.removeEventListener(e, resetTimer));
-      clearTimeout(timer);
-    };
-  }, [user]);
-
-  // Periodic session validity check (every 30 seconds)
-  useEffect(() => {
-    if (!user) return;
-
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch(`http://localhost:3001/users/${user.id}`);
-        const freshUser = await res.json();
-
-        if (
-          freshUser.status !== "active" ||
-          freshUser.uid !== auth.currentUser?.uid ||
-          freshUser.sessionToken !== LOCAL_SESSION_ID
-        ) {
-          await logout(
-            "Your session has ended, was disabled, or logged in elsewhere."
-          );
-        }
-      } catch (err) {
-        console.error("Session check failed:", err);
-        await logout("Unable to verify your session.");
-      }
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [user]);
-
-  // Update isOnline and lastSeen on tab/browser close
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      if (user) {
-        try {
-          await fetch(`http://localhost:3001/users/${user.id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              isOnline: false,
-              sessionToken: null,
-              lastSeen: new Date().toISOString(),
-            }),
-          });
-        } catch (err) {
-          console.error("Unload update failed:", err);
-        }
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () =>
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [user]);
-
-  // Login method using Firebase Auth
   const login = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -169,7 +112,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Logout method using Firebase Auth and clears sessionToken & online status in DB
   const logout = async (message) => {
     try {
       if (user) {
@@ -178,7 +120,6 @@ export function AuthProvider({ children }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             isOnline: false,
-            sessionToken: null,
             lastSeen: new Date().toISOString(),
           }),
         });
@@ -195,7 +136,6 @@ export function AuthProvider({ children }) {
     navigate("/auth", { replace: true });
   };
 
-  // Signup method (Firebase + JSON DB)
   const signup = async (email, password, extraFields = {}) => {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -212,7 +152,6 @@ export function AuthProvider({ children }) {
         role: isAdmin ? "admin" : "member",
         status: isAdmin ? "active" : "inactive",
         isOnline: false,
-        sessionToken: null,
         createdAt: new Date().toISOString(),
         lastLogin: null,
         avatarUrl: extraFields.avatarUrl || "https://randomuser.me/api/portraits/men/7.jpg",
@@ -239,8 +178,125 @@ export function AuthProvider({ children }) {
     }
   };
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const res = await fetch(`http://localhost:3001/users?uid=${firebaseUser.uid}`);
+          const data = await res.json();
+          const dbUser = data[0];
+
+          if (!dbUser || dbUser.status !== "active") {
+            await logout("Your account is inactive.");
+            return;
+          }
+
+          await fetch(`http://localhost:3001/users/${dbUser.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              isOnline: true,
+              lastLogin: new Date().toISOString(),
+            }),
+          });
+
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(dbUser));
+          setUser({ ...dbUser, firebaseUser });
+        } catch (err) {
+          console.error("User fetch failed:", err);
+          await logout("Session verification failed.");
+        }
+      } else {
+        setUser(null);
+        sessionStorage.clear();
+      }
+
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    let timer;
+    const resetTimer = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        logout("You’ve been logged out due to inactivity.");
+      }, 15 * 60 * 1000);
+    };
+
+    const events = ["mousemove", "keydown", "click", "scroll"];
+    events.forEach((e) => window.addEventListener(e, resetTimer));
+    resetTimer();
+
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, resetTimer));
+      clearTimeout(timer);
+    };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/users/${user.id}`);
+        const freshUser = await res.json();
+
+        if (
+          freshUser.status !== "active" ||
+          freshUser.uid !== auth.currentUser?.uid
+        ) {
+          await logout("Your session has ended or your account was deactivated.");
+        }
+      } catch (err) {
+        console.error("Session check failed:", err);
+        await logout("Unable to verify your session.");
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [user]);
+
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      if (user) {
+        try {
+          await fetch(`http://localhost:3001/users/${user.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              isOnline: false,
+              lastSeen: new Date().toISOString(),
+            }),
+          });
+        } catch (err) {
+          console.error("Unload update failed:", err);
+        }
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [user]);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, signup, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        signup,
+        loading,
+        googleSignIn,
+        completeGoogleSignup,
+        pendingGoogleUser,
+        showInvitePrompt,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

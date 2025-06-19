@@ -1,173 +1,140 @@
 .authPage {
-    max-width: 300px;
-    margin: 10px auto;
-    padding: .5rem 1.5rem;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-    font-family: "Segoe UI", sans-serif;
-    max-height: 100vh;
-    /* overflow-y: auto; */
-  }
-  
-  .authPage h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #2c3e50;
-    font-size: 1.4rem;
-  }
-  
-  .authForm {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .formGroup {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .formGroup label {
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: gray;
-  }
-  
-  .formGroup input {
-    padding: 0.4rem;
-    font-size: .8rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    outline-color: #3498db;
-  }
-  
-  .passwordInputWrapper {
-    position: relative;
-  }
-  
-  .passwordInputWrapper input {
-    max-width: 100%;
-    
-  }
+  max-width: 300px;
+  margin: 10px auto;
+  padding: 0.5rem 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", sans-serif;
+  max-height: 100vh;
+}
 
+.authPage h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  font-size: 1.4rem;
+}
 
-  .passwordInputWrapper {
-    position: relative;
-    width: 100%;
-  }
-  
-  .passwordInputWrapper input {
-    width: 100%;
-    padding-right: 2.5rem; 
-    box-sizing: border-box;
-  }
-  
-  
-  .eyeIcon {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #555;
-    font-size: 1.1rem;
-  }
-  
-  .eyeIcon:hover {
-    color: #000;
-  }
-  
-  
+.formWrapper {
+  transition: all 0.4s ease;
+}
 
-  .toggleText {
-    margin-top: 1.5rem;
-    text-align: center;
-    font-size: 0.95rem;
-    color: #555;
-  }
-  
-  .toggleButton {
-    background: #3498db !important;
-    border: none;
-    color: white !important;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 0;
-    padding:10px;
-  }
-  
-  .errorMessage {
-    background-color: #ffe5e5;
-    color: #b30000;
-    padding: 10px;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    text-align: center;
-    border: 1px solid #ffb3b3;
-  }
+.slideInLogin {
+  animation: slideFromLeft 0.4s ease;
+}
 
-    .submitButton {
-    padding: 0.5rem;
-    background-color: #3498db !important;
-    color:white !important;
-    border: none;
-    color: white;
-    font-size: 1rem;
-    border-radius: 60px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top:10px;
+.slideInSignup {
+  animation: slideFromRight 0.4s ease;
+}
+
+@keyframes slideFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
   }
-  
-  .submitButton:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .submitButton:hover {
-    background-color: #2980b9;
-    color:white
+}
+
+@keyframes slideFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
   }
-  
-  .inputError {
-    border: 2px solid red;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .formWrapper {
-    transition: all 0.4s ease;
+}
+
+.toggleText {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.toggleButton {
+  background: #3498db !important;
+  border: none;
+  color: white !important;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+}
+.inviteModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.inviteModal {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease-out;
+  text-align: center;
+}
+
+.inviteModal h3 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.inviteModal input,
+.inviteModal textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.inviteModal input:focus,
+.inviteModal textarea:focus {
+  border-color: #007bff;
+}
+
+.inviteModal button {
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.inviteModal button:hover {
+  background-color: #0056b3;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
   }
-  
-  /* Login slides in from left */
-  .slideInLogin {
-    animation: slideFromLeft 0.4s ease;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  /* Signup slides in from right */
-  .slideInSignup {
-    animation: slideFromRight 0.4s ease;
-  }
-  
-  @keyframes slideFromLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  @keyframes slideFromRight {
-    from {
-      opacity: 0;
-      transform: translateX(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
+}

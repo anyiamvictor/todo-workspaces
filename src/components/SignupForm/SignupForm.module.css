@@ -1,0 +1,111 @@
+.authForm {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formGroup label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: gray;
+  }
+  
+  .formGroup input {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline-color: #3498db;
+  }
+  
+  .passwordInputWrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  .passwordInputWrapper input {
+    width: 100%;
+    padding-right: 2.5rem;
+    box-sizing: border-box;
+  }
+  
+  .eyeIcon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+    font-size: 1.1rem;
+  }
+  
+  .eyeIcon:hover {
+    color: #000;
+  }
+  
+  .submitButton {
+    padding: 0.5rem;
+    background-color: #3498db !important;
+    color: white !important;
+    font-size: 1rem;
+    border-radius: 60px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .submitButton:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  
+  .submitButton:hover {
+    background-color: #2980b9;
+    color: white;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .googleBtn {
+    background-color: white;
+    color: #444;
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    font-size: 16px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .googleBtn:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .icon {
+    font-size: 20px;
+  }
+  
+  .errorMessage {
+    background-color: #ffe5e5;
+    color: #b30000;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #ffb3b3;
+  }
+  
