@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./ProjectList.module.css";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 
 function ProjectList() {
   const { workspaceId } = useParams();
@@ -14,6 +14,8 @@ function ProjectList() {
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [warnIncomplete, setWarnIncomplete] = useState(false);
+  const [permissionDenied, setPermissionDenied] = useState(false);
+
 
   useEffect(() => {
     fetchProjects();
@@ -86,6 +88,10 @@ function ProjectList() {
   }
 
   function handleDeleteClick(project) {
+    if (user?.id !== project.createdBy) {
+      setPermissionDenied(true);
+      return;
+    }
     const stats = getTaskStatsForProject(project.id);
     const hasUnapprovedTasks = stats.uncompleted > 0;
 
@@ -256,6 +262,26 @@ function ProjectList() {
           </div>
         </div>
       )}
+
+{permissionDenied && (
+  <div className={styles.modalOverlay}>
+    <div className={styles.modal}>
+      <p>
+        ❌ <strong>You don’t have permission</strong> to delete this project.<br />
+        Please contact the project owner or an admin.
+      </p>
+      <div className={styles.modalActions}>
+        <button
+          onClick={() => setPermissionDenied(false)}
+          className={styles.cancelButton}
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

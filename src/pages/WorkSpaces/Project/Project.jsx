@@ -5,7 +5,7 @@ import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskMo
 import BackButton from "../../../components/BackButton/BackButton";
 import TaskItem from "../../../components/TaskItem/TaskItem";
 import { updateProjectStatus } from "../../../components/UpdateProjectStatus";
-import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext/AuthContextFirebase";
 import { createNotifications } from "../../../components/createNotifications";
 
 function Project() {

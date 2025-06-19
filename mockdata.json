@@ -1,265 +1,196 @@
 {
   "users": [
     {
-      "id": "u-7fb622f8-640b-4754-8565-30840bf9b90f",
+      "id": "u-f96dc8f8-a4c6-46dd-95ff-27a43100cf3d",
+      "uid": "qnuA877tyOUeEwB6lXb6F5XJrw22",
+      "email": "bb@bb.com",
       "name": "obinna anyiam",
-      "email": "admin@admin.com",
-      "password": "admin",
       "phoneNumber": "07013723537",
-      "bio": "Tech Boiz",
+      "bio": "techboi",
       "role": "admin",
       "status": "active",
-      "createdAt": "2025-06-18T13:50:37.069Z",
+      "isOnline": false,
+      "createdAt": "2025-06-18T23:35:31.427Z",
       "lastLogin": null,
-      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
-      "avatarUrl": null,
-      "isOnline": true,
-      "sessionToken": "1b79dde4-6d21-46ba-884e-7b9c5729a9cf",
-      "lastSeen": "2025-06-18T14:18:30.244Z",
-      "workspaceCount": 5
+      "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
+      "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
+      "pendingCount": 0,
+      "completedCount": 0,
+      "rejectedCount": 0,
+      "approvedCount": 0,
+      "totalAssignedTask": 0,
+      "workspaceCount": 1,
+      "totalProjectsCompleted": 0,
+      "lastSeen": "2025-06-19T01:14:33.820Z",
+      "sessionToken": null
     },
     {
-      "id": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "name": "Hannah Johnson",
+      "id": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "uid": "7sHPU4SVOQh1wyEUvcKViOO2E662",
       "email": "hj@hj.com",
-      "password": "hj",
-      "phoneNumber": "07030040340",
-      "bio": "tech girl",
+      "name": "hj",
+      "phoneNumber": "234",
+      "bio": "hj girl",
       "role": "member",
       "status": "active",
       "isOnline": true,
-      "createdAt": "2025-06-18T13:55:01.129Z",
-      "lastLogin": null,
+      "createdAt": "2025-06-19T00:38:19.897Z",
+      "lastLogin": "2025-06-19T01:53:44.269Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
+      "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "pendingCount": 0,
       "completedCount": 1,
       "rejectedCount": 1,
       "approvedCount": 0,
       "totalAssignedTask": 0,
-      "workspaceCount": 3,
+      "workspaceCount": 1,
       "totalProjectsCompleted": 0,
-      "sessionToken": "c7260e1d-b8e7-4447-8b65-46ae3855d194",
-      "lastSeen": "2025-06-18T14:04:55.009Z"
+      "lastSeen": "2025-06-19T01:53:43.283Z",
+      "sessionToken": "406a9e5d-094b-464a-8356-efc39d3c52c7"
     },
     {
-      "id": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "name": "candice",
-      "email": "candice@candice.com",
-      "password": "candice",
-      "phoneNumber": "07013723537",
-      "bio": "techie",
+      "id": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+      "uid": "1pY2dKwQykUJkUz7MoDSzsxQQi93",
+      "email": "obi@obi.com",
+      "name": "obi",
+      "phoneNumber": "3",
+      "bio": "me",
       "role": "member",
       "status": "active",
-      "isOnline": true,
-      "createdAt": "2025-06-18T13:56:33.021Z",
+      "isOnline": false,
+      "createdAt": "2025-06-19T00:58:19.162Z",
       "lastLogin": null,
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
-      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
+      "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "pendingCount": 0,
-      "completedCount": 2,
-      "rejectedCount": 1,
+      "completedCount": 1,
+      "rejectedCount": 0,
       "approvedCount": 1,
       "totalAssignedTask": 1,
-      "workspaceCount": 5,
+      "workspaceCount": 1,
       "totalProjectsCompleted": 0,
-      "sessionToken": "e2f76a85-d662-4dfc-b3c2-4f5d8e3ac422",
-      "lastSeen": "2025-06-18T14:20:31.549Z"
+      "sessionToken": null,
+      "lastSeen": "2025-06-19T01:14:44.030Z"
     }
   ],
   "groups": [
     {
-      "id": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f",
+      "id": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "name": "ovuacomp",
-      "adminId": "u-7fb622f8-640b-4754-8565-30840bf9b90f",
-      "registrationDate": "2025-06-18",
-      "inviteCode": "jesus"
+      "adminId": "qnuA877tyOUeEwB6lXb6F5XJrw22",
+      "registrationDate": "2025-06-19",
+      "inviteCode": "admin"
     }
   ],
   "workspaces": [
     {
-      "id": "ws1750256000897",
-      "name": "Marketing",
-      "description": "All marketting related task",
-      "createdAt": "2025-06-18T14:13:20.897Z",
-      "ownerId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
+      "id": "ws1750294831326",
+      "name": "test firebase",
+      "description": "firebase",
+      "createdAt": "2025-06-19T01:00:31.326Z",
+      "ownerId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
       "memberIds": [
-        "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-        "u-7fb622f8-640b-4754-8565-30840bf9b90f",
-        "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6"
+        "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+        "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+        "u-f96dc8f8-a4c6-46dd-95ff-27a43100cf3d"
       ],
-      "groupId": "g-e0a16b62-2c6d-4109-bc2a-56911dd6a07f"
+      "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549"
     }
   ],
   "projects": [
     {
-      "id": "4922",
-      "name": "Ogombo village",
-      "description": "Tasks to cover Ogombo vilage",
-      "endDate": "2025-06-20",
+      "id": "ce06",
+      "name": "fire base set up",
+      "description": "ssssssssssssssssssssssssssssssssssssssssss",
+      "endDate": "2025-06-21",
       "status": "completed",
-      "workspaceId": "ws1750256000897",
-      "createdBy": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "createdAt": "2025-06-18"
+      "workspaceId": "ws1750294831326",
+      "createdBy": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "createdAt": "2025-06-19"
     }
   ],
   "tasks": [
     {
-      "id": "4daa",
-      "title": "Alhaja Street",
-      "description": "Go to all houses on alhaja street",
-      "assignedTo": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "dueDate": "2025-06-18",
+      "id": "66fe",
+      "title": "npm install",
+      "description": "install all dependencies",
+      "assignedTo": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+      "dueDate": "2025-06-20",
       "status": "approved",
-      "priority": "high",
-      "projectId": "4922",
-      "assignedToName": "candice",
-      "createdAt": "2025-06-18T14:19:57.388Z",
+      "priority": "medium",
+      "projectId": "ce06",
+      "assignedToName": "obi",
+      "createdAt": "2025-06-19T01:02:28.109Z",
       "doneClicked": true,
       "wasRejected": false,
       "completedLog": [
         {
-          "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-          "userName": "Hannah Johnson",
-          "timestamp": "2025-06-18T14:21:30.393Z"
+          "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+          "userName": "hj",
+          "timestamp": "2025-06-19T01:02:47.185Z"
         },
         {
-          "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-          "userName": "candice",
-          "timestamp": "2025-06-18T14:24:02.408Z"
-        },
-        {
-          "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-          "userName": "candice",
-          "timestamp": "2025-06-18T14:25:53.174Z"
+          "userId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+          "userName": "obi",
+          "timestamp": "2025-06-19T01:03:27.572Z"
         }
       ],
       "completedBy": {
-        "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-        "userName": "candice",
-        "timestamp": "2025-06-18T14:25:53.174Z"
+        "userId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+        "userName": "obi",
+        "timestamp": "2025-06-19T01:03:27.572Z"
       }
     }
   ],
   "notifications": [
     {
-      "id": "ed4b",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "You've been added to a new workspace: \"Marketing\"",
+      "id": "ec7f",
+      "userId": "u-f96dc8f8-a4c6-46dd-95ff-27a43100cf3d",
+      "message": "You've been added to a new workspace: \"test firebase\"",
+      "seen": false,
+      "timestamp": "2025-06-19T01:00:31.366Z"
+    },
+    {
+      "id": "99ef",
+      "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "message": "You've been added to a new workspace: \"test firebase\"",
       "seen": true,
-      "timestamp": "2025-06-18T14:13:20.929Z"
+      "timestamp": "2025-06-19T01:00:31.368Z"
     },
     {
-      "id": "e952",
-      "userId": "u-7fb622f8-640b-4754-8565-30840bf9b90f",
-      "message": "You've been added to a new workspace: \"Marketing\"",
-      "seen": false,
-      "timestamp": "2025-06-18T14:13:20.931Z"
-    },
-    {
-      "id": "9874",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "You have a new task: 'Alhaja Street'",
+      "id": "0698",
+      "userId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+      "message": "You have a new task: 'npm install'",
       "seen": true,
-      "timestamp": "2025-06-18T14:19:57.403Z"
+      "timestamp": "2025-06-19T01:02:28.122Z"
     },
     {
-      "id": "346c",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "You have been assigned a new task: 'Alhaja Street'",
+      "id": "bdcd",
+      "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "message": "A task was marked as done by hj in 'fire base set up'.",
       "seen": true,
-      "timestamp": "2025-06-18T14:21:06.115Z"
+      "timestamp": "2025-06-19T01:02:47.237Z"
     },
     {
-      "id": "b9d4",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:21:06.131Z"
-    },
-    {
-      "id": "2046",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "A task was marked as done by Hannah Johnson in 'Ogombo village'.",
+      "id": "905c",
+      "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "message": "Your task completion on 'npm install' was rejected.",
       "seen": true,
-      "timestamp": "2025-06-18T14:21:30.453Z"
+      "timestamp": "2025-06-19T01:02:58.438Z"
     },
     {
-      "id": "eee7",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "Your task completion on 'Alhaja Street' was rejected.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:22:27.475Z"
+      "id": "b5d3",
+      "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "message": "A task was marked as done by obi in 'fire base set up'.",
+      "seen": true,
+      "timestamp": "2025-06-19T01:03:27.639Z"
     },
     {
-      "id": "b334",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "You have been assigned a new task: 'Alhaja Street'",
-      "seen": false,
-      "timestamp": "2025-06-18T14:23:48.827Z"
-    },
-    {
-      "id": "6a82",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:23:48.841Z"
-    },
-    {
-      "id": "0749",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "A task was marked as done by candice in 'Ogombo village'.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:24:02.609Z"
-    },
-    {
-      "id": "60fa",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "Your task completion on 'Alhaja Street' was rejected.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:24:44.416Z"
-    },
-    {
-      "id": "6844",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "You have been assigned a new task: 'Alhaja Street'",
-      "seen": false,
-      "timestamp": "2025-06-18T14:24:51.283Z"
-    },
-    {
-      "id": "0fe5",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:24:51.315Z"
-    },
-    {
-      "id": "5792",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "You have been assigned a new task: 'Alhaja Street'",
-      "seen": false,
-      "timestamp": "2025-06-18T14:25:44.527Z"
-    },
-    {
-      "id": "d3e5",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "Your task 'Alhaja Street' has been reassigned to someone else.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:25:44.543Z"
-    },
-    {
-      "id": "da29",
-      "userId": "u-c455a201-d22d-488f-91be-cf0d737a5b07",
-      "message": "A task was marked as done by candice in 'Ogombo village'.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:25:53.238Z"
-    },
-    {
-      "id": "9a98",
-      "userId": "u-f340cef3-2f4b-4282-a96a-db42f4bcc1e6",
-      "message": "Your task completion on 'Alhaja Street' was approved.",
-      "seen": false,
-      "timestamp": "2025-06-18T14:26:08.024Z"
+      "id": "eea3",
+      "userId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+      "message": "Your task completion on 'npm install' was approved.",
+      "seen": true,
+      "timestamp": "2025-06-19T01:03:44.979Z"
     }
   ]
 }

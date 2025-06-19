@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext/AuthContext';
+import { useAuth } from '../../contexts/AuthContext/AuthContextFirebase';
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 

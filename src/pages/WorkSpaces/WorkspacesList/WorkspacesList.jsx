@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./WorkspacesList.module.css";
 import WorkspaceModal from "../../../components/WorkspaceModal/WorkspaceModal";
-import { useAuth } from "../../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext/AuthContextFirebase";
 
 function WorkspacesList() {
   const { user } = useAuth();

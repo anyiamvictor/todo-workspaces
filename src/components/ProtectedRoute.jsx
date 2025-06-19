@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext/AuthContext";
+import { useAuth } from "../contexts/AuthContext/AuthContextFirebase";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();

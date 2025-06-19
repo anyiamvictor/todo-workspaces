@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import styles from "./AddEditTaskModal.module.css";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import {createNotifications} from "../createNotifications"
 
 

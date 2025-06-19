@@ -1,6 +1,6 @@
 import { Outlet, useParams, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import styles from "./WorkspaceLayout.module.css";
 import AddProjectModal from "../AddProjectModal/AddProjectModal";
 

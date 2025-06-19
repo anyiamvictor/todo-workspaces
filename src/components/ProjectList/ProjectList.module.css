@@ -198,6 +198,9 @@
   opacity: .2;
 }
 
+.modal p strong {
+  color: #c53030;
+}
 
 
 /* These are necessary so `styles.completed` and `styles.pending` actually resolve */

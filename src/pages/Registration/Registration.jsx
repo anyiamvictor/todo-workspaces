@@ -1,12 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import styles from "./Registration.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+// Friendly error messages
+const getFriendlyMessage = (code) => {
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "This email is already in use.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/weak-password":
+      return "Password must be at least 6 characters.";
+    case "auth/network-request-failed":
+      return "Network error. Please check your connection.";
+    default:
+      return "Something went wrong. Please try again.";
+  }
+};
 
 function Registration() {
-  const { login } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -22,7 +37,6 @@ function Registration() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -34,60 +48,54 @@ function Registration() {
     setLoading(true);
 
     try {
-      const userRes = await fetch(`http://localhost:3001/users?email=${form.email}`);
-      const existingUsers = await userRes.json();
-
-      if (existingUsers.length > 0) {
+      // ✅ Check for duplicate email in DB
+      const res = await fetch(`http://localhost:3001/users?email=${form.email}`);
+      const existing = await res.json();
+      if (existing.length > 0) {
         setError("Email already exists.");
         setLoading(false);
         return;
       }
+
       const newGroupId = `g-${crypto.randomUUID()}`;
 
-      const adminId = `u-${crypto.randomUUID()}`;
-      const newUser = {
-        id: adminId,
+      // ✅ Register admin user
+      const newUser = await signup(form.email, form.password, {
         name: form.adminName,
-        email: form.email,
-        password: form.password,
         phoneNumber: form.phoneNumber,
         bio: form.bio,
         role: "admin",
         status: "active",
-        createdAt: new Date().toISOString(),
-        lastLogin: null,
         groupId: newGroupId,
-        avatarUrl: null
-      };
-
-      const createUser = await fetch("http://localhost:3001/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
+        avatarUrl: "https://randomuser.me/api/portraits/men/7.jpg", // optional fallback
       });
 
-      if (!createUser.ok) throw new Error("Failed to create user");
-
+      // ✅ Create new group entry
       const newGroup = {
         id: newGroupId,
         name: form.companyName,
-        adminId: adminId,
-        registrationDate: new Date().toLocaleDateString("en-CA")
+        adminId: newUser.uid,
+        registrationDate: new Date().toISOString().split("T")[0], // YYYY-MM-DD
       };
 
-      const createGroup = await fetch("http://localhost:3001/groups", {
+      const groupRes = await fetch("http://localhost:3001/groups", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newGroup),
       });
 
-      if (!createGroup.ok) throw new Error("Failed to create group");
+      if (!groupRes.ok) throw new Error("Failed to create group");
 
-      login({ ...newUser, groupId: newGroupId });
-      navigate(`/admin/${newGroupId}`);
+      alert("Registration successful! Please log in.");
+      navigate("/auth", { replace: true });
+
     } catch (err) {
-      console.error(err);
-      setError("Something went wrong.");
+      console.error("Signup error:", err);
+      if (err.code?.startsWith("auth/")) {
+        setError(getFriendlyMessage(err.code));
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -101,34 +109,19 @@ function Registration() {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label>Company Name</label>
-          <input
-            name="companyName"
-            value={form.companyName}
-            onChange={handleChange}
-            required
-          />
+          <input name="companyName" value={form.companyName} onChange={handleChange} required />
         </div>
 
         <div className={styles.formGroup}>
           <label>Admin Name</label>
-          <input
-            name="adminName"
-            value={form.adminName}
-            onChange={handleChange}
-            required
-          />
+          <input name="adminName" value={form.adminName} onChange={handleChange} required />
         </div>
 
         <div className={styles.formGroup}>
           <label>Email</label>
-          <input
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
+          <input name="email" type="email" value={form.email} onChange={handleChange} required />
         </div>
+
         <div className={styles.formGroup}>
           <label>Password</label>
           <div className={styles.passwordWrapper}>
@@ -148,23 +141,14 @@ function Registration() {
           </div>
         </div>
 
-
         <div className={styles.formGroup}>
-          <label>Phone</label>
-          <input
-            name="phoneNumber"
-            value={form.phoneNumber}
-            onChange={handleChange}
-          />
+          <label>Phone Number</label>
+          <input name="phoneNumber" value={form.phoneNumber} onChange={handleChange} />
         </div>
 
         <div className={styles.formGroup}>
           <label>Bio</label>
-          <textarea
-            name="bio"
-            value={form.bio}
-            onChange={handleChange}
-          />
+          <textarea name="bio" value={form.bio} onChange={handleChange} rows={3} />
         </div>
 
         <button type="submit" className={styles.submitBtn} disabled={loading}>

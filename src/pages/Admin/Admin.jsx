@@ -1,6 +1,6 @@
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import styles from "./Admin.module.css";
 import WorkspaceModal from "../../components/WorkspaceModal/WorkspaceModal";
 import AddProjectModal from "../../components/AddProjectModal/AddProjectModal";
@@ -54,10 +54,11 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       const groupRes = await fetch(`http://localhost:3001/groups/${groupId}`);
       const groupData = await groupRes.json();
 
-      if (!groupRes.ok || groupData.adminId !== user.id) {
+      if (!groupRes.ok || !groupData || groupData.adminId !== user.uid) {
         setError("Unauthorized or group not found.");
         return;
       }
+      
 
       const [wsRes, usersRes] = await Promise.all([
         fetch(`http://localhost:3001/workspaces?groupId=${groupId}`),

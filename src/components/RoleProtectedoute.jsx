@@ -1,22 +1,29 @@
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext/AuthContext";
+import { Navigate, useLocation, useParams } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext/AuthContextFirebase";
 
 function RoleProtectedRoute({ allowedRoles, children }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
+  const { groupId } = useParams(); // ✅ for admin routes
 
-  // Not logged in
-  if (!user || user === null) {
+  // ⏳ Wait until auth is ready
+  if (loading) return null;
+
+  // ❌ Not logged in
+  if (!user) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
-  // Logged in but not allowed
-  if (!allowedRoles.includes(user.role)) {
+  // ❌ Wrong role or wrong group
+  if (
+    !allowedRoles.includes(user.role) ||
+    (groupId && user.groupId !== groupId)
+  ) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  // Authorized
+  // ✅ Authorized
   return children;
 }
 

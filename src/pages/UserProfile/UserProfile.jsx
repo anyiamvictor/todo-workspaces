@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext/AuthContext';
+import { useAuth } from '../../contexts/AuthContext/AuthContextFirebase';
 import styles from './UserProfile.module.css';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';

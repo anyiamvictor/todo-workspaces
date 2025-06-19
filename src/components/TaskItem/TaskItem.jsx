@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styles from "./TaskItem.module.css";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 
 
 
