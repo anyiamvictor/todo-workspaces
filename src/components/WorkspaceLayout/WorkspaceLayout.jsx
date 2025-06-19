@@ -95,14 +95,14 @@ function WorkspaceLayout() {
                 View All Projects
               </NavLink>
 
-              <NavLink
+             {(user.role=="supervisor")&&( <NavLink
                 to={`/workspaces/${workspaceId}/projects/new`}
                 className={({ isActive }) =>
                   isActive ? `${styles.link} ${styles.active}` : styles.link
                 }
               >
                 Add New Project
-              </NavLink>
+              </NavLink>)}
             </>
           )}
         </nav>

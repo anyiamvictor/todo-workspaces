@@ -20,6 +20,8 @@ function Project() {
   const [projectName, setProjectName] = useState("");
   const [users, setUsers] = useState([]);
   const [sortOption, setSortOption] = useState("default");
+  const [projectCreatedBy, setProjectCreatedBy] = useState(null);
+
 
 
 
@@ -53,6 +55,7 @@ function Project() {
       const res = await fetch(`http://localhost:3001/projects/${projectId}`);
       const data = await res.json();
       setProjectName(data.name);
+      setProjectCreatedBy(data.createdBy); 
     } catch (err) {
       console.error("Error fetching project:", err);
     }
@@ -205,6 +208,9 @@ function Project() {
   
     fetchTasks();
   };
+
+
+  
   
   
   return (
@@ -213,15 +219,16 @@ function Project() {
       <p>Available Tasks:</p>
 
       <div className={styles.btns}>
-        <button
+      {user.id === projectCreatedBy && 
+          <button
           className={styles.addTaskBtn}
           onClick={() => {
             setEditingTask(null);
             setShowModal(true);
-          }}
+      }}
         >
           + Add Task
-        </button>
+        </button>}
         <BackButton />
       </div>
 

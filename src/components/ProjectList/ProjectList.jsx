@@ -195,7 +195,7 @@ function ProjectList() {
             >
               <div className={styles.projectTopRow}>
                 <span className={styles.projectName}>{project.name}</span>
-                <button
+               {(user.role==="supervisor")&&( <button
                   className={styles.deleteButton}
                   title="Delete project"
                   onClick={(e) => {
@@ -204,7 +204,7 @@ function ProjectList() {
                   }}
                 >
                   🗑️
-                </button>
+                </button>)}
               </div>
               <div className={styles.projectMeta}>
                 <span>👤 {getUserNameById(project.createdBy)}</span>

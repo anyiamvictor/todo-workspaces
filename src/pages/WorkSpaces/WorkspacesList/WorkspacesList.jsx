@@ -5,7 +5,6 @@ import WorkspaceModal from "../../../components/WorkspaceModal/WorkspaceModal";
 import { useAuth } from "../../../contexts/AuthContext/AuthContextFirebase";
 
 function WorkspacesList() {
-  const { user } = useAuth();
   const [workspaces, setWorkspaces] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,6 +12,7 @@ function WorkspacesList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [workspaceToDelete, setWorkspaceToDelete] = useState(null);
+  const { user} = useAuth();
 
   useEffect(() => {
     const fetchWorkspaces = async () => {
@@ -120,9 +120,9 @@ function WorkspacesList() {
       <h2 className={styles.heading}>Workspaces</h2>
 
       <div className={styles.wrkspctop}>
-        <button className={styles.addBtn} onClick={() => setShowModal(true)}>
+      {(user.role==="supervisor")&& (<button className={styles.addBtn} onClick={() => setShowModal(true)}>
           + Add Workspace
-        </button>
+        </button>)}
 
         <input
           type="text"
@@ -141,13 +141,13 @@ function WorkspacesList() {
         ) : (
           filteredWorkspaces.map((workspace) => (
             <li key={workspace.id} className={styles.listItem}>
-              <button
+            {(user.role ==="supervisor")&&(  <button
                 className={styles.deleteIconBtn}
                 onClick={() => requestDelete(workspace)}
                 title="Delete Workspace"
               >
                 ✖️
-              </button>
+              </button>)}
               <Link to={`/workspaces/${workspace.id}`} className={styles.link}>
                 {workspace.name}
                 <p className={styles.description}>{workspace.description}</p>

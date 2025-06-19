@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styles from "./WorkspaceItem.module.css";
 import MemberChecklistModal from "../../../components/MemberChecklistModal/MemberChecklistModal";
+import {useAuth} from "../../../contexts/AuthContext/AuthContextFirebase"
 
 function WorkspaceItem() {
   const { workspaceId } = useParams();
@@ -9,7 +10,7 @@ function WorkspaceItem() {
   const [ownerName, setOwnerName] = useState("Loading...");
   const [users, setUsers] = useState([]);
   const [showMemberModal, setShowMemberModal] = useState(false);
-
+  const { user } = useAuth();
   useEffect(() => {
     const fetchWorkspace = async () => {
       try {
@@ -105,12 +106,12 @@ function WorkspaceItem() {
             ))}
           </ul>
 
-          <button
+       { user.role==="supervisor" &&  <button
             className={styles.addMembersButton}
             onClick={() => setShowMemberModal(true)}
           >
             + Add Members
-          </button>
+          </button>}
         </div>
         <p className={styles.description}><span><b>Description:</b></span>   {workspace.description}</p>
         <p className={styles.meta}>

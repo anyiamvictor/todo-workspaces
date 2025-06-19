@@ -9,9 +9,9 @@
       "bio": "techboi",
       "role": "admin",
       "status": "active",
-      "isOnline": true,
+      "isOnline": false,
       "createdAt": "2025-06-18T23:35:31.427Z",
-      "lastLogin": "2025-06-19T20:52:09.911Z",
+      "lastLogin": "2025-06-19T21:51:34.070Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "pendingCount": 0,
@@ -19,9 +19,9 @@
       "rejectedCount": 0,
       "approvedCount": 0,
       "totalAssignedTask": 0,
-      "workspaceCount": 1,
+      "workspaceCount": 2,
       "totalProjectsCompleted": 0,
-      "lastSeen": "2025-06-19T20:18:24.063Z",
+      "lastSeen": "2025-06-19T21:53:36.554Z",
       "sessionToken": null
     },
     {
@@ -38,12 +38,12 @@
       "lastLogin": "2025-06-19T17:52:49.883Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
-      "pendingCount": 0,
+      "pendingCount": 1,
       "completedCount": 1,
       "rejectedCount": 1,
       "approvedCount": 0,
-      "totalAssignedTask": 0,
-      "workspaceCount": 1,
+      "totalAssignedTask": 1,
+      "workspaceCount": 2,
       "totalProjectsCompleted": 0,
       "lastSeen": "2025-06-19T17:59:37.081Z",
       "sessionToken": null
@@ -55,11 +55,11 @@
       "name": "obi",
       "phoneNumber": "3",
       "bio": "me",
-      "role": "member",
+      "role": "supervisor",
       "status": "active",
-      "isOnline": false,
+      "isOnline": true,
       "createdAt": "2025-06-19T00:58:19.162Z",
-      "lastLogin": "2025-06-19T20:15:36.021Z",
+      "lastLogin": "2025-06-19T22:06:47.513Z",
       "avatarUrl": "https://randomuser.me/api/portraits/men/7.jpg",
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "pendingCount": 1,
@@ -67,10 +67,10 @@
       "rejectedCount": 1,
       "approvedCount": 1,
       "totalAssignedTask": 2,
-      "workspaceCount": 1,
+      "workspaceCount": 2,
       "totalProjectsCompleted": 0,
       "sessionToken": null,
-      "lastSeen": "2025-06-19T20:15:37.885Z"
+      "lastSeen": "2025-06-19T22:06:45.631Z"
     },
     {
       "id": "u-31c04421-9617-4dab-b1d7-1d54fa578ecd",
@@ -102,11 +102,11 @@
       "name": "Obinna anyiam",
       "phoneNumber": "",
       "bio": "sss",
-      "role": "member",
+      "role": "supervisor",
       "status": "active",
       "isOnline": true,
       "createdAt": "2025-06-19T20:51:40.206Z",
-      "lastLogin": "2025-06-19T20:52:33.188Z",
+      "lastLogin": "2025-06-19T22:06:56.696Z",
       "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIgVt79PMI_rSVG4Db-1ci5rYlYD7WVnR66ahwz28ZDQ-L2Nl7K=s96-c",
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549",
       "pendingCount": 0,
@@ -114,8 +114,9 @@
       "rejectedCount": 0,
       "approvedCount": 0,
       "totalAssignedTask": 0,
-      "workspaceCount": 0,
-      "totalProjectsCompleted": 0
+      "workspaceCount": 1,
+      "totalProjectsCompleted": 0,
+      "lastSeen": "2025-06-19T22:06:54.717Z"
     }
   ],
   "groups": [
@@ -146,6 +147,20 @@
         "u-f96dc8f8-a4c6-46dd-95ff-27a43100cf3d"
       ],
       "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549"
+    },
+    {
+      "id": "ws1750370168075",
+      "name": "ogombo",
+      "description": "test",
+      "createdAt": "2025-06-19T21:56:08.075Z",
+      "ownerId": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+      "memberIds": [
+        "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
+        "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+        "u-f96dc8f8-a4c6-46dd-95ff-27a43100cf3d",
+        "u-c328639d-8637-4507-ac15-7c4673a2a567"
+      ],
+      "groupId": "g-246745e2-d210-4156-bf32-fe25172fd549"
     }
   ],
   "projects": [
@@ -157,6 +172,16 @@
       "status": "active",
       "workspaceId": "ws1750294831326",
       "createdBy": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "createdAt": "2025-06-19"
+    },
+    {
+      "id": "a2c6",
+      "name": "fire base set up",
+      "description": "asxas",
+      "endDate": "2025-06-21",
+      "status": "active",
+      "workspaceId": "ws1750370168075",
+      "createdBy": "u-4c9e417f-7bd6-469c-b50c-89c0ccf11288",
       "createdAt": "2025-06-19"
     }
   ],
@@ -243,6 +268,18 @@
         "userName": "Obinna anyiam",
         "timestamp": "2025-06-19T20:25:49.271Z"
       }
+    },
+    {
+      "id": "8a21",
+      "title": "npm install",
+      "description": "saxasxa",
+      "assignedTo": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "dueDate": "2025-06-20",
+      "status": "pending",
+      "priority": "medium",
+      "projectId": "a2c6",
+      "assignedToName": "hj",
+      "createdAt": "2025-06-19T21:56:34.618Z"
     }
   ],
   "notifications": [
@@ -350,6 +387,34 @@
       "message": "Your task completion on 'cv cv' was approved.",
       "seen": true,
       "timestamp": "2025-06-19T20:25:51.655Z"
+    },
+    {
+      "id": "f022",
+      "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "message": "You've been added to a new workspace: \"ogombo\"",
+      "seen": false,
+      "timestamp": "2025-06-19T21:56:08.108Z"
+    },
+    {
+      "id": "24fa",
+      "userId": "u-c328639d-8637-4507-ac15-7c4673a2a567",
+      "message": "You've been added to a new workspace: \"ogombo\"",
+      "seen": false,
+      "timestamp": "2025-06-19T21:56:08.111Z"
+    },
+    {
+      "id": "f863",
+      "userId": "u-f96dc8f8-a4c6-46dd-95ff-27a43100cf3d",
+      "message": "You've been added to a new workspace: \"ogombo\"",
+      "seen": false,
+      "timestamp": "2025-06-19T21:56:08.110Z"
+    },
+    {
+      "id": "c7ed",
+      "userId": "u-e8ffb0d4-b029-4b5e-95b5-574db10ef10c",
+      "message": "You have a new task: 'npm install'",
+      "seen": false,
+      "timestamp": "2025-06-19T21:56:34.636Z"
     }
   ]
 }

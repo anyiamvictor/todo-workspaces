@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import styles from "./TaskItem.module.css";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 
@@ -9,6 +9,23 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
   
   const [showDescription, setShowDescription] = useState(false);
   const { user } = useAuth();
+  const [projectOwnerId, setProjectOwnerId] = useState(null);
+
+  useEffect(() => {
+    const fetchProjectOwner = async () => {
+      if (!task.projectId) return;
+      try {
+        const res = await fetch(`http://localhost:3001/projects/${task.projectId}`);
+        if (!res.ok) throw new Error("Failed to fetch project");
+        const data = await res.json();
+        setProjectOwnerId(data.createdBy);
+      } catch (err) {
+        console.error("Project fetch error:", err);
+      }
+    };
+  
+    fetchProjectOwner();
+  }, [task.projectId]);
   
 
   
@@ -40,6 +57,8 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
   }
 
   const { className: dueClass, label: dueLabel } = getDueDateInfo(task.dueDate);
+  const isSupervisor = user.role === "supervisor";
+  const isProjectOwner = user.id === projectOwnerId;
 
   return (
     <li className={`${styles.taskItem} ${task.status === "approved" ? styles.finalized : ""}`}>
@@ -60,13 +79,13 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
                 {task.assignedToName || "Unassigned"}
               </span>
               {task.createdAt && (
-  <span>
-    <strong>Created:</strong>{" "}
-    <span className={styles.createdDate}>
-      {new Date(task.createdAt).toLocaleDateString()}
-    </span>
-  </span>
-)}
+                <span>
+                  <strong>Created:</strong>{" "}
+                  <span className={styles.createdDate}>
+                    {new Date(task.createdAt).toLocaleDateString()}
+                  </span>
+                </span>
+              )}
 
               <span>
                 <strong>Due:</strong>{" "}
@@ -75,21 +94,34 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
                 </span>
               </span>
            
-                <span>
-                  <strong>Priority:</strong>{" "}
-                  <span className={`${styles.priority} ${styles[`priority-${task.priority.toLowerCase()}`]}`}>
-                    {task.priority}
-                  </span>
+              <span>
+                <strong>Priority:</strong>{" "}
+                <span className={`${styles.priority} ${styles[`priority-${task.priority.toLowerCase()}`]}`}>
+                  {task.priority}
                 </span>
+              </span>
    
            
               
             </div>
             <div className={styles.taskActions}>
-              <button onClick={() => onDone(task.id, user)} disabled={task.doneClicked}>✅ Submit for Review</button>
-              <button onClick={() => onApprove(task.id)} disabled={task.status === "approved"}> {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}</button>
-              <button onClick={() => onReject(task.id)} disabled={rejectDisabled || task.status === "approved"}>❌ Reject Submission</button>
-              <button onClick={() => onEdit(task)} disabled={task.status === "approved"}>✏️ Edit</button>
+              {(!isProjectOwner)&&<button onClick={() => onDone(task.id, user)} disabled={task.doneClicked}>✅ Submit for Review</button>}
+
+              {isSupervisor && isProjectOwner && (
+                <button onClick={() => onApprove(task.id)} disabled={task.status === "approved"}>
+                  {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}
+                </button>
+              )}
+              {isSupervisor && isProjectOwner && (
+                <button onClick={() => onReject(task.id)} disabled={rejectDisabled || task.status === "approved"}>
+                  ❌ Reject Submission
+                </button>
+              )}
+              {isSupervisor && isProjectOwner && (
+                <button onClick={() => onEdit(task)} disabled={task.status === "approved"}>
+                  ✏️ Edit
+                </button>
+              )}
 
             </div>
           </div>
