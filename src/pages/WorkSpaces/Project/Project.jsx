@@ -1,12 +1,24 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "./Project.module.css";
-import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskModal";
+// import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskModal";
+import AddTaskHandler from "../../../components/AddEditTaskModal/AddTaskHandler";
+import EditTaskHandler from "../../../components/AddEditTaskModal/EditTaskHandler";
 import BackButton from "../../../components/BackButton/BackButton";
 import TaskItem from "../../../components/TaskItem/TaskItem";
 import { updateProjectStatus } from "../../../components/UpdateProjectStatus";
 import { useAuth } from "../../../contexts/AuthContext/AuthContextFirebase";
 import { createNotifications } from "../../../components/createNotifications";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../../components/firebaseConfig";
 
 function Project() {
   const { projectId } = useParams();
@@ -22,25 +34,22 @@ function Project() {
   const [sortOption, setSortOption] = useState("default");
   const [projectCreatedBy, setProjectCreatedBy] = useState(null);
 
-
-
-
   useEffect(() => {
     const loadAll = async () => {
       await Promise.all([fetchTasks(), fetchProject(), fetchUsers()]);
     };
     loadAll();
-  
+
     const interval = setInterval(fetchTasks, 1000);
     return () => clearInterval(interval);
   }, [projectId]);
-  
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/tasks?projectId=${projectId}`);
-      if (!res.ok) throw new Error("Failed to fetch tasks");
-      const data = await res.json();
+      const snapshot = await getDocs(
+        query(collection(db, "tasks"), where("projectId", "==", projectId))
+      );
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setTasks(data);
       updateProjectStatus(projectId);
     } catch (err) {
@@ -52,10 +61,13 @@ function Project() {
 
   const fetchProject = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/projects/${projectId}`);
-      const data = await res.json();
-      setProjectName(data.name);
-      setProjectCreatedBy(data.createdBy); 
+      const projectRef = doc(db, "projects", projectId);
+      const docSnap = await getDoc(projectRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setProjectName(data.name);
+        setProjectCreatedBy(data.createdBy);
+      }
     } catch (err) {
       console.error("Error fetching project:", err);
     }
@@ -63,8 +75,8 @@ function Project() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:3001/users");
-      const data = await res.json();
+      const snapshot = await getDocs(collection(db, "users"));
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setUsers(data);
     } catch (err) {
       console.error("Error fetching users:", err);
@@ -72,140 +84,112 @@ function Project() {
   };
 
   const getUserNameById = (id) => {
-    const user = users.find((u) => u.id === id);
-    return user ? user.name : "Unknown";
+    const found = users.find((u) => u.uid === id || u.id === id);
+    return found ? found.name : "Unknown";
   };
 
-  const incrementUserField = async (userId, field) => {
-    const res = await fetch(`http://localhost:3001/users/${userId}`);
-    const userData = await res.json();
-    const newCount = (userData[field] || 0) + 1;
-
-    await fetch(`http://localhost:3001/users/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [field]: newCount }),
-    });
+  const incrementUserField = async (uid, field) => {
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) return;
+    const current = userSnap.data()[field] || 0;
+    await updateDoc(userRef, { [field]: current + 1 });
   };
 
-  const decrementUserPending = async (userId) => {
-    const res = await fetch(`http://localhost:3001/users/${userId}`);
-    const userData = await res.json();
-    const current = userData.pendingCount || 0;
-    const newCount = current > 0 ? current - 1 : 0;
-
-    await fetch(`http://localhost:3001/users/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pendingCount: newCount }),
-    });
+  const decrementUserPending = async (uid) => {
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) return;
+    const current = userSnap.data().pendingCount || 0;
+    await updateDoc(userRef, { pendingCount: current > 0 ? current - 1 : 0 });
   };
 
   const handleDone = async (taskId, currentUser) => {
-    const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
-    const task = await res.json();
+    const taskRef = doc(db, "tasks", taskId);
+    const taskSnap = await getDoc(taskRef);
+    if (!taskSnap.exists()) return;
+    const task = taskSnap.data();
     if (task.doneClicked) return;
-  
+
     const updatedLog = [
       ...(task.completedLog || []),
       {
-        userId: currentUser.id,
+        userId: currentUser.uid,
         userName: currentUser.name,
         timestamp: new Date().toISOString(),
       },
     ];
-  
-    await fetch(`http://localhost:3001/tasks/${taskId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        status: "completed",
-        doneClicked: true,
-        wasRejected: false,
-        completedLog: updatedLog,
-      }),
+
+    await updateDoc(taskRef, {
+      status: "completed",
+      doneClicked: true,
+      wasRejected: false,
+      completedLog: updatedLog,
     });
-  
-    await incrementUserField(currentUser.id, "completedCount");
+
+    await incrementUserField(currentUser.uid, "completedCount");
     await decrementUserPending(task.assignedTo);
     fetchTasks();
-  
-    // ✅ createNotifications added: Notify project owner
-    const projectRes = await fetch(`http://localhost:3001/projects/${projectId}`);
-    const project = await projectRes.json();
-  
+
+    const projectSnap = await getDoc(doc(db, "projects", projectId));
+    const project = projectSnap.data();
+
     await createNotifications({
       userId: project.createdBy,
       message: `A task was marked as done by ${currentUser.name} in '${project.name}'.`,
     });
   };
-  
+
   const handleApprove = async (taskId) => {
-    const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
-    const task = await res.json();
-  
+    const taskRef = doc(db, "tasks", taskId);
+    const taskSnap = await getDoc(taskRef);
+    if (!taskSnap.exists()) return;
+    const task = taskSnap.data();
     if (task.status === "approved") return;
-  
-    const latestUser =
-      task.completedLog && task.completedLog.length > 0
-        ? task.completedLog[task.completedLog.length - 1]
-        : null;
-  
-    await fetch(`http://localhost:3001/tasks/${taskId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        status: "approved",
-        completedBy: latestUser,
-      }),
+
+    const latestUser = task.completedLog?.at(-1) || null;
+
+    await updateDoc(taskRef, {
+      status: "approved",
+      completedBy: latestUser,
     });
-  
+
     if (latestUser) {
       await incrementUserField(latestUser.userId, "approvedCount");
-  
-      // ✅ createNotifications added: Notify user of approval
       await createNotifications({
         userId: latestUser.userId,
         message: `Your task completion on '${task.title}' was approved.`,
       });
     }
-  
+
     fetchTasks();
   };
-  
+
   const handleReject = async (taskId) => {
-    const res = await fetch(`http://localhost:3001/tasks/${taskId}`);
-    const task = await res.json();
-  
-    const latestUser =
-      task.completedLog && task.completedLog.length > 0
-        ? task.completedLog[task.completedLog.length - 1]
-        : null;
-  
-    await fetch(`http://localhost:3001/tasks/${taskId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        status: "pending",
-        doneClicked: false,
-        wasRejected: true,
-      }),
+    const taskRef = doc(db, "tasks", taskId);
+    const taskSnap = await getDoc(taskRef);
+    if (!taskSnap.exists()) return;
+    const task = taskSnap.data();
+
+    const latestUser = task.completedLog?.at(-1) || null;
+
+    await updateDoc(taskRef, {
+      status: "pending",
+      doneClicked: false,
+      wasRejected: true,
     });
-  
+
     if (latestUser) {
       await incrementUserField(latestUser.userId, "rejectedCount");
-  
       if (task.assignedTo) {
         await incrementUserField(task.assignedTo, "pendingCount");
       }
-  
-      // ✅ createNotifications added: Notify user of rejection
       await createNotifications({
         userId: latestUser.userId,
         message: `Your task completion on '${task.title}' was rejected.`,
       });
     }
-  
+
     fetchTasks();
   };
 
@@ -215,16 +199,17 @@ function Project() {
       <p>Available Tasks:</p>
 
       <div className={styles.btns}>
-      {user.id === projectCreatedBy && 
+        {user.uid === projectCreatedBy && (
           <button
-          className={styles.addTaskBtn}
-          onClick={() => {
-            setEditingTask(null);
-            setShowModal(true);
-      }}
-        >
-          + Add Task
-        </button>}
+            className={styles.addTaskBtn}
+            onClick={() => {
+              setEditingTask(null);
+              setShowModal(true);
+            }}
+          >
+            + Add Task
+          </button>
+        )}
         <BackButton />
       </div>
 
@@ -247,62 +232,63 @@ function Project() {
         <p>{error}</p>
       ) : (
         <ul className={styles.taskList}>
-          {
-         [...tasks]
-         .sort((a, b) => {
-           if (sortOption === "dueDate") {
-             return new Date(a.dueDate) - new Date(b.dueDate);
-           } else if (sortOption === "priority") {
-             const priorityOrder = { High: 1, Medium: 2, Low: 3 };
-             return priorityOrder[a.priority] - priorityOrder[b.priority];
-           } else {
-             const aScore =
-               (a.assignedTo === user.id ? 0 : 2) +
-               (a.status === "pending" ? 0 : 1); // 0 = best, 1 = less important, 2 = least important
-             const bScore =
-               (b.assignedTo === user.id ? 0 : 2) +
-               (b.status === "pending" ? 0 : 1);
-       
-             return aScore - bScore;
-                }
-              })
-              .map((task) => (
-                <TaskItem
-                  key={task.id}
-                  task={{
-                    ...task,
-                    assignedToName: getUserNameById(task.assignedTo),
-                  }}
-                  onDone={() => handleDone(task.id, user)}
-                  onApprove={() => handleApprove(task.id)}
-                  onReject={() => handleReject(task.id)}
-                  onEdit={(t) => {
-                    setEditingTask(t);
-                    setShowModal(true);
-                  }}
-                  rejectDisabled={task.wasRejected}
-                />
-              ))
-          }
+          {[...tasks]
+            .sort((a, b) => {
+              if (sortOption === "dueDate") {
+                return new Date(a.dueDate) - new Date(b.dueDate);
+              } else if (sortOption === "priority") {
+                const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+              } else {
+                const aScore = (a.assignedTo === user.uid ? 0 : 2) + (a.status === "pending" ? 0 : 1);
+                const bScore = (b.assignedTo === user.uid ? 0 : 2) + (b.status === "pending" ? 0 : 1);
+                return aScore - bScore;
+              }
+            })
+            .map((task) => (
+              <TaskItem
+                key={task.id}
+                task={{
+                  ...task,
+                  assignedToName: getUserNameById(task.assignedTo),
+                }}
+                onDone={() => handleDone(task.id, user)}
+                onApprove={() => handleApprove(task.id)}
+                onReject={() => handleReject(task.id)}
+                onEdit={(t) => {
+                  setEditingTask(t);
+                  setShowModal(true);
+                }}
+                rejectDisabled={task.wasRejected}
+              />
+            ))}
         </ul>
       )}
 
-      {showModal && (
-        <AddEditTaskModal
-          projectId={projectId}
-          task={editingTask}
-          onClose={() => setShowModal(false)}
-          onSuccess={() => {
-            setShowModal(false);
-            fetchTasks();
-          }}
-        />
-      )}
+{showModal &&
+  (editingTask ? (
+    <EditTaskHandler
+      projectId={projectId}
+      task={editingTask}
+      onClose={() => setShowModal(false)}
+      onSuccess={() => {
+        setShowModal(false);
+        fetchTasks();
+      }}
+    />
+  ) : (
+    <AddTaskHandler
+      projectId={projectId}
+      onClose={() => setShowModal(false)}
+      onSuccess={() => {
+        setShowModal(false);
+        fetchTasks();
+      }}
+    />
+  ))}
+
     </div>
   );
-
-  
-  
 }
 
 export default Project;

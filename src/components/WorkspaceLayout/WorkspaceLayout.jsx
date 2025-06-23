@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import styles from "./WorkspaceLayout.module.css";
 import AddProjectModal from "../AddProjectModal/AddProjectModal";
+import { doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { db } from "../../components/firebaseConfig";
 
 function WorkspaceLayout() {
   const { workspaceId } = useParams();
@@ -15,17 +17,21 @@ function WorkspaceLayout() {
   useEffect(() => {
     const fetchWorkspace = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/workspaces/${workspaceId}`);
-        const data = await res.json();
-        setWorkspace(data);
+        const docRef = doc(db, "workspaces", workspaceId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setWorkspace({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          console.error("Workspace not found");
+        }
       } catch (err) {
         console.error("Failed to fetch workspace:", err);
       }
     };
-  
+
     fetchWorkspace();
   }, [workspaceId]);
-  
 
   const showAddProjectModal = location.pathname.endsWith("/projects/new");
 
@@ -34,17 +40,11 @@ function WorkspaceLayout() {
       const newProject = {
         ...projectData,
         workspaceId,
-        createdBy: user?.id || "Unknown",
-        createdAt: new Date().toISOString().split("T")[0]
+        createdBy: user?.uid || "Unknown",
+        createdAt: new Date().toISOString().split("T")[0],
       };
 
-      const response = await fetch("http://localhost:3001/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newProject),
-      });
-
-      if (!response.ok) throw new Error("Failed to create project");
+      await addDoc(collection(db, "projects"), newProject);
 
       navigate(`/workspaces/${workspaceId}/projects`);
     } catch (error) {
@@ -52,13 +52,9 @@ function WorkspaceLayout() {
     }
   };
 
- 
-  
   const isOnProjectDetail = location.pathname.match(
     new RegExp(`^/workspaces/${workspaceId}/projects/[^/]+$`)
   );
-
- 
 
   return (
     <div className={styles.wrapper}>
@@ -95,14 +91,16 @@ function WorkspaceLayout() {
                 View All Projects
               </NavLink>
 
-             {(user.role=="supervisor")&&( <NavLink
-                to={`/workspaces/${workspaceId}/projects/new`}
-                className={({ isActive }) =>
-                  isActive ? `${styles.link} ${styles.active}` : styles.link
-                }
-              >
-                Add New Project
-              </NavLink>)}
+              {user.role === "supervisor" && (
+                <NavLink
+                  to={`/workspaces/${workspaceId}/projects/new`}
+                  className={({ isActive }) =>
+                    isActive ? `${styles.link} ${styles.active}` : styles.link
+                  }
+                >
+                  Add New Project
+                </NavLink>
+              )}
             </>
           )}
         </nav>
@@ -117,8 +115,6 @@ function WorkspaceLayout() {
             onSubmit={handleAddProject}
           />
         )}
-
-     
       </main>
     </div>
   );

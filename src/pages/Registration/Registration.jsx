@@ -1,8 +1,21 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import styles from "./Registration.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  getDocs,
+  query,
+  collection,
+  where,
+  addDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
+import { db } from "../../components/firebaseConfig";
+import { signOut } from "firebase/auth";
+import { auth } from "../../components/firebaseConfig"; // adjust path if needed
+
 
 // Friendly error messages
 const getFriendlyMessage = (code) => {
@@ -48,9 +61,13 @@ function Registration() {
     setLoading(true);
 
     try {
-      // ✅ Check for duplicate email in DB
-      const res = await fetch(`http://localhost:3001/users?email=${form.email}`);
-      const existing = await res.json();
+      // ✅ Check for duplicate email in Firestore
+      // const res = await fetch(`http://localhost:3001/users?email=${form.email}`);
+      // const existing = await res.json();
+      const q = query(collection(db, "users"), where("email", "==", form.email));
+      const snapshot = await getDocs(q);
+      const existing = snapshot.docs.map((doc) => doc.data());
+
       if (existing.length > 0) {
         setError("Email already exists.");
         setLoading(false);
@@ -67,27 +84,31 @@ function Registration() {
         role: "admin",
         status: "active",
         groupId: newGroupId,
-        avatarUrl: "https://randomuser.me/api/portraits/men/7.jpg", // optional fallback
+        avatarUrl: "https://randomuser.me/api/portraits/men/7.jpg",
+        isOnline:false
       });
+      await signOut(auth);
+      sessionStorage.clear(); // just in case
 
-      // ✅ Create new group entry
+      // ✅ Create new group entry in Firestore
       const newGroup = {
         id: newGroupId,
         name: form.companyName,
         adminId: newUser.uid,
-        registrationDate: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+        registrationDate: new Date().toISOString().split("T")[0],
       };
 
-      const groupRes = await fetch("http://localhost:3001/groups", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newGroup),
-      });
+      // const groupRes = await fetch("http://localhost:3001/groups", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(newGroup),
+      // });
+      // if (!groupRes.ok) throw new Error("Failed to create group");
 
-      if (!groupRes.ok) throw new Error("Failed to create group");
+      await setDoc(doc(db, "groups", newGroupId), newGroup);
 
       alert("Registration successful! Please log in.");
-      navigate("/auth", { replace: true });
+      navigate("/auth", replace);
 
     } catch (err) {
       console.error("Signup error:", err);

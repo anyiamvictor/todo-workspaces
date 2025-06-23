@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./MemberChecklistModal.module.css"
+import styles from "./MemberChecklistModal.module.css";
 
 function MemberChecklistModal({ members, selected, onChange, onClose, ownerId }) {
   const [filter, setFilter] = useState("");
@@ -13,22 +13,23 @@ function MemberChecklistModal({ members, selected, onChange, onClose, ownerId })
     m.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const toggleMember = (id) => {
-    if (id === ownerId) return;
+  const toggleMember = (uid) => {
+    if (uid === ownerId) return;
     setLocalSelected((prev) =>
-      prev.includes(id) ? prev.filter((uid) => uid !== id) : [...prev, id]
+      prev.includes(uid) ? prev.filter((id) => id !== uid) : [...prev, uid]
     );
   };
 
   const selectAll = () => {
     const all = filteredMembers
-      .map((m) => m.id)
-      .filter((id) => id !== ownerId);
+      .map((m) => m.uid)
+      .filter((uid) => uid !== ownerId);
     setLocalSelected([...new Set([...localSelected, ...all])]);
   };
 
   const deselectAll = () => {
-    setLocalSelected(localSelected.filter((id) => !filteredMembers.map((m) => m.id).includes(id)));
+    const filteredUids = filteredMembers.map((m) => m.uid);
+    setLocalSelected(localSelected.filter((uid) => !filteredUids.includes(uid)));
   };
 
   const handleSave = () => {
@@ -59,19 +60,18 @@ function MemberChecklistModal({ members, selected, onChange, onClose, ownerId })
 
         <ul className={styles.memberList}>
           {filteredMembers.map((member) => (
-            <li key={member.id}>
+            <li key={member.uid}>
               <label>
                 <input
                   type="checkbox"
-                  checked={localSelected.includes(member.id)}
-                  onChange={() => toggleMember(member.id)}
-                  disabled={member.id === ownerId}
+                  checked={localSelected.includes(member.uid)}
+                  onChange={() => toggleMember(member.uid)}
+                  disabled={member.uid === ownerId}
                 />
                 {member.name}
-                {member.id === ownerId && (
+                {member.uid === ownerId && (
                   <span className={styles.ownerNote}> (Creator - cannot be removed)</span>
                 )}
-                
               </label>
             </li>
           ))}

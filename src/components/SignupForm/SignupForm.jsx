@@ -1,6 +1,12 @@
-// components/SignupForm.jsx
 import React, { useState } from "react";
 import styles from "./SignupForm.module.css";
+import {
+  getDocs,
+  collection,
+  where,
+  query,
+} from "firebase/firestore";
+import { db } from "../../components/firebaseConfig";
 
 function SignupForm({ signup, setError, setInviteError }) {
   const [formData, setFormData] = useState({
@@ -10,50 +16,84 @@ function SignupForm({ signup, setError, setInviteError }) {
     phoneNumber: "",
     bio: "",
     inviteCode: "",
+    status: "inactive",
   });
+
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [inviteError, localInviteError] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "inviteCode") {
+      setInviteError(false);
+      localInviteError(false); // reset local invite error on typing
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setInviteError(false);
+    localInviteError(false);
     setLoading(true);
+    setSuccess(false);
 
     try {
-      const exists = await fetch(`http://localhost:3001/users?email=${formData.email}`);
-      const users = await exists.json();
+      // 🔁 Old JSON Server check
+      // const exists = await fetch(`http://localhost:3001/users?email=${formData.email}`);
+      // const users = await exists.json();
+
+      // ✅ Firestore: Check if email already exists
+      const snapshot = await getDocs(
+        query(collection(db, "users"), where("email", "==", formData.email))
+      );
+      const users = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       if (users.length > 0) {
         setError("Email already exists.");
         setLoading(false);
         return;
       }
 
-      const res = await fetch(`http://localhost:3001/groups?inviteCode=${formData.inviteCode}`);
-      const groups = await res.json();
-      if (groups.length === 0) {
+      // 🔁 Old JSON Server invite code check
+      // const res = await fetch(`http://localhost:3001/groups`);
+      // const allGroups = await res.json();
+      // const matchedGroup = allGroups.find(
+      //   (group) => group.inviteCode === formData.inviteCode
+      // );
+
+      // ✅ Firestore: Validate invite code
+      const groupSnapshot = await getDocs(
+        query(collection(db, "groups"), where("inviteCode", "==", formData.inviteCode))
+      );
+      const matchedGroups = groupSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+      if (matchedGroups.length === 0) {
         setInviteError(true);
+        localInviteError(true);
         setError("Invalid invite code.");
         setLoading(false);
         return;
       }
 
+      const matchedGroup = matchedGroups[0];
+
+      // ✅ Create user in Firestore Auth + users collection
       await signup(formData.email, formData.password, {
         name: formData.name,
         phoneNumber: formData.phoneNumber,
         bio: formData.bio,
         role: "member",
-        groupId: groups[0].id,
+        groupId: matchedGroup.id,
+        status: formData.status,
       });
 
-      alert("Account created. Please wait for admin approval.");
+      setSuccess(true);
     } catch (err) {
       console.error(err);
       setError("Signup failed. Please try again.");
+
     } finally {
       setLoading(false);
     }
@@ -61,14 +101,30 @@ function SignupForm({ signup, setError, setInviteError }) {
 
   return (
     <form className={styles.authForm} onSubmit={handleSubmit}>
+      {success && (
+        <div className={styles.successMessage}>
+          ✅ Account created! Please wait for admin approval.
+        </div>
+      )}
+
       <div className={styles.formGroup}>
         <label>Full Name</label>
-        <input name="name" value={formData.name} onChange={handleChange} required />
+        <input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
       </div>
 
       <div className={styles.formGroup}>
         <label>Phone Number</label>
-        <input name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
+        <input
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          required
+        />
       </div>
 
       <div className={styles.formGroup}>
@@ -78,23 +134,41 @@ function SignupForm({ signup, setError, setInviteError }) {
           value={formData.inviteCode}
           onChange={handleChange}
           required
-          className={styles.inputError}
+          className={inviteError ? styles.inputError : ""}
         />
       </div>
 
       <div className={styles.formGroup}>
         <label>Bio</label>
-        <textarea name="bio" value={formData.bio} onChange={handleChange} rows={3} required />
+        <textarea
+          name="bio"
+          value={formData.bio}
+          onChange={handleChange}
+          rows={3}
+          required
+        />
       </div>
 
       <div className={styles.formGroup}>
         <label>Email</label>
-        <input name="email" type="email" value={formData.email} onChange={handleChange} required />
+        <input
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
       </div>
 
       <div className={styles.formGroup}>
         <label>Password</label>
-        <input name="password" type="password" value={formData.password} onChange={handleChange} required />
+        <input
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
       </div>
 
       <button className={styles.submitButton} disabled={loading}>

@@ -138,3 +138,26 @@
     opacity: 1;
   }
 }
+
+
+.errorBanner {
+  background-color: #ffe5e5;
+  color: #b30000;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  text-align: center;
+  border: 1px solid #ffb3b3;
+  font-weight: 500;
+}
+
+.successBanner {
+  background-color: #e6ffed;
+  color: #2d7a46;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px solid #98dfb6;
+  text-align: center;
+  font-weight: 500;
+}

@@ -1,8 +1,16 @@
+body{
+  background: #75646433;
+}
+
 .home {
+margin:1px auto;
     padding: 2rem;
     text-align: center;
     background: #f5f7fa;
-    min-height: 100vh;
+    min-height: 90vh;
+    width:fit-content;
+    box-shadow: 1px 1px 30px rgba(160, 160, 160, 0.616);
+    border-radius: 25px;;
   }
   
   .header {

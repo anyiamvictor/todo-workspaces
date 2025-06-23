@@ -9,7 +9,7 @@ function Home() {
     <div className={styles.home}>
       <header className={styles.header}>
         <h1>
-          Welcome to Todo<span style={{ color: "red" }}>Workspace</span>
+          Welcome to Todo<span style={{ color: "red" }}>Workspaces</span>
         </h1>
         <p>
           Collaborate with your team. Manage workspaces, projects, and tasks efficiently.

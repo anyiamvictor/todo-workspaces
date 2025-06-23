@@ -1,12 +1,10 @@
-import React from "react";
-import { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./TaskItem.module.css";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../components/firebaseConfig";
 
-
-
-function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) {
-  
+function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled }) {
   const [showDescription, setShowDescription] = useState(false);
   const { user } = useAuth();
   const [projectOwnerId, setProjectOwnerId] = useState(null);
@@ -15,20 +13,22 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
     const fetchProjectOwner = async () => {
       if (!task.projectId) return;
       try {
-        const res = await fetch(`http://localhost:3001/projects/${task.projectId}`);
-        if (!res.ok) throw new Error("Failed to fetch project");
-        const data = await res.json();
-        setProjectOwnerId(data.createdBy);
+        const projectRef = doc(db, "projects", task.projectId);
+        const projectSnap = await getDoc(projectRef);
+        if (projectSnap.exists()) {
+          const projectData = projectSnap.data();
+          setProjectOwnerId(projectData.createdBy);
+        } else {
+          console.warn("Project not found");
+        }
       } catch (err) {
-        console.error("Project fetch error:", err);
+        console.error("Error fetching project:", err);
       }
     };
-  
+
     fetchProjectOwner();
   }, [task.projectId]);
-  
 
-  
   function getDueDateInfo(dueDate) {
     const today = new Date();
     const due = new Date(dueDate);
@@ -58,12 +58,11 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
 
   const { className: dueClass, label: dueLabel } = getDueDateInfo(task.dueDate);
   const isSupervisor = user.role === "supervisor";
-  const isProjectOwner = user.id === projectOwnerId;
+  const isProjectOwner = user.uid === projectOwnerId;
 
   return (
     <li className={`${styles.taskItem} ${task.status === "approved" ? styles.finalized : ""}`}>
       <div className={styles.taskContent}>
-        
         <div>
           <h3 className={styles.title}>{task.title}</h3>
           <div className={styles.taskid}>
@@ -75,8 +74,7 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
                 </span>
               </span>
               <span>
-                <strong>Assigned to:</strong>{" "}
-                {task.assignedToName || "Unassigned"}
+                <strong>Assigned to:</strong> {task.assignedToName || "Unassigned"}
               </span>
               {task.createdAt && (
                 <span>
@@ -86,48 +84,47 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
                   </span>
                 </span>
               )}
-
               <span>
                 <strong>Due:</strong>{" "}
                 <span className={`${styles.dueDate} ${dueClass}`}>
                   {dueLabel} ({new Date(task.dueDate).toLocaleDateString()})
                 </span>
               </span>
-           
               <span>
                 <strong>Priority:</strong>{" "}
                 <span className={`${styles.priority} ${styles[`priority-${task.priority.toLowerCase()}`]}`}>
                   {task.priority}
                 </span>
               </span>
-   
-           
-              
             </div>
+
             <div className={styles.taskActions}>
-              {(!isProjectOwner)&&<button onClick={() => onDone(task.id, user)} disabled={task.doneClicked}>✅ Submit for Review</button>}
-
-              {isSupervisor && isProjectOwner && (
-                <button onClick={() => onApprove(task.id)} disabled={task.status === "approved"}>
-                  {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}
-                </button>
-              )}
-              {isSupervisor && isProjectOwner && (
-                <button onClick={() => onReject(task.id)} disabled={rejectDisabled || task.status === "approved"}>
-                  ❌ Reject Submission
-                </button>
-              )}
-              {isSupervisor && isProjectOwner && (
-                <button onClick={() => onEdit(task)} disabled={task.status === "approved"}>
-                  ✏️ Edit
+              {!isProjectOwner && (
+                <button onClick={() => onDone(task.id, user)} disabled={task.doneClicked}>
+                  ✅ Submit for Review
                 </button>
               )}
 
+              {isSupervisor && isProjectOwner && (
+                <>
+                  <button onClick={() => onApprove(task.id)} disabled={task.status === "approved"}>
+                    {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}
+                  </button>
+                  <button
+                    onClick={() => onReject(task.id)}
+                    disabled={rejectDisabled || task.status === "approved"}
+                  >
+                    ❌ Reject Submission
+                  </button>
+                  <button onClick={() => onEdit(task)} disabled={task.status === "approved"}>
+                    ✏️ Edit
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
 
-        
         <div className={styles.noteSection}>
           <div className={styles.noteHeader}>
             <h4 className={styles.noteTitle}>📝 Note</h4>
@@ -140,8 +137,7 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
           </div>
 
           <div
-            className={`${styles.descriptionwrapper} ${showDescription ? styles.expanded : ""
-              }`}
+            className={`${styles.descriptionwrapper} ${showDescription ? styles.expanded : ""}`}
           >
             <p className={styles.description}>{task.description}</p>
           </div>
@@ -150,5 +146,5 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit,rejectDisabled }) 
     </li>
   );
 }
-export default TaskItem;
 
+export default TaskItem;

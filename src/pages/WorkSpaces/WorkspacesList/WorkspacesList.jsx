@@ -3,6 +3,16 @@ import { Link } from "react-router-dom";
 import styles from "./WorkspacesList.module.css";
 import WorkspaceModal from "../../../components/WorkspaceModal/WorkspaceModal";
 import { useAuth } from "../../../contexts/AuthContext/AuthContextFirebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+import { db } from "../../../components/firebaseConfig";
 
 function WorkspacesList() {
   const [workspaces, setWorkspaces] = useState([]);
@@ -12,16 +22,15 @@ function WorkspacesList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [workspaceToDelete, setWorkspaceToDelete] = useState(null);
-  const { user} = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchWorkspaces = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3001/workspaces?groupId=${user.groupId}`
+        const snapshot = await getDocs(
+          query(collection(db, "workspaces"), where("groupId", "==", user.groupId))
         );
-        if (!response.ok) throw new Error("Failed to fetch workspaces");
-        const data = await response.json();
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setWorkspaces(data);
       } catch (err) {
         setError(err.message);
@@ -39,20 +48,12 @@ function WorkspacesList() {
     const workspaceWithGroup = {
       ...workspace,
       groupId: user.groupId,
-      ownerId: user.id,
+      ownerId: user.uid,
     };
 
     try {
-      const response = await fetch("http://localhost:3001/workspaces", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(workspaceWithGroup),
-      });
-
-      if (!response.ok) throw new Error("Failed to add workspace");
-
-      const added = await response.json();
-      setWorkspaces((prev) => [...prev, added]);
+      const docRef = await addDoc(collection(db, "workspaces"), workspaceWithGroup);
+      setWorkspaces((prev) => [...prev, { id: docRef.id, ...workspaceWithGroup }]);
       setShowModal(false);
     } catch (err) {
       console.error("Error adding workspace:", err.message);
@@ -61,14 +62,10 @@ function WorkspacesList() {
   };
 
   const requestDelete = (workspace) => {
-    const isAuthorized =
-      user.role === "admin" || user.id === workspace.ownerId;
+    const isAuthorized = user.role === "admin" || user.uid === workspace.ownerId;
 
     if (!isAuthorized) {
-      setWorkspaceToDelete({
-        ...workspace,
-        blocked: true,
-      });
+      setWorkspaceToDelete({ ...workspace, blocked: true });
       setShowConfirm(true);
       return;
     }
@@ -80,21 +77,27 @@ function WorkspacesList() {
   const confirmDelete = async () => {
     const workspace = workspaceToDelete;
     try {
-      const projectsRes = await fetch(`http://localhost:3001/projects?workspaceId=${workspace.id}`);
-      const projects = await projectsRes.json();
+      const projectsSnapshot = await getDocs(
+        query(collection(db, "projects"), where("workspaceId", "==", workspace.id))
+      );
+      const projects = projectsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
       for (const project of projects) {
-        const tasksRes = await fetch(`http://localhost:3001/tasks?projectId=${project.id}`);
-        const tasks = await tasksRes.json();
+        const tasksSnapshot = await getDocs(
+          query(collection(db, "tasks"), where("projectId", "==", project.id))
+        );
+        const tasks = tasksSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
         for (const task of tasks) {
-          await fetch(`http://localhost:3001/tasks/${task.id}`, { method: "DELETE" });
+          await deleteDoc(doc(db, "tasks", task.id));
         }
-        await fetch(`http://localhost:3001/projects/${project.id}`, { method: "DELETE" });
+
+        await deleteDoc(doc(db, "projects", project.id));
       }
 
-      await fetch(`http://localhost:3001/workspaces/${workspace.id}`, { method: "DELETE" });
+      await deleteDoc(doc(db, "workspaces", workspace.id));
 
-      setWorkspaces(prev => prev.filter(ws => ws.id !== workspace.id));
+      setWorkspaces((prev) => prev.filter((ws) => ws.id !== workspace.id));
       setShowConfirm(false);
       setWorkspaceToDelete(null);
     } catch (err) {
@@ -120,9 +123,11 @@ function WorkspacesList() {
       <h2 className={styles.heading}>Workspaces</h2>
 
       <div className={styles.wrkspctop}>
-      {(user.role==="supervisor")&& (<button className={styles.addBtn} onClick={() => setShowModal(true)}>
-          + Add Workspace
-        </button>)}
+        {user.role === "supervisor" && (
+          <button className={styles.addBtn} onClick={() => setShowModal(true)}>
+            + Add Workspace
+          </button>
+        )}
 
         <input
           type="text"
@@ -141,13 +146,15 @@ function WorkspacesList() {
         ) : (
           filteredWorkspaces.map((workspace) => (
             <li key={workspace.id} className={styles.listItem}>
-            {(user.role ==="supervisor")&&(  <button
-                className={styles.deleteIconBtn}
-                onClick={() => requestDelete(workspace)}
-                title="Delete Workspace"
-              >
-                ✖️
-              </button>)}
+              {user.role === "supervisor" && (
+                <button
+                  className={styles.deleteIconBtn}
+                  onClick={() => requestDelete(workspace)}
+                  title="Delete Workspace"
+                >
+                  ✖️
+                </button>
+              )}
               <Link to={`/workspaces/${workspace.id}`} className={styles.link}>
                 {workspace.name}
                 <p className={styles.description}>{workspace.description}</p>
@@ -156,7 +163,6 @@ function WorkspacesList() {
           ))
         )}
       </ul>
-
 
       {showModal && (
         <WorkspaceModal
@@ -171,7 +177,10 @@ function WorkspacesList() {
           <div className={styles.confirmBox}>
             {workspaceToDelete?.blocked ? (
               <>
-                <p>You don’t have clearance to delete this workspace. Please contact the owner.</p>
+                <p>
+                  You don’t have clearance to delete this workspace. Please contact the
+                  owner.
+                </p>
                 <div className={styles.confirmActions}>
                   <button onClick={cancelDelete}>Okay</button>
                 </div>
@@ -179,9 +188,8 @@ function WorkspacesList() {
             ) : (
               <>
                 <p>
-                  Are you sure you want to delete{" "}
-                  <strong>{workspaceToDelete.name}</strong> and all associated
-                  projects and tasks?
+                  Are you sure you want to delete <strong>{workspaceToDelete.name}</strong> and
+                  all associated projects and tasks?
                 </p>
                 <div className={styles.confirmActions}>
                   <button onClick={confirmDelete}>Yes, Delete</button>
@@ -189,7 +197,6 @@ function WorkspacesList() {
                 </div>
               </>
             )}
-
           </div>
         </div>
       )}

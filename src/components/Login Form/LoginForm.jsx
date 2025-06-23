@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import styles from "./LoginForm.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { query, collection, where, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig"; 
 
 function LoginForm({ login, googleSignIn, setError }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -20,8 +22,10 @@ function LoginForm({ login, googleSignIn, setError }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:3001/users?email=${formData.email}`);
-      const users = await res.json();
+      // const res = await fetch(`http://localhost:3001/users?email=${formData.email}`);
+      // const users = await res.json();
+      const snapshot = await getDocs(query(collection(db, "users"), where("email", "==", formData.email)));
+      const users = snapshot.docs.map(doc =>({id:doc.id, ...doc.data()}))
 
       if (users.length === 0 || users[0].status !== "active") {
         setError("Account not found or not yet approved.");

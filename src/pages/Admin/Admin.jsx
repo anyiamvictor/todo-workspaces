@@ -5,6 +5,20 @@ import styles from "./Admin.module.css";
 import WorkspaceModal from "../../components/WorkspaceModal/WorkspaceModal";
 import AddProjectModal from "../../components/AddProjectModal/AddProjectModal";
 import AddEditTaskModal from "../../components/AddEditTaskModal/AddEditTaskModal";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+  addDoc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../../components/firebaseConfig"; // adjust if path differs
+
 
 function Admin() {
   const { groupId } = useParams();
@@ -47,43 +61,55 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       fetchUsersOnly(); // Refresh users every 5s
     }, 5000);
     return () => clearInterval(interval);
-  }, [groupId, user.id]);
+  }, [groupId, user.uid]);
 
   const fetchGroupData = async () => {
     try {
-      const groupRes = await fetch(`http://localhost:3001/groups/${groupId}`);
-      const groupData = await groupRes.json();
-
-      if (!groupRes.ok || !groupData || groupData.adminId !== user.uid) {
+      // const groupRes = await fetch(`http://localhost:3001/groups/${groupId}`);
+      // const groupData = await groupRes.json();
+  
+      const groupSnap = await getDoc(doc(db, "groups", groupId));
+      const groupData = groupSnap.exists() ? groupSnap.data() : null;
+  
+      if (!groupData || groupData.adminId !== user.uid) {
         setError("Unauthorized or group not found.");
         return;
       }
-      
-
-      const [wsRes, usersRes] = await Promise.all([
-        fetch(`http://localhost:3001/workspaces?groupId=${groupId}`),
-        fetch(`http://localhost:3001/users?groupId=${groupId}`)
+  
+      // const [wsRes, usersRes] = await Promise.all([
+      //   fetch(`http://localhost:3001/workspaces?groupId=${groupId}`),
+      //   fetch(`http://localhost:3001/users?groupId=${groupId}`)
+      // ]);
+  
+      const [wsSnapshot, usersSnapshot] = await Promise.all([
+        getDocs(query(collection(db, "workspaces"), where("groupId", "==", groupId))),
+        getDocs(query(collection(db, "users"), where("groupId", "==", groupId))),
       ]);
-
-      const wsData = await wsRes.json();
-      const userData = await usersRes.json();
-
+  
+      const wsData = wsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const userData = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  
       setGroup(groupData);
       setWorkspaces(wsData);
       setUsers(userData);
       setNewInviteCode(groupData.inviteCode || "");
-
-      const workspaceIds = wsData.map((ws) => ws.id);
-      const projRes = await fetch(`http://localhost:3001/projects`);
-      const projData = await projRes.json();
-      const groupProjects = projData.filter((p) => workspaceIds.includes(p.workspaceId));
+  
+      // const projRes = await fetch(`http://localhost:3001/projects`);
+      // const projData = await projRes.json();
+      const allProjectsSnap = await getDocs(collection(db, "projects"));
+      const projData = allProjectsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const groupProjects = projData.filter(p => wsData.some(ws => ws.id === p.workspaceId));
       setProjects(groupProjects);
-
-      const projIds = groupProjects.map((p) => p.id);
-      const taskRes = await fetch(`http://localhost:3001/tasks`);
-      const taskData = await taskRes.json();
-      const groupTasks = taskData.filter((t) => projIds.includes(t.projectId));
+  
+      // const taskRes = await fetch(`http://localhost:3001/tasks`);
+      // const taskData = await taskRes.json();
+      const allTasksSnap = await getDocs(collection(db, "tasks"));
+      const taskData = allTasksSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const groupTasks = taskData.filter(t =>
+        groupProjects.some(p => p.id === t.projectId)
+      );
       setTasks(groupTasks);
+  
     } catch (err) {
       console.error(err);
       setError("Something went wrong.");
@@ -91,16 +117,20 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       setLoading(false);
     }
   };
+  
 
   const fetchUsersOnly = async () => {
     try {
-      const usersRes = await fetch(`http://localhost:3001/users?groupId=${groupId}`);
-      const userData = await usersRes.json();
+      // const usersRes = await fetch(`http://localhost:3001/users?groupId=${groupId}`);
+      // const userData = await usersRes.json();
+      const snapshot = await getDocs(query(collection(db, "users"), where("groupId", "==", groupId)));
+      const userData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setUsers(userData);
     } catch (err) {
       console.error("Failed to refresh users:", err);
     }
   };
+  
 
   if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
   if (loading) return <p>Loading admin dashboard...</p>;
@@ -108,23 +138,35 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
 
   const toggleUserStatus = async (userId, currentStatus) => {
     const newStatus = currentStatus === "active" ? "inactive" : "active";
-    await fetch(`http://localhost:3001/users/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    });
+  
+    // await fetch(`http://localhost:3001/users/${userId}`, {
+    //   method: "PATCH",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ status: newStatus }),
+    // });
+  
+    const userRef = doc(db, "users", userId);
+    await updateDoc(userRef, { status: newStatus });
+  
     fetchUsersOnly();
   };
+  
 
   const toggleUserRole = async (userId, currentRole) => {
     const newRole = currentRole === "supervisor" ? "member" : "supervisor";
-    await fetch(`http://localhost:3001/users/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role: newRole }),
-    });
+  
+    // await fetch(`http://localhost:3001/users/${userId}`, {
+    //   method: "PATCH",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ role: newRole }),
+    // });
+  
+    const userRef = doc(db, "users", userId);
+    await updateDoc(userRef, { role: newRole });
+  
     fetchUsersOnly();
   };
+  
 
   const deleteUser = async (userId, userName) => {
     setUserToDelete({ id: userId, name: userName });
@@ -135,9 +177,10 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
     if (!userToDelete) return;
   
     try {
-      await fetch(`http://localhost:3001/users/${userToDelete.id}`, {
-        method: "DELETE",
-      });
+      // await fetch(`http://localhost:3001/users/${userToDelete.id}`, {
+      //   method: "DELETE",
+      // });
+      await deleteDoc(doc(db, "users", userToDelete.id));
       fetchUsersOnly();
     } catch (err) {
       console.error("Failed to delete user:", err);
@@ -148,23 +191,23 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
     }
   };
   
+  
 
   const updateInviteCode = async () => {
     if (!newInviteCode.trim()) return;
-
+  
     setUpdatingInviteCode(true);
     try {
-      const res = await fetch(`http://localhost:3001/groups/${groupId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ inviteCode: newInviteCode.trim() }),
-      });
-
-      if (res.ok) {
-        setGroup((prev) => ({ ...prev, inviteCode: newInviteCode.trim() }));
-      } else {
-        alert("Failed to update invite code.");
-      }
+      // const res = await fetch(`http://localhost:3001/groups/${groupId}`, {
+      //   method: "PATCH",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ inviteCode: newInviteCode.trim() }),
+      // });
+  
+      const groupRef = doc(db, "groups", groupId);
+      await updateDoc(groupRef, { inviteCode: newInviteCode.trim() });
+  
+      setGroup((prev) => ({ ...prev, inviteCode: newInviteCode.trim() }));
     } catch (err) {
       console.error(err);
       alert("An error occurred while updating the invite code.");
@@ -172,6 +215,7 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       setUpdatingInviteCode(false);
     }
   };
+  
 
   const formatLastSeen = (timestamp) => {
     const date = new Date(timestamp);
@@ -186,15 +230,16 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
   
   const handleSubmit = async (workspace) => {
     try {
-      const response = await fetch("http://localhost:3001/workspaces", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(workspace),
-      });
+      // const response = await fetch("http://localhost:3001/workspaces", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(workspace),
+      // });
+      // const added = await response.json();
   
-      if (!response.ok) throw new Error("Failed to add workspace");
+      const docRef = await addDoc(collection(db, "workspaces"), workspace);
+      const added = { id: docRef.id, ...workspace };
   
-      const added = await response.json();
       setWorkspaces((prev) => [...prev, added]);
       setShowModal(false);
     } catch (err) {
@@ -202,6 +247,7 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       alert("Error creating workspace: " + err.message);
     }
   };
+  
 
   const handleProjectSubmit = async (projectData) => {
     try {
@@ -210,15 +256,16 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
         workspaceId: projectWorkspaceId,
       };
   
-      const res = await fetch("http://localhost:3001/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newProject),
-      });
+      // const res = await fetch("http://localhost:3001/projects", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(newProject),
+      // });
+      // const created = await res.json();
   
-      if (!res.ok) throw new Error("Failed to create project");
+      const docRef = await addDoc(collection(db, "projects"), newProject);
+      const created = { id: docRef.id, ...newProject };
   
-      const created = await res.json();
       setProjects((prev) => [...prev, created]);
       setShowProjectModal(false);
       setProjectWorkspaceId(null);
@@ -227,6 +274,7 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       alert("Could not create project.");
     }
   };
+  
   
   
   const confirmDeleteWorkspace = (workspace) => {
@@ -246,7 +294,8 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       );
       await Promise.all(
         tasksToDelete.map((t) =>
-          fetch(`http://localhost:3001/tasks/${t.id}`, { method: "DELETE" })
+          // fetch(`http://localhost:3001/tasks/${t.id}`, { method: "DELETE" })
+          deleteDoc(doc(db, "tasks", t.id))
         )
       );
   
@@ -254,12 +303,14 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       const projectsToDelete = projects.filter((p) => p.workspaceId === workspaceId);
       await Promise.all(
         projectsToDelete.map((p) =>
-          fetch(`http://localhost:3001/projects/${p.id}`, { method: "DELETE" })
+          // fetch(`http://localhost:3001/projects/${p.id}`, { method: "DELETE" })
+          deleteDoc(doc(db, "projects", p.id))
         )
       );
   
       // Delete workspace
-      await fetch(`http://localhost:3001/workspaces/${workspaceId}`, { method: "DELETE" });
+      // await fetch(`http://localhost:3001/workspaces/${workspaceId}`, { method: "DELETE" });
+      await deleteDoc(doc(db, "workspaces", workspaceId));
   
       // Update local state
       setWorkspaces((prev) => prev.filter((ws) => ws.id !== workspaceId));
@@ -275,6 +326,7 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
       alert("Failed to delete workspace and its children.");
     }
   };
+  
 
   const confirmDeleteProject = (project) => {
     setProjectToDelete(project);
@@ -283,13 +335,15 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
   
   const handleDeleteProject = async () => {
     if (!projectToDelete) return;
-    await fetch(`http://localhost:3001/projects/${projectToDelete.id}`, { method: "DELETE" });
-    
-    // Optionally also delete tasks under this project (if needed)
+  
+    // await fetch(`http://localhost:3001/projects/${projectToDelete.id}`, { method: "DELETE" });
+    await deleteDoc(doc(db, "projects", projectToDelete.id));
+  
     setProjects(prev => prev.filter(p => p.id !== projectToDelete.id));
     setShowProjectDeleteModal(false);
     setProjectToDelete(null);
   };
+  
   
   const confirmDeleteTask = (task) => {
     setTaskToDelete(task);
@@ -298,23 +352,28 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
   
   const handleDeleteTask = async () => {
     if (!taskToDelete) return;
-    await fetch(`http://localhost:3001/tasks/${taskToDelete.id}`, { method: "DELETE" });
+  
+    // await fetch(`http://localhost:3001/tasks/${taskToDelete.id}`, { method: "DELETE" });
+    await deleteDoc(doc(db, "tasks", taskToDelete.id));
   
     setTasks(prev => prev.filter(t => t.id !== taskToDelete.id));
     setShowTaskDeleteModal(false);
     setTaskToDelete(null);
   };
   
-  const handleTaskSuccess = async () => {
-    // Reload tasks for the affected project or fetch all tasks again
-    const res = await fetch("http://localhost:3001/tasks");
-    const data = await res.json();
-    setTasks(data);
   
+  const handleTaskSuccess = async () => {
+    // const res = await fetch("http://localhost:3001/tasks");
+    // const data = await res.json();
+    const snapshot = await getDocs(collection(db, "tasks"));
+    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  
+    setTasks(data);
     setShowTaskModal(false);
     setTaskToEdit(null);
     setTaskProjectId(null);
   };
+  
   
   const openProjectModal = (workspaceId) => {
     setProjectWorkspaceId(workspaceId);

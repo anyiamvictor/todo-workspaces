@@ -8,6 +8,16 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../../components/firebaseConfig";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
+import { db } from "../../components/firebaseConfig";
 
 const AuthContext = createContext();
 
@@ -28,19 +38,19 @@ export function AuthProvider({ children }) {
       const result = await signInWithPopup(auth, provider);
       const firebaseUser = result.user;
 
-      const res = await fetch(`http://localhost:3001/users?uid=${firebaseUser.uid}`);
-      const dbUsers = await res.json();
+      const q = query(collection(db, "users"), where("uid", "==", firebaseUser.uid));
+      const snapshot = await getDocs(q);
+      const dbUsers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
       if (dbUsers.length > 0) {
         const user = dbUsers[0];
 
         if (user.status !== "active") {
-          alert("Your account is not yet activated.");
           await signOut(auth);
           return;
         }
 
-        sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
         navigate(user.role === "admin" ? `/admin/${user.groupId}` : "/dashboard", { replace: true });
       } else {
         setPendingGoogleUser(firebaseUser);
@@ -56,16 +66,14 @@ export function AuthProvider({ children }) {
     if (!pendingGoogleUser) return;
 
     try {
-      const res = await fetch(`http://localhost:3001/groups?inviteCode=${inviteCode}`);
-      const matchedGroups = await res.json();
-      if (matchedGroups.length === 0) {
-        throw new Error("Invalid invite code.");
-      }
+      const q = query(collection(db, "groups"), where("inviteCode", "==", inviteCode));
+      const snapshot = await getDocs(q);
+      const matchedGroups = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
+      if (matchedGroups.length === 0) throw new Error("Invalid invite code.");
       const group = matchedGroups[0];
 
       const newUser = {
-        id: `u-${crypto.randomUUID()}`,
         uid: pendingGoogleUser.uid,
         email: pendingGoogleUser.email,
         name: pendingGoogleUser.displayName || "",
@@ -87,13 +95,7 @@ export function AuthProvider({ children }) {
         totalProjectsCompleted: 0,
       };
 
-      await fetch("http://localhost:3001/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
-      });
-
-      alert("Google account registered. Please wait for admin approval.");
+      await setDoc(doc(db, "users", newUser.uid), newUser);
       setPendingGoogleUser(null);
       setShowInvitePrompt(false);
       await logout();
@@ -103,39 +105,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const login = async (email, password) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-      console.error("Login failed:", err);
-      throw err;
-    }
-  };
-
-  const logout = async (message) => {
-    try {
-      if (user) {
-        await fetch(`http://localhost:3001/users/${user.id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            isOnline: false,
-            lastSeen: new Date().toISOString(),
-          }),
-        });
-      }
-
-      await signOut(auth);
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
-
-    sessionStorage.clear();
-    setUser(null);
-    if (message) alert(message);
-    navigate("/auth", { replace: true });
-  };
-
   const signup = async (email, password, extraFields = {}) => {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -143,7 +112,6 @@ export function AuthProvider({ children }) {
 
       const isAdmin = extraFields.role === "admin";
       const newUser = {
-        id: `u-${crypto.randomUUID()}`,
         uid,
         email,
         name: extraFields.name || "",
@@ -165,46 +133,74 @@ export function AuthProvider({ children }) {
         totalProjectsCompleted: 0,
       };
 
-      await fetch("http://localhost:3001/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
-      });
+      console.log("✅ Firebase Auth user UID:", uid);
+      await setDoc(doc(db, "users", uid), newUser);
+      console.log("✅ User saved to Firestore:", newUser);
 
       return newUser;
     } catch (err) {
-      console.error("Signup failed:", err);
+      console.error("❌ Signup failed:", err.code, err.message);
       throw err;
     }
+  };
+
+  const login = async (email, password) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      console.error("Login failed:", err);
+      throw err;
+    }
+  };
+
+  const logout = async () => {
+    try {
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          isOnline: false,
+          lastSeen: new Date().toISOString(),
+        });
+      }
+
+      await signOut(auth);
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+
+    sessionStorage.clear();
+    setUser(null);
+    navigate("/auth", { replace: true });
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         try {
-          const res = await fetch(`http://localhost:3001/users?uid=${firebaseUser.uid}`);
-          const data = await res.json();
+          const q = query(collection(db, "users"), where("uid", "==", firebaseUser.uid));
+          const snapshot = await getDocs(q);
+          const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
           const dbUser = data[0];
 
           if (!dbUser || dbUser.status !== "active") {
-            await logout("Your account is inactive.");
+            await logout();
             return;
           }
 
-          await fetch(`http://localhost:3001/users/${dbUser.id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              isOnline: true,
-              lastLogin: new Date().toISOString(),
-            }),
+          const userRef = doc(db, "users", dbUser.uid);
+          await updateDoc(userRef, {
+            isOnline: true,
+            lastLogin: new Date().toISOString(),
           });
 
           sessionStorage.setItem(SESSION_KEY, JSON.stringify(dbUser));
           setUser({ ...dbUser, firebaseUser });
+          navigate(dbUser.role === "admin" ? `/admin/${dbUser.groupId}` : "/dashboard", {
+            replace: true,
+          });
         } catch (err) {
           console.error("User fetch failed:", err);
-          await logout("Session verification failed.");
+          await logout();
         }
       } else {
         setUser(null);
@@ -216,72 +212,6 @@ export function AuthProvider({ children }) {
 
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (!user) return;
-
-    let timer;
-    const resetTimer = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        logout("You’ve been logged out due to inactivity.");
-      }, 15 * 60 * 1000);
-    };
-
-    const events = ["mousemove", "keydown", "click", "scroll"];
-    events.forEach((e) => window.addEventListener(e, resetTimer));
-    resetTimer();
-
-    return () => {
-      events.forEach((e) => window.removeEventListener(e, resetTimer));
-      clearTimeout(timer);
-    };
-  }, [user]);
-
-  useEffect(() => {
-    if (!user) return;
-
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch(`http://localhost:3001/users/${user.id}`);
-        const freshUser = await res.json();
-
-        if (
-          freshUser.status !== "active" ||
-          freshUser.uid !== auth.currentUser?.uid
-        ) {
-          await logout("Your session has ended or your account was deactivated.");
-        }
-      } catch (err) {
-        console.error("Session check failed:", err);
-        await logout("Unable to verify your session.");
-      }
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [user]);
-
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      if (user) {
-        try {
-          await fetch(`http://localhost:3001/users/${user.id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              isOnline: false,
-              lastSeen: new Date().toISOString(),
-            }),
-          });
-        } catch (err) {
-          console.error("Unload update failed:", err);
-        }
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [user]);
 
   return (
     <AuthContext.Provider

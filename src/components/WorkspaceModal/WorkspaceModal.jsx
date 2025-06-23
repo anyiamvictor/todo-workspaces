@@ -2,6 +2,17 @@ import React, { useEffect, useState } from "react";
 import styles from "./WorkspaceModal.module.css";
 import MemberChecklistModal from "../MemberChecklistModal/MemberChecklistModal";
 import { createNotifications } from "../createNotifications";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  setDoc
+} from "firebase/firestore";
+import { db } from "../../components/firebaseConfig";
 
 function WorkspaceModal({ user, onClose, onSubmit }) {
   const [users, setUsers] = useState([]);
@@ -11,16 +22,18 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedMemberIds, setSelectedMemberIds] = useState([]);
-
   const [showMemberModal, setShowMemberModal] = useState(false);
 
   useEffect(() => {
     async function fetchUsers() {
       try {
         setLoadingUsers(true);
-        const res = await fetch("http://localhost:3001/users");
-        if (!res.ok) throw new Error("Failed to fetch users");
-        const data = await res.json();
+        const q = query(collection(db, "users"), where("groupId", "==", user.groupId));
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter((u) => u.status === "active")
+          .sort((a, b) => a.name.localeCompare(b.name));
         setUsers(data);
       } catch (error) {
         setErrorUsers(error.message);
@@ -28,62 +41,59 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
         setLoadingUsers(false);
       }
     }
+
     fetchUsers();
-  }, []);
+  }, [user.groupId]);
 
-  const groupMembers = users
-    .filter((u) => u.groupId === user.groupId && u.status === "active")
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const groupMembers = users;
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const allMemberIds = [...new Set([user.id, ...selectedMemberIds])];
-    
-      const newWorkspace = {
-        id: `ws${Date.now()}`,
-        name,
-        description,
-        createdAt: new Date().toISOString(),
-        ownerId: user.id,
-        memberIds: allMemberIds,
-        groupId: user.groupId,
-      };
-    
-      try {
-        // Update workspace counts for all involved users
-        await Promise.all(
-          allMemberIds.map(async (memberId) => {
-            const res = await fetch(`http://localhost:3001/users/${memberId}`);
-            if (!res.ok) throw new Error("Failed to fetch user");
-    
-            const userData = await res.json();
-            const updatedCount = (userData.workspaceCount || 0) + 1;
-    
-            await fetch(`http://localhost:3001/users/${memberId}`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ workspaceCount: updatedCount }),
-            });
-          })
-        );
-    
-        // 🔔 Notify only selected members (not the creator)
-        await Promise.all(
-          selectedMemberIds.map((memberId) =>
-            createNotifications({
-              userId: memberId,
-              message: `You've been added to a new workspace: "${name}"`,
-            })
-          )
-        );
-    
-        onSubmit(newWorkspace);
-      } catch (err) {
-        console.error("Error during workspace creation:", err);
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const allMemberIds = [...new Set([user.uid, ...selectedMemberIds])];
+
+    const newWorkspace = {
+      name,
+      description,
+      createdAt: new Date().toISOString(),
+      ownerId: user.uid,
+      memberIds: allMemberIds,
+      groupId: user.groupId,
     };
-    
-    
+
+    try {
+      // Create workspace in Firestore
+      const newDocRef = doc(collection(db, "workspaces"));
+      await setDoc(newDocRef, { ...newWorkspace, id: newDocRef.id });
+
+      // Update workspaceCount for all involved users
+      await Promise.all(
+        allMemberIds.map(async (uid) => {
+          const userRef = doc(db, "users", uid);
+          const userSnap = await getDoc(userRef);
+          if (!userSnap.exists()) return;
+
+          const userData = userSnap.data();
+          const updatedCount = (userData.workspaceCount || 0) + 1;
+
+          await updateDoc(userRef, { workspaceCount: updatedCount });
+        })
+      );
+
+      // Notify selected members (excluding creator)
+      await Promise.all(
+        selectedMemberIds.map((uid) =>
+          createNotifications({
+            userId: uid,
+            message: `You've been added to a new workspace: "${name}"`,
+          })
+        )
+      );
+
+      onSubmit({ ...newWorkspace, id: newDocRef.id });
+    } catch (err) {
+      console.error("Error during workspace creation:", err);
+    }
+  };
 
   if (loadingUsers) return <p>Loading users...</p>;
   if (errorUsers) return <p>Error loading users: {errorUsers}</p>;
@@ -137,7 +147,7 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
             selected={selectedMemberIds}
             onClose={() => setShowMemberModal(false)}
             onChange={setSelectedMemberIds}
-            ownerId={user.id}
+            ownerId={user.uid}
           />
         )}
       </div>

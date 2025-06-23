@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import LoginForm from "../../components/Login Form/LoginForm";
 import SignupForm from "../../components/SignupForm/SignupForm";
+import { motion, AnimatePresence } from "framer-motion";
+import { getDocs, collection } from "firebase/firestore";
+import {db} from "../../components/firebaseConfig"
 
 function Authentication() {
   const {
@@ -21,7 +24,9 @@ function Authentication() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
   const [inviteCode, setInviteCode] = useState("");
+  const [inviteError, setInviteError] = useState(false);
   const [bio, setBio] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
     if (user?.groupId) {
@@ -30,51 +35,90 @@ function Authentication() {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (successMsg || error) {
+      const timeout = setTimeout(() => {
+        setSuccessMsg("");
+        setError("");
+      }, 4000);
+      return () => clearTimeout(timeout);
+    }
+  }, [successMsg, error]);
 
   const handleInviteSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      // Get all groups
-      const res = await fetch("http://localhost:3001/groups");
-      const allGroups = await res.json();
-  
-      // Check if any group has the entered invite code
-      const matchedGroup = allGroups.find(group => group.inviteCode === inviteCode);
-  
+      const snapshot = await getDocs(collection(db, "groups"));
+      const allGroups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      const matchedGroup = allGroups.find(
+        (group) => group.inviteCode === inviteCode
+      );
+
       if (!matchedGroup) {
-        alert("Invalid invite code. Please double-check and try again.");
+        setInviteError(true);
+        setError("Invalid invite code. Please double-check and try again.");
         return;
       }
-  
-      // Proceed to register
+
       await completeGoogleSignup(inviteCode, bio);
-  
-      // Clear sensitive fields after submission
+      setInviteError(false);
+      setError("");
+      setSuccessMsg("Account created successfully. Awaiting admin approval.");
       setInviteCode("");
       setBio("");
     } catch (err) {
       console.error("Invite submission failed:", err);
-      alert(err.message || "Something went wrong.");
+      setError(err.message || "Something went wrong.");
     }
   };
-  
-  
 
   return (
     <div className={styles.authPage}>
       <h2>{isLogin ? "Login to Your Account" : "Create a New Account"}</h2>
-      {error && <div className={styles.errorMessage}>{error}</div>}
-      
+
+      <AnimatePresence>
+        {successMsg && (
+          <motion.div
+            className={styles.successBanner}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            {successMsg}
+          </motion.div>
+        )}
+        {error && (
+          <motion.div
+            className={styles.errorBanner}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            {error}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {isLogin ? (
         <LoginForm login={login} googleSignIn={googleSignIn} setError={setError} />
       ) : (
-        <SignupForm signup={signup} setError={setError} />
+        <SignupForm signup={signup} setError={setError} setInviteError={setInviteError} />
       )}
 
       <p className={styles.toggleText}>
         {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-        <button className={styles.toggleButton} onClick={() => setIsLogin((prev) => !prev)}>
+        <button
+          className={styles.toggleButton}
+          onClick={() => {
+            setIsLogin((prev) => !prev);
+            setError("");
+            setSuccessMsg("");
+          }}
+        >
           {isLogin ? "Sign Up" : "Login"}
         </button>
       </p>
