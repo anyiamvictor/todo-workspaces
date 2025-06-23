@@ -3,6 +3,15 @@ import { useAuth } from '../../contexts/AuthContext/AuthContextFirebase';
 import styles from './UserProfile.module.css';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { db } from '../../components/firebaseConfig';
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  query,
+  where,
+} from 'firebase/firestore';
 
 const COLORS = ['#00C49F', '#FF8042', '#FF3B3F', '#0088FE'];
 
@@ -17,33 +26,25 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [tasksRes, workspacesRes, groupsRes] = await Promise.all([
-          fetch('http://localhost:3001/tasks'),
-          fetch('http://localhost:3001/workspaces'),
-          fetch('http://localhost:3001/groups'),
+        const [tasksSnap, workspacesSnap, groupsSnap] = await Promise.all([
+          getDocs(query(collection(db, 'tasks'), where('assignedTo', '==', user.uid))),
+          getDocs(collection(db, 'workspaces')),
+          getDocs(collection(db, 'groups')),
         ]);
 
-        const allTasks = await tasksRes.json();
-        const allWorkspaces = await workspacesRes.json();
-        const groups = await groupsRes.json();
-
-        const userTasks = allTasks
-          .filter((t) => {
-            if (Array.isArray(t.assignedTo)) {
-              return t.assignedTo.includes(user.id);
-            }
-            return t.assignedTo === user.id;
-          })
+        const tasks = tasksSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const userTasks = tasks
           .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
           .slice(0, 5);
-
         setRecentTasks(userTasks);
 
-        const userGroup = groups.find((g) => g.id === user.groupId);
+        const groups = groupsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const userGroup = groups.find(g => g.id === user.groupId);
         if (userGroup) setGroupName(userGroup.name);
 
+        const allWorkspaces = workspacesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         const userWorkspaces = allWorkspaces.filter(
-          (w) => w.ownerId === user.id || w.memberIds.includes(user.id)
+          (w) => w.ownerId === user.uid || (w.memberIds || []).includes(user.uid)
         );
         setWorkspaces(userWorkspaces);
       } catch (err) {
@@ -52,7 +53,7 @@ const UserProfile = () => {
     };
 
     fetchData();
-  }, [user.id, user.groupId]);
+  }, [user.uid, user.groupId]);
 
   const chartData = [
     { name: 'Completed', value: user.completedCount || 0 },
@@ -66,12 +67,13 @@ const UserProfile = () => {
     : '0.0';
 
   const handleSave = async () => {
-    await fetch(`http://localhost:3001/users/${user.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bio }),
-    });
-    setIsEditing(false);
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, { bio });
+      setIsEditing(false);
+    } catch (err) {
+      console.error('Failed to update bio:', err);
+    }
   };
 
   return (

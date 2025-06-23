@@ -23,6 +23,7 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
   const [description, setDescription] = useState("");
   const [selectedMemberIds, setSelectedMemberIds] = useState([]);
   const [showMemberModal, setShowMemberModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -49,9 +50,14 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const allMemberIds = [...new Set([user.uid, ...selectedMemberIds])];
 
+    const newDocRef = doc(collection(db, "workspaces"));
     const newWorkspace = {
+      id: newDocRef.id,
       name,
       description,
       createdAt: new Date().toISOString(),
@@ -61,11 +67,10 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
     };
 
     try {
-      // Create workspace in Firestore
-      const newDocRef = doc(collection(db, "workspaces"));
-      await setDoc(newDocRef, { ...newWorkspace, id: newDocRef.id });
+      // Save workspace
+      await setDoc(newDocRef, newWorkspace);
 
-      // Update workspaceCount for all involved users
+      // Update workspace count
       await Promise.all(
         allMemberIds.map(async (uid) => {
           const userRef = doc(db, "users", uid);
@@ -74,12 +79,11 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
 
           const userData = userSnap.data();
           const updatedCount = (userData.workspaceCount || 0) + 1;
-
           await updateDoc(userRef, { workspaceCount: updatedCount });
         })
       );
 
-      // Notify selected members (excluding creator)
+      // Notify selected members
       await Promise.all(
         selectedMemberIds.map((uid) =>
           createNotifications({
@@ -89,9 +93,12 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
         )
       );
 
-      onSubmit({ ...newWorkspace, id: newDocRef.id });
+      onSubmit(newWorkspace); // Pass to parent
+      onClose();
     } catch (err) {
       console.error("Error during workspace creation:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -134,7 +141,9 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
           </div>
 
           <div className={styles.actions}>
-            <button type="submit">Create</button>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create"}
+            </button>
             <button type="button" onClick={onClose}>
               Cancel
             </button>

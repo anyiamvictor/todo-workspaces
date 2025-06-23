@@ -2,58 +2,11 @@
   "users": [],
   "groups": [],
   "workspaces": [
-    {
-      "id": "xh6t2aaO3aYtMpL4YGin",
-      "name": "test",
-      "description": "test",
-      "createdAt": "2025-06-23T13:40:38.650Z",
-      "ownerId": "pBvhzTe5r7WsTFLYySG4kAdqoSD2",
-      "memberIds": [
-        "pBvhzTe5r7WsTFLYySG4kAdqoSD2",
-        "uvEoyl2EXfT3oeWDcC6I2QrRsKk1",
-        "CMnlRsO4tcWiRC8C5PdLhQr8QZH3"
-      ],
-      "groupId": "g-41dde508-b746-4ecb-95ce-26462e217e75"
-    }
+ 
   ],
   "projects": [],
   "tasks": [
-    {
-      "id": "b5cb",
-      "title": "fghfgGDFDGF",
-      "description": "jghjgjh",
-      "assignedTo": "",
-      "dueDate": "2025-06-25",
-      "status": "pending",
-      "priority": "medium",
-      "projectId": "P4z9btwdqJuU5sCrrsa0",
-      "assignedToName": "Unassigned",
-      "createdAt": "2025-06-23T14:18:20.858Z"
-    },
-    {
-      "id": "61b1",
-      "title": "df",
-      "description": "sdsdcsd",
-      "assignedTo": "",
-      "dueDate": "2025-06-25",
-      "status": "pending",
-      "priority": "medium",
-      "projectId": "P4z9btwdqJuU5sCrrsa0",
-      "assignedToName": "Unassigned",
-      "createdAt": "2025-06-23T14:20:56.352Z"
-    },
-    {
-      "id": "b43f",
-      "title": "dcvsv",
-      "description": "vsdsdv",
-      "assignedTo": "",
-      "dueDate": "2025-06-25",
-      "status": "pending",
-      "priority": "medium",
-      "projectId": "P4z9btwdqJuU5sCrrsa0",
-      "assignedToName": "Unassigned",
-      "createdAt": "2025-06-23T14:24:49.534Z"
-    }
+
   ],
   "notifications": []
 }

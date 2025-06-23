@@ -43,23 +43,10 @@ function WorkspacesList() {
   }, [user?.groupId]);
 
   const handleModalClose = () => setShowModal(false);
-
-  const handleAddWorkspace = async (workspace) => {
-    const workspaceWithGroup = {
-      ...workspace,
-      groupId: user.groupId,
-      ownerId: user.uid,
-    };
-
-    try {
-      const docRef = await addDoc(collection(db, "workspaces"), workspaceWithGroup);
-      setWorkspaces((prev) => [...prev, { id: docRef.id, ...workspaceWithGroup }]);
-      setShowModal(false);
-    } catch (err) {
-      console.error("Error adding workspace:", err.message);
-      alert("Error creating workspace: " + err.message);
-    }
+  const handleAddWorkspace = (newWorkspace) => {
+    setWorkspaces((prev) => [...prev, newWorkspace]);
   };
+  
 
   const requestDelete = (workspace) => {
     const isAuthorized = user.role === "admin" || user.uid === workspace.ownerId;

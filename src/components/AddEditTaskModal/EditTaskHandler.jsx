@@ -12,6 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { createNotifications } from "../createNotifications";
+import { updateUserStat } from "../StatHandler/";
 
 export default function EditTaskHandler({ projectId, task, onClose, onSuccess }) {
   const { user } = useAuth();
@@ -106,6 +107,12 @@ export default function EditTaskHandler({ projectId, task, onClose, onSuccess })
       await updateDoc(doc(db, "tasks", task.id), payload);
 
       if (assignedId !== prevAssignedId) {
+
+         // Update user stats
+  await updateUserStat(prevAssignedId, "pendingCount", -1);
+        await updateUserStat(assignedId, "pendingCount", 1);
+        
+        // notifications
         if (assignedId) {
           await createNotifications({
             userId: assignedId,
