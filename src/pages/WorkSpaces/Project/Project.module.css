@@ -112,7 +112,18 @@
   .sortControls {
     margin: 1rem 0;
     display: flex;
+    justify-content: space-between;
     gap: 0.5rem;
     align-items: center;
+  }
+  
+  .searchControls {
+    margin: 1rem 0;
+  }
+  
+  .searchInput {
+    width: fit-content;
+    padding: 0.5rem;
+    font-size: 1rem;
   }
   

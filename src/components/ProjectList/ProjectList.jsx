@@ -6,12 +6,14 @@ import {
   collection,
   query,
   where,
-  getDocs,
   deleteDoc,
   doc,
   updateDoc,
+  onSnapshot,
+  getDocs
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
+import SkeletonBlock from "../SkeletonBlock/SkeletonBlock"
 
 function ProjectList() {
   const { workspaceId } = useParams();
@@ -27,33 +29,39 @@ function ProjectList() {
   const [permissionDenied, setPermissionDenied] = useState(false);
 
   useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
+    if (!workspaceId) return;
+
+    const unsubscribeProjects = onSnapshot(
+      query(collection(db, "projects"), where("workspaceId", "==", workspaceId)),
+      (snapshot) => {
+        setProjects(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        setLoading(false);
+      },
+      (err) => setError(err.message)
+    );
+
+    const unsubscribeTasks = onSnapshot(
+      query(collection(db, "tasks"), where("workspaceId", "==", workspaceId)),
+      (snapshot) => {
+        setTasks(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      },
+      (err) => setError(err.message)
+    );
+
+    const unsubscribeUsers = onSnapshot(
+      collection(db, "users"),
+      (snapshot) => {
+        setUsers(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      },
+      (err) => setError(err.message)
+    );
+
+    return () => {
+      unsubscribeProjects();
+      unsubscribeTasks();
+      unsubscribeUsers();
+    };
   }, [workspaceId]);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const projectQuery = query(collection(db, "projects"), where("workspaceId", "==", workspaceId));
-      const taskQuery = query(collection(db, "tasks"), where("workspaceId", "==", workspaceId));
-      const usersQuery = collection(db, "users");
-
-      const [projectSnap, taskSnap, usersSnap] = await Promise.all([
-        getDocs(projectQuery),
-        getDocs(taskQuery),
-        getDocs(usersQuery)
-      ]);
-
-      setProjects(projectSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-      setTasks(taskSnap.docs.map(doc => doc.data()));
-      setUsers(usersSnap.docs.map(doc => doc.data()));
-    } catch (err) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getUserNameById = (uid) => {
     const userObj = users.find((u) => u.uid === uid);
@@ -141,7 +149,29 @@ function ProjectList() {
     return "#38a169";
   };
 
-  if (loading) return <p>Loading projects...</p>;
+  if (loading) return  <div style={{
+    display: "flex",
+    flexDirection: "column",
+    gap:"20px",
+    justifyContent: "center",
+    height: "100vh",
+    width: "100%",   // full width
+  }}>
+   
+    <SkeletonBlock width="80%" height="20px" />
+    <SkeletonBlock width="90%" height="20px" />
+    <SkeletonBlock width="70%" height="20px" />
+    <SkeletonBlock width="60%" height="50px" />
+    <SkeletonBlock width="40%" height="20px" />
+    <SkeletonBlock width="60%" height="30px" />
+    <SkeletonBlock width="80%" height="20px" />
+    <SkeletonBlock width="90%" height="20px" />
+    <SkeletonBlock width="70%" height="20px" />
+    <SkeletonBlock width="60%" height="50px" />
+    <SkeletonBlock width="40%" height="20px" />
+    <SkeletonBlock width="60%" height="30px" />
+
+  </div>;
   if (error) return <p>Error: {error}</p>;
   if (projects.length === 0) return <p>No projects found for this workspace.</p>;
 
@@ -184,7 +214,12 @@ function ProjectList() {
                 </div>
                 <div className={styles.projectMeta}>
                   <span>👤 {getUserNameById(project.createdBy)}</span>
-                  <span>📅 {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : "N/A"}</span>
+                  <span>
+                    📅{" "}
+                    {project.createdAt
+                      ? new Date(project.createdAt).toLocaleDateString()
+                      : "N/A"}
+                  </span>
                   <div className={styles.taskProgress}>
                     <div
                       className={styles.progressBarContainer}

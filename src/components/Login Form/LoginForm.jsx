@@ -4,8 +4,8 @@ import styles from "./LoginForm.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { query, collection, where, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig"; 
-
+import { db } from "../firebaseConfig";
+import TextSpinner from "../TextSpinner/TextSpinner"
 function LoginForm({ login, googleSignIn, setError }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +66,7 @@ function LoginForm({ login, googleSignIn, setError }) {
       </div>
 
       <button className={styles.submitButton} disabled={loading}>
-        {loading ? "Logging in..." : "Login"}
+        {loading ? <TextSpinner/>: "Login"}
       </button>
 
       <div className={styles.container}>

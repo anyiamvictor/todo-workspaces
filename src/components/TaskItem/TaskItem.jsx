@@ -5,7 +5,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
 
 function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled }) {
-  const [showDescription, setShowDescription] = useState(false);
   const { user } = useAuth();
   const [projectOwnerId, setProjectOwnerId] = useState(null);
 
@@ -120,12 +119,12 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
                   </button>
 
                   <button
-  onClick={() => onReject(task.id)}
-  disabled={rejectDisabled || task.status !== "completed"}
-  className={rejectDisabled || task.status !== "completed" ? styles.disabledButton : ""}
->
-  ❌ Reject Submission
-</button>
+                    onClick={() => onReject(task.id)}
+                    disabled={rejectDisabled || task.status !== "completed"}
+                    className={rejectDisabled || task.status !== "completed" ? styles.disabledButton : ""}
+                  >
+                    ❌ Reject Submission
+                  </button>
 
                   <button
                     onClick={() => onEdit(task)}
@@ -144,16 +143,10 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
         <div className={styles.noteSection}>
           <div className={styles.noteHeader}>
             <h4 className={styles.noteTitle}>📝 Note</h4>
-            {/* <button
-              className={styles.toggleButton}
-              onClick={() => setShowDescription(!showDescription)}
-            >
-              {showDescription ? "🔽" : "▶️"}
-            </button> */}
+        
           </div>
 
           <div
-            // className={`${styles.descriptionwrapper} ${showDescription ? styles.expanded : ""}`}
           >
             <p className={styles.description}>{task.description}</p>
           </div>

@@ -13,7 +13,7 @@ import {
   setDoc
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
-
+import TextSpinner from "../TextSpinner/TextSpinner";
 function WorkspaceModal({ user, onClose, onSubmit }) {
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -102,7 +102,8 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
     }
   };
 
-  if (loadingUsers) return <p>Loading users...</p>;
+  if (loadingUsers)return (
+  <TextSpinner/>)
   if (errorUsers) return <p>Error loading users: {errorUsers}</p>;
 
   return (

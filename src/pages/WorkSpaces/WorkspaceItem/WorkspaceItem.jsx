@@ -9,10 +9,10 @@ import {
   getDocs,
   updateDoc,
   collection,
-  where,
-  query,
+ 
 } from "firebase/firestore";
 import { db } from "../../../components/firebaseConfig";
+import SkeletonBlock from "../../../components/SkeletonBlock/SkeletonBlock";
 
 function WorkspaceItem() {
   const { workspaceId } = useParams();
@@ -79,7 +79,7 @@ function WorkspaceItem() {
     }
   };
 
-  if (!workspace) return <p>Loading workspace...</p>;
+  if (!workspace) return <p><SkeletonBlock/></p>;
 
   const memberUsers = users.filter((u) => workspace.memberIds.includes(u.uid));
 

@@ -7,8 +7,12 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
+import TextSpinner from "../TextSpinner/TextSpinner";
+import { useNavigate } from "react-router-dom";
 
 function SignupForm({ signup, setError, setInviteError }) {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,7 +32,7 @@ function SignupForm({ signup, setError, setInviteError }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (name === "inviteCode") {
       setInviteError(false);
-      localInviteError(false); // reset local invite error on typing
+      localInviteError(false);
     }
   };
 
@@ -41,11 +45,6 @@ function SignupForm({ signup, setError, setInviteError }) {
     setSuccess(false);
 
     try {
-      // 🔁 Old JSON Server check
-      // const exists = await fetch(`http://localhost:3001/users?email=${formData.email}`);
-      // const users = await exists.json();
-
-      // ✅ Firestore: Check if email already exists
       const snapshot = await getDocs(
         query(collection(db, "users"), where("email", "==", formData.email))
       );
@@ -56,14 +55,6 @@ function SignupForm({ signup, setError, setInviteError }) {
         return;
       }
 
-      // 🔁 Old JSON Server invite code check
-      // const res = await fetch(`http://localhost:3001/groups`);
-      // const allGroups = await res.json();
-      // const matchedGroup = allGroups.find(
-      //   (group) => group.inviteCode === formData.inviteCode
-      // );
-
-      // ✅ Firestore: Validate invite code
       const groupSnapshot = await getDocs(
         query(collection(db, "groups"), where("inviteCode", "==", formData.inviteCode))
       );
@@ -79,7 +70,6 @@ function SignupForm({ signup, setError, setInviteError }) {
 
       const matchedGroup = matchedGroups[0];
 
-      // ✅ Create user in Firestore Auth + users collection
       await signup(formData.email, formData.password, {
         name: formData.name,
         phoneNumber: formData.phoneNumber,
@@ -90,10 +80,23 @@ function SignupForm({ signup, setError, setInviteError }) {
       });
 
       setSuccess(true);
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+        bio: "",
+        inviteCode: "",
+        status: "inactive",
+      });
+
+      setTimeout(() => {
+        setSuccess(false);
+        navigate("/auth");
+      }, 2500);
     } catch (err) {
       console.error(err);
       setError("Signup failed. Please try again.");
-
     } finally {
       setLoading(false);
     }
@@ -172,7 +175,7 @@ function SignupForm({ signup, setError, setInviteError }) {
       </div>
 
       <button className={styles.submitButton} disabled={loading}>
-        {loading ? "Signing up..." : "Sign Up"}
+        {loading ? <TextSpinner /> : "Sign Up"}
       </button>
     </form>
   );

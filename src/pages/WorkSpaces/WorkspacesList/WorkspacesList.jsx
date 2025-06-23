@@ -8,11 +8,11 @@ import {
   query,
   where,
   getDocs,
-  addDoc,
   deleteDoc,
   doc,
 } from "firebase/firestore";
 import { db } from "../../../components/firebaseConfig";
+import SkeletonBlock from "../../../components/SkeletonBlock/SkeletonBlock";
 
 function WorkspacesList() {
   const [workspaces, setWorkspaces] = useState([]);
@@ -102,7 +102,29 @@ function WorkspacesList() {
     ws.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <p>Loading workspaces...</p>;
+  if (loading)  return (
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      gap:"20px",
+      justifyContent: "center",
+      height: "100vh",
+      width: "100%",   // full width
+    }}>
+      <SkeletonBlock width="80%" height="20px" />
+      <SkeletonBlock width="90%" height="20px" />
+      <SkeletonBlock width="70%" height="20px" />
+      <SkeletonBlock width="60%" height="50px" />
+      <SkeletonBlock width="40%" height="20px" />
+      <SkeletonBlock width="60%" height="30px" />
+      <SkeletonBlock width="80%" height="20px" />
+      <SkeletonBlock width="90%" height="20px" />
+      <SkeletonBlock width="70%" height="20px" />
+      <SkeletonBlock width="60%" height="50px" />
+      <SkeletonBlock width="40%" height="20px" />
+      <SkeletonBlock width="60%" height="30px" />
+
+    </div>);
   if (error) return <p>Error: {error}</p>;
 
   return (

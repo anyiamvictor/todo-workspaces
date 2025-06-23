@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "./Project.module.css";
-// import AddEditTaskModal from "../../../components/AddEditTaskModal/AddEditTaskModal";
 import AddTaskHandler from "../../../components/AddEditTaskModal/AddTaskHandler";
 import EditTaskHandler from "../../../components/AddEditTaskModal/EditTaskHandler";
 import BackButton from "../../../components/BackButton/BackButton";
@@ -13,13 +12,14 @@ import {
   collection,
   query,
   where,
-  getDocs,
   getDoc,
   doc,
   updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../../components/firebaseConfig";
-import {updateUserStat}  from "../../../components/StatHandler"
+import { updateUserStat } from "../../../components/StatHandler";
+import SkeletonBlock from "../../../components/SkeletonBlock/SkeletonBlock";
 
 function Project() {
   const { projectId } = useParams();
@@ -34,31 +34,30 @@ function Project() {
   const [users, setUsers] = useState([]);
   const [sortOption, setSortOption] = useState("default");
   const [projectCreatedBy, setProjectCreatedBy] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const loadAll = async () => {
-      await Promise.all([fetchTasks(), fetchProject(), fetchUsers()]);
-    };
-    loadAll();
+    if (!projectId) return;
 
-    const interval = setInterval(fetchTasks, 1000);
-    return () => clearInterval(interval);
+    const unsubscribeTasks = onSnapshot(
+      query(collection(db, "tasks"), where("projectId", "==", projectId)),
+      (snapshot) => {
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setTasks(data);
+        updateProjectStatus(projectId);
+        setLoading(false);
+      },
+      (err) => {
+        setError(err.message);
+        setLoading(false);
+      }
+    );
+
+    fetchProject();
+    fetchUsers();
+
+    return () => unsubscribeTasks();
   }, [projectId]);
-
-  const fetchTasks = async () => {
-    try {
-      const snapshot = await getDocs(
-        query(collection(db, "tasks"), where("projectId", "==", projectId))
-      );
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setTasks(data);
-      updateProjectStatus(projectId);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const fetchProject = async () => {
     try {
@@ -76,9 +75,11 @@ function Project() {
 
   const fetchUsers = async () => {
     try {
-      const snapshot = await getDocs(collection(db, "users"));
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setUsers(data);
+      const snapshot = await onSnapshot(collection(db, "users"), (snap) => {
+        const data = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setUsers(data);
+      });
+      return snapshot;
     } catch (err) {
       console.error("Error fetching users:", err);
     }
@@ -88,7 +89,6 @@ function Project() {
     const found = users.find((u) => u.uid === id || u.id === id);
     return found ? found.name : "Unknown";
   };
-
 
   const handleDone = async (taskId, currentUser) => {
     const taskRef = doc(db, "tasks", taskId);
@@ -113,14 +113,10 @@ function Project() {
       completedLog: updatedLog,
     });
 
-    // await incrementUserField(currentUser.uid, "completedCount");
-    // await decrementUserPending(task.assignedTo);
     await updateUserStat(currentUser.uid, "completedCount", 1);
-if (task.assignedTo) {
-  await updateUserStat(task.assignedTo, "pendingCount", -1);
-}
-
-    fetchTasks();
+    if (task.assignedTo) {
+      await updateUserStat(task.assignedTo, "pendingCount", -1);
+    }
 
     const projectSnap = await getDoc(doc(db, "projects", projectId));
     const project = projectSnap.data();
@@ -146,7 +142,6 @@ if (task.assignedTo) {
     });
 
     if (latestUser) {
-     
       await updateUserStat(latestUser.userId, "approvedCount", 1);
 
       await createNotifications({
@@ -154,8 +149,6 @@ if (task.assignedTo) {
         message: `Your task completion on '${task.title}' was approved.`,
       });
     }
-
-    fetchTasks();
   };
 
   const handleReject = async (taskId) => {
@@ -177,19 +170,17 @@ if (task.assignedTo) {
       if (task.assignedTo) {
         await updateUserStat(task.assignedTo, "pendingCount", 1);
       }
-      
+
       await createNotifications({
         userId: latestUser.userId,
         message: `Your task completion on '${task.title}' was rejected.`,
       });
     }
-
-    fetchTasks();
   };
 
   return (
     <div className={styles.projectContainer}>
-      <h3>{projectName || "Loading..."}</h3>
+      <h3>{projectName || <SkeletonBlock/>}</h3>
       <p>Available Tasks:</p>
 
       <div className={styles.btns}>
@@ -208,25 +199,65 @@ if (task.assignedTo) {
       </div>
 
       <div className={styles.sortControls}>
-        <label htmlFor="sort">Sort tasks by: </label>
-        <select
-          id="sort"
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-        >
-          <option value="default">Assigned to me (default)</option>
-          <option value="dueDate">Due Date (Soonest First)</option>
-          <option value="priority">Priority (High to Low)</option>
-        </select>
+        <div>
+          <label htmlFor="sort">Sort tasks by: </label>
+          <select
+            id="sort"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="default">Assigned to me (default)</option>
+            <option value="dueDate">Due Date (Soonest First)</option>
+            <option value="priority">Priority (High to Low)</option>
+          </select>
+        </div>
+
+        <div className={styles.searchControls}>
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
+        </div>
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+             <div style={{
+              display: "flex",
+              flexDirection: "column",
+              gap:"20px",
+              justifyContent: "center",
+              height: "100vh",
+              width: "100%",   // full width
+            }}>
+              <SkeletonBlock width="80%" height="20px" />
+              <SkeletonBlock width="90%" height="20px" />
+              <SkeletonBlock width="70%" height="20px" />
+              <SkeletonBlock width="60%" height="50px" />
+              <SkeletonBlock width="40%" height="20px" />
+              <SkeletonBlock width="60%" height="30px" />
+              <SkeletonBlock width="80%" height="20px" />
+              <SkeletonBlock width="90%" height="20px" />
+              <SkeletonBlock width="70%" height="20px" />
+              <SkeletonBlock width="60%" height="50px" />
+              <SkeletonBlock width="40%" height="20px" />
+              <SkeletonBlock width="60%" height="30px" />
+        
+            </div>
       ) : error ? (
         <p>{error}</p>
       ) : (
         <ul className={styles.taskList}>
           {[...tasks]
+            .filter((task) => {
+              const q = searchQuery.toLowerCase();
+              return (
+                task.title.toLowerCase().includes(q) ||
+                task.description.toLowerCase().includes(q)
+              );
+            })
             .sort((a, b) => {
               if (sortOption === "dueDate") {
                 return new Date(a.dueDate) - new Date(b.dueDate);
@@ -259,28 +290,21 @@ if (task.assignedTo) {
         </ul>
       )}
 
-{showModal &&
-  (editingTask ? (
-    <EditTaskHandler
-      projectId={projectId}
-      task={editingTask}
-      onClose={() => setShowModal(false)}
-      onSuccess={() => {
-        setShowModal(false);
-        fetchTasks();
-      }}
-    />
-  ) : (
-    <AddTaskHandler
-      projectId={projectId}
-      onClose={() => setShowModal(false)}
-      onSuccess={() => {
-        setShowModal(false);
-        fetchTasks();
-      }}
-    />
-  ))}
-
+      {showModal &&
+        (editingTask ? (
+          <EditTaskHandler
+            projectId={projectId}
+            task={editingTask}
+            onClose={() => setShowModal(false)}
+            onSuccess={() => setShowModal(false)}
+          />
+        ) : (
+          <AddTaskHandler
+            projectId={projectId}
+            onClose={() => setShowModal(false)}
+            onSuccess={() => setShowModal(false)}
+          />
+        ))}
     </div>
   );
 }

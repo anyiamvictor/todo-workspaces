@@ -183,8 +183,6 @@ export function AuthProvider({ children }) {
           const dbUser = data[0];
 
           if (!dbUser || dbUser.status !== "active") {
-            // await logout();
-            alert("wait for admin to approve you")
             return;
           }
 

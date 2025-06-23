@@ -14,9 +14,9 @@ import {
   getDoc,
   doc,
   addDoc,
-  setDoc,
   updateDoc,
   deleteDoc,
+  onSnapshot
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig"; // adjust if path differs
 
@@ -54,15 +54,38 @@ const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
   
 
 
+useEffect(() => {
+  if (!groupId || !user?.uid) return;
 
+  fetchGroupData(); // Initial load for all data once
 
-  useEffect(() => {
-    fetchGroupData();
-    const interval = setInterval(() => {
-      fetchUsersOnly(); // Refresh users every 5s
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [groupId, user.uid]);
+  // Real-time listeners
+  const unsubGroup = onSnapshot(doc(db, "groups", groupId), (docSnap) => {
+    if (docSnap.exists()) {
+      const groupData = docSnap.data();
+      if (groupData.adminId !== user.uid) {
+        setError("Unauthorized or group not found.");
+        return;
+      }
+      setGroup(groupData);
+      setNewInviteCode(groupData.inviteCode || "");
+    }
+  });
+
+  const unsubUsers = onSnapshot(
+    query(collection(db, "users"), where("groupId", "==", groupId)),
+    (querySnap) => {
+      const userList = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setUsers(userList);
+    }
+  );
+
+  return () => {
+    unsubGroup();
+    unsubUsers();
+  };
+}, [groupId, user?.uid]);
+//next add snap shot for workgroups, task, project 
 
   const fetchGroupData = async () => {
     try {

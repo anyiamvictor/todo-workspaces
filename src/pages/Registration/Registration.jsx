@@ -8,13 +8,13 @@ import {
   query,
   collection,
   where,
-  addDoc,
   doc,
   setDoc,
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
 import { signOut } from "firebase/auth";
-import { auth } from "../../components/firebaseConfig"; // adjust path if needed
+import { auth } from "../../components/firebaseConfig"; 
+import TextSpinner from "../../components/TextSpinner/TextSpinner"
 
 
 // Friendly error messages
@@ -173,7 +173,7 @@ function Registration() {
         </div>
 
         <button type="submit" className={styles.submitBtn} disabled={loading}>
-          {loading ? "Creating..." : "Register Company"}
+          {loading ? <TextSpinner/> : "Register Company"}
         </button>
       </form>
     </div>
