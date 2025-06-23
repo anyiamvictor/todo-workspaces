@@ -157,3 +157,9 @@ margin-left: 40px;
   color: #555;
   font-style: italic;
 }
+.disabledButton {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}

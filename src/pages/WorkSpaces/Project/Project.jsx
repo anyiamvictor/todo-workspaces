@@ -19,6 +19,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../../components/firebaseConfig";
+import {updateUserStat}  from "../../../components/StatHandler"
 
 function Project() {
   const { projectId } = useParams();
@@ -88,21 +89,6 @@ function Project() {
     return found ? found.name : "Unknown";
   };
 
-  const incrementUserField = async (uid, field) => {
-    const userRef = doc(db, "users", uid);
-    const userSnap = await getDoc(userRef);
-    if (!userSnap.exists()) return;
-    const current = userSnap.data()[field] || 0;
-    await updateDoc(userRef, { [field]: current + 1 });
-  };
-
-  const decrementUserPending = async (uid) => {
-    const userRef = doc(db, "users", uid);
-    const userSnap = await getDoc(userRef);
-    if (!userSnap.exists()) return;
-    const current = userSnap.data().pendingCount || 0;
-    await updateDoc(userRef, { pendingCount: current > 0 ? current - 1 : 0 });
-  };
 
   const handleDone = async (taskId, currentUser) => {
     const taskRef = doc(db, "tasks", taskId);
@@ -127,8 +113,13 @@ function Project() {
       completedLog: updatedLog,
     });
 
-    await incrementUserField(currentUser.uid, "completedCount");
-    await decrementUserPending(task.assignedTo);
+    // await incrementUserField(currentUser.uid, "completedCount");
+    // await decrementUserPending(task.assignedTo);
+    await updateUserStat(currentUser.uid, "completedCount", 1);
+if (task.assignedTo) {
+  await updateUserStat(task.assignedTo, "pendingCount", -1);
+}
+
     fetchTasks();
 
     const projectSnap = await getDoc(doc(db, "projects", projectId));
@@ -155,7 +146,9 @@ function Project() {
     });
 
     if (latestUser) {
-      await incrementUserField(latestUser.userId, "approvedCount");
+     
+      await updateUserStat(latestUser.userId, "approvedCount", 1);
+
       await createNotifications({
         userId: latestUser.userId,
         message: `Your task completion on '${task.title}' was approved.`,
@@ -180,10 +173,11 @@ function Project() {
     });
 
     if (latestUser) {
-      await incrementUserField(latestUser.userId, "rejectedCount");
+      await updateUserStat(latestUser.userId, "rejectedCount", 1);
       if (task.assignedTo) {
-        await incrementUserField(task.assignedTo, "pendingCount");
+        await updateUserStat(task.assignedTo, "pendingCount", 1);
       }
+      
       await createNotifications({
         userId: latestUser.userId,
         message: `Your task completion on '${task.title}' was rejected.`,

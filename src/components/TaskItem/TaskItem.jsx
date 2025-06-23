@@ -116,9 +116,14 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
                   >
                     ❌ Reject Submission
                   </button>
-                  <button onClick={() => onEdit(task)} disabled={task.status === "approved"}>
+                  <button
+                    onClick={() => onEdit(task)}
+                    disabled={task.status === "approved" || task.doneClicked}
+                    className={task.status === "approved" || task.doneClicked ? styles.disabledButton : ""}
+                  >
                     ✏️ Edit
                   </button>
+
                 </>
               )}
             </div>
