@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
-import TaskForm from "./TaskForm";
 import { db } from "../firebaseConfig";
+import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import {
-  doc,
-  getDoc,
-  addDoc,
-  updateDoc,
   collection,
   query,
   where,
   getDocs,
+  getDoc,
+  addDoc,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
+import TaskForm from "./TaskForm";
 import { createNotifications } from "../createNotifications";
 
-export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
+export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
   const { user } = useAuth();
+
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    assignedTo: null,
-    dueDate: "",
-    status: "pending",
-    priority: "medium",
+    title: task?.title || "",
+    description: task?.description || "",
+    assignedTo: task?.assignedTo
+      ? { value: task.assignedTo, label: task.assignedToName || "Unassigned" }
+      : null,
+    dueDate: task?.dueDate || "",
+    status: task?.status || "pending",
+    priority: task?.priority || "medium",
   });
 
   const [groupUsers, setGroupUsers] = useState([]);
@@ -31,8 +34,9 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
 
   useEffect(() => {
     const fetchProject = async () => {
-      const docSnap = await getDoc(doc(db, "projects", projectId));
-      const data = docSnap.data();
+      const projectRef = doc(db, "projects", projectId);
+      const snap = await getDoc(projectRef);
+      const data = snap.data();
       setProjectCreatedAt(data.createdAt);
       setProjectEndDate(data.endDate);
     };
@@ -65,11 +69,12 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
   const handleSelectChange = (selectedOption) => {
     setFormData((prev) => ({ ...prev, assignedTo: selectedOption }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const assignedId = formData.assignedTo?.value;
+    const assignedId = formData.assignedTo?.value || null;
     const due = new Date(formData.dueDate);
-  
+
     if (projectCreatedAt && due < new Date(projectCreatedAt)) {
       alert("❌ Due date cannot be before project start date.");
       return;
@@ -78,44 +83,48 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
       alert("❌ Due date cannot be after project end date.");
       return;
     }
-  
+
     const payload = {
-      ...formData,
+      title: formData.title,
+      description: formData.description,
       assignedTo: assignedId,
       assignedToName: formData.assignedTo?.label || "Unassigned",
+      dueDate: formData.dueDate,
+      status: formData.status,
+      priority: formData.priority,
       projectId,
-      createdAt: new Date().toISOString(),
-      doneClicked: false,
-      wasRejected: false,
-      completedLog: [],
-      status: "pending",
     };
-  
-    const taskRef = await addDoc(collection(db, "tasks"), payload);
-  
-    if (assignedId) {
-      // 1. Notify the assignee
-      await createNotifications({
-        userId: assignedId,
-        message: `You have a new task: '${formData.title}'`,
-      });
-  
-      // 2. Increment their pendingCount
-      const userRef = doc(db, "users", assignedId);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const current = userSnap.data().pendingCount || 0;
-        await updateDoc(userRef, { pendingCount: current + 1 });
+
+    try {
+      if (task) {
+        // Edit
+        const ref = doc(db, "tasks", task.id);
+        await updateDoc(ref, payload);
+      } else {
+        // Create
+        await addDoc(collection(db, "tasks"), {
+          ...payload,
+          createdAt: new Date().toISOString(),
+        });
+
+        if (assignedId) {
+          await createNotifications({
+            userId: assignedId,
+            message: `You have a new task: '${formData.title}'`,
+          });
+        }
       }
+
+      onSuccess();
+    } catch (err) {
+      console.error("Error saving task:", err);
+      alert("Something went wrong while saving the task.");
     }
-  
-    onSuccess();
   };
-  
 
   return (
     <TaskForm
-      isEdit={false}
+      isEdit={!!task}
       formData={formData}
       groupUsers={groupUsers}
       projectCreatedAt={projectCreatedAt}

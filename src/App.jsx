@@ -14,7 +14,7 @@ import WorkspaceItem from "./pages/WorkSpaces/WorkspaceItem/WorkspaceItem";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import ProjectList from "./components/ProjectList/ProjectList";
 import Project from "./pages/WorkSpaces/Project/Project";
-import AddEditTask from "./components/AddEditTaskModal/AddEditTaskModal";
+// import AddEditTask from "./components/AddEditTaskModal/AddEditTaskModal";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Rootlayout from "./components/Rootlayout/Rootlayout";
 import Admin from "./pages/Admin/Admin";
@@ -56,7 +56,7 @@ function App() {
               <Route path="projects" element={<ProjectList />} />
               <Route path="projects/:projectId" element={<Project />}>
                 <Route path="task/:taskId" element={<TaskItem />} />
-                <Route path="add-task" element={<AddEditTask />} />
+                {/* <Route path="add-task" element={<AddEditTask />} /> */}
               </Route>
             </Route>
           </Route>

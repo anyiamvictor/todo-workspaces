@@ -5,6 +5,7 @@ import styles from "./Admin.module.css";
 import WorkspaceModal from "../../components/WorkspaceModal/WorkspaceModal";
 import AddProjectModal from "../../components/AddProjectModal/AddProjectModal";
 import AddEditTaskModal from "../../components/AddEditTaskModal/AddEditTaskModal";
+import TaskForm from "../../components/AddEditTaskModal/TaskForm";
 import {
   collection,
   query,

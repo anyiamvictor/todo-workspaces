@@ -107,15 +107,26 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
 
               {isSupervisor && isProjectOwner && (
                 <>
-                  <button onClick={() => onApprove(task.id)} disabled={task.status === "approved"}>
-                    {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}
-                  </button>
                   <button
-                    onClick={() => onReject(task.id)}
-                    disabled={rejectDisabled || task.status === "approved"}
+                    onClick={() => onApprove(task.id)}
+                    disabled={task.status !== "completed"}
+                    className={task.status !== "completed" ? styles.disabledButton : ""}
                   >
-                    ❌ Reject Submission
+                    {task.status === "approved"
+                      ? "✅ Finalized"
+                      : task.status === "completed"
+                        ? "👍 Approve"
+                        : "👍 Approve"}
                   </button>
+
+                  <button
+  onClick={() => onReject(task.id)}
+  disabled={rejectDisabled || task.status !== "completed"}
+  className={rejectDisabled || task.status !== "completed" ? styles.disabledButton : ""}
+>
+  ❌ Reject Submission
+</button>
+
                   <button
                     onClick={() => onEdit(task)}
                     disabled={task.status === "approved" || task.doneClicked}
@@ -133,16 +144,16 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
         <div className={styles.noteSection}>
           <div className={styles.noteHeader}>
             <h4 className={styles.noteTitle}>📝 Note</h4>
-            <button
+            {/* <button
               className={styles.toggleButton}
               onClick={() => setShowDescription(!showDescription)}
             >
               {showDescription ? "🔽" : "▶️"}
-            </button>
+            </button> */}
           </div>
 
           <div
-            className={`${styles.descriptionwrapper} ${showDescription ? styles.expanded : ""}`}
+            // className={`${styles.descriptionwrapper} ${showDescription ? styles.expanded : ""}`}
           >
             <p className={styles.description}>{task.description}</p>
           </div>
