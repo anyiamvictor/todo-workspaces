@@ -21,10 +21,10 @@ import { db } from "../../../components/firebaseConfig";
 import { updateUserStat } from "../../../components/StatHandler";
 import SkeletonBlock from "../../../components/SkeletonBlock/SkeletonBlock";
 
+
 function Project() {
   const { projectId } = useParams();
   const { user } = useAuth();
-
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,7 +38,6 @@ function Project() {
 
   useEffect(() => {
     if (!projectId) return;
-
     const unsubscribeTasks = onSnapshot(
       query(collection(db, "tasks"), where("projectId", "==", projectId)),
       (snapshot) => {
@@ -52,10 +51,8 @@ function Project() {
         setLoading(false);
       }
     );
-
     fetchProject();
     fetchUsers();
-
     return () => unsubscribeTasks();
   }, [projectId]);
 

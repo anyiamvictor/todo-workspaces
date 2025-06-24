@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./AddProjectModal.module.css";
+import TextSpinner from "../TextSpinner/TextSpinner"
 
 function AddProjectModal({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ function AddProjectModal({ onClose, onSubmit }) {
     endDate: "",
     status: "pending", // fixed status
   });
+  const [submitting, setSubmitting] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,9 +19,10 @@ function AddProjectModal({ onClose, onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // force status to "pending" on submit
+    setSubmitting(true); // disable button immediately
     onSubmit({ ...formData, status: "pending" });
   };
+  
 
   return (
     <div className={styles.modalBackdrop}>
@@ -62,9 +66,9 @@ function AddProjectModal({ onClose, onSubmit }) {
           />
 
           <div className={styles.actions}>
-            <button type="submit">Save Project</button>
+            <button type="submit" disabled={submitting}>{submitting ? <TextSpinner/> : "Save Project"}</button>
             <button type="button" onClick={onClose}>
-              Cancel
+              Cancel 
             </button>
           </div>
         </form>

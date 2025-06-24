@@ -1,6 +1,7 @@
 // TaskForm.jsx
 import Select from "react-select";
 import styles from "./AddEditTaskModal.module.css";
+import TextSpinner from "../TextSpinner/TextSpinner"
 
 export default function TaskForm({
   isEdit,
@@ -12,6 +13,7 @@ export default function TaskForm({
   handleSelectChange,
   handleSubmit,
   onClose,
+  submitting
 }) {
   const customStyles = {
     option: (provided, state) => ({
@@ -113,7 +115,10 @@ export default function TaskForm({
           </label>
 
           <div className={styles.actions}>
-            <button type="submit">{isEdit ? "Update" : "Create"}</button>
+            <button type="submit" disabled={submitting}>
+              {submitting ?<TextSpinner/> : isEdit ? "Update Task" : "Create Task"}
+            </button>
+
             <button type="button" onClick={onClose}>
               Cancel
             </button>

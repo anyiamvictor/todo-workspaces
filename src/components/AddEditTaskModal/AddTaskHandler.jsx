@@ -28,6 +28,9 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
   const [groupUsers, setGroupUsers] = useState([]);
   const [projectCreatedAt, setProjectCreatedAt] = useState("");
   const [projectEndDate, setProjectEndDate] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  
+
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -65,52 +68,62 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
   const handleSelectChange = (selectedOption) => {
     setFormData((prev) => ({ ...prev, assignedTo: selectedOption }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const assignedId = formData.assignedTo?.value;
-    const due = new Date(formData.dueDate);
+    if (submitting) return;
+    setSubmitting(true);
   
-    if (projectCreatedAt && due < new Date(projectCreatedAt)) {
-      alert("❌ Due date cannot be before project start date.");
-      return;
-    }
-    if (projectEndDate && due > new Date(projectEndDate)) {
-      alert("❌ Due date cannot be after project end date.");
-      return;
-    }
+    try {
+      const assignedId = formData.assignedTo?.value;
+      const due = new Date(formData.dueDate);
   
-    const payload = {
-      ...formData,
-      assignedTo: assignedId,
-      assignedToName: formData.assignedTo?.label || "Unassigned",
-      projectId,
-      createdAt: new Date().toISOString(),
-      doneClicked: false,
-      wasRejected: false,
-      completedLog: [],
-      status: "pending",
-    };
-  
-    const taskRef = await addDoc(collection(db, "tasks"), payload);
-  
-    if (assignedId) {
-      // 1. Notify the assignee
-      await createNotifications({
-        userId: assignedId,
-        message: `You have a new task: '${formData.title}'`,
-      });
-  
-      // 2. Increment their pendingCount
-      const userRef = doc(db, "users", assignedId);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const current = userSnap.data().pendingCount || 0;
-        await updateDoc(userRef, { pendingCount: current + 1 });
+      if (projectCreatedAt && due < new Date(projectCreatedAt)) {
+        alert("❌ Due date cannot be before project start date.");
+        return;
       }
-    }
+      if (projectEndDate && due > new Date(projectEndDate)) {
+        alert("❌ Due date cannot be after project end date.");
+        return;
+      }
   
-    onSuccess();
+      const payload = {
+        ...formData,
+        assignedTo: assignedId,
+        assignedToName: formData.assignedTo?.label || "Unassigned",
+        projectId,
+        createdAt: new Date().toISOString(),
+        doneClicked: false,
+        wasRejected: false,
+        completedLog: [],
+        status: "pending",
+      };
+  
+      const taskRef = await addDoc(collection(db, "tasks"), payload);
+  
+      if (assignedId) {
+        await createNotifications({
+          userId: assignedId,
+          message: `You have a new task: '${formData.title}'`,
+        });
+  
+        const userRef = doc(db, "users", assignedId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const current = userSnap.data().pendingCount || 0;
+          await updateDoc(userRef, { pendingCount: current + 1 });
+        }
+      }
+  
+      onSuccess();
+    } catch (error) {
+      console.error("❌ Error creating task:", error);
+      alert("Something went wrong while creating the task.");
+    } finally {
+      setSubmitting(false);
+    }
   };
+  
   
 
   return (
@@ -124,6 +137,7 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
       handleSelectChange={handleSelectChange}
       handleSubmit={handleSubmit}
       onClose={onClose}
+      submitting={submitting}
     />
   );
 }

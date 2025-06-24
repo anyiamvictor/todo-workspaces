@@ -28,6 +28,8 @@ export default function EditTaskHandler({ projectId, task, onClose, onSuccess })
   const [groupUsers, setGroupUsers] = useState([]);
   const [projectCreatedAt, setProjectCreatedAt] = useState("");
   const [projectEndDate, setProjectEndDate] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -83,6 +85,8 @@ export default function EditTaskHandler({ projectId, task, onClose, onSuccess })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
 
     const assignedId = formData.assignedTo?.value || "";
     const prevAssignedId = task.assignedTo;
@@ -130,6 +134,8 @@ export default function EditTaskHandler({ projectId, task, onClose, onSuccess })
       onSuccess();
     } catch (error) {
       console.error("Error updating task:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -144,6 +150,7 @@ export default function EditTaskHandler({ projectId, task, onClose, onSuccess })
       handleSelectChange={handleSelectChange}
       handleSubmit={handleSubmit}
       onClose={onClose}
+      submitting={submitting}
     />
   );
 }
