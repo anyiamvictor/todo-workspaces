@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "browser-image-compression": "^2.0.2",
+    "date-fns": "^4.1.0",
     "firebase": "^11.9.1",
     "framer-motion": "^12.18.1",
     "react": "^19.1.0",

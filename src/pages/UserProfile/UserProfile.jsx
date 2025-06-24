@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext/AuthContextFirebase';
 import styles from './UserProfile.module.css';
 import { motion } from 'framer-motion';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip,ResponsiveContainer } from 'recharts';
 import { db } from '../../components/firebaseConfig';
 import {
   collection,
@@ -12,6 +12,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
+import EditProfileModal from '../../components/EditProfileModal/EditProfileModal';
 
 const COLORS = ['#00C49F', '#FF8042', '#FF3B3F', '#0088FE'];
 
@@ -40,7 +41,7 @@ const UserProfile = () => {
 
         const groups = groupsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         const userGroup = groups.find(g => g.id === user.groupId);
-        if (userGroup) setGroupName(userGroup.name);
+        if (userGroup  && userGroup.name) setGroupName(userGroup.name);
 
         const allWorkspaces = workspacesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         const userWorkspaces = allWorkspaces.filter(
@@ -98,27 +99,22 @@ const UserProfile = () => {
         </button>
       </div>
 
-      {isEditing ? (
-        <motion.div
-          className={styles.editSection}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            className={styles.bioInput}
-          />
-          <button onClick={handleSave} className={styles.saveBtn}>Save</button>
-        </motion.div>
-      ) : (
-        <p className={styles.bio}>{bio}</p>
-      )}
+      {isEditing && (
+  <EditProfileModal
+    user={user}
+    onClose={() => setIsEditing(false)}
+    onUpdated={() => {
+      // Optional: refresh data here
+      setBio(user.bio); // or re-fetch
+    }}
+  />
+)}
 
       <div className={styles.statsGrid}>
         {/* Task Overview Pie */}
         <motion.div className={styles.card} whileHover={{ scale: 1.05 }}>
           <h3>Task Overview</h3>
+          <ResponsiveContainer width="100%" height={200}>
           <PieChart width={200} height={200}>
             <Pie
               data={chartData}
@@ -134,6 +130,7 @@ const UserProfile = () => {
             </Pie>
             <Tooltip />
           </PieChart>
+          </ResponsiveContainer>
         </motion.div>
 
         {/* Task Stats */}
@@ -155,11 +152,16 @@ const UserProfile = () => {
         <motion.div className={styles.card} whileHover={{ scale: 1.05 }}>
           <h3>Recent Activity</h3>
           <ul>
-            {recentTasks.map((task) => (
-              <li key={task.id}>
-                <strong>{task.title}</strong> — {new Date(task.updatedAt).toLocaleDateString()}
-              </li>
-            ))}
+            {recentTasks.length === 0 ? (
+              <li>No recent activity.</li>
+            ) : (
+              recentTasks.map((task) => (
+                <li key={task.id}>
+                  <strong>{task.title}</strong> — {new Date(task.updatedAt?.toDate?.() || task.updatedAt).toLocaleDateString()}
+                </li>
+              ))
+            )}
+
           </ul>
         </motion.div>
       </div>

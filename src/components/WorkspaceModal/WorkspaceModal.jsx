@@ -143,7 +143,7 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
 
           <div className={styles.actions}>
             <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create"}
+              {isSubmitting ? <TextSpinner/> : "Create"}
             </button>
             <button type="button" onClick={onClose}>
               Cancel

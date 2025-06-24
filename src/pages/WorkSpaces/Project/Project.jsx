@@ -180,7 +180,7 @@ function Project() {
 
   return (
     <div className={styles.projectContainer}>
-      <h3>{projectName || <SkeletonBlock/>}</h3>
+      <h3>{projectName || "fetching users name"}</h3>
       <p>Available Tasks:</p>
 
       <div className={styles.btns}>

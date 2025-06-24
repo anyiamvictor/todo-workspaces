@@ -79,7 +79,28 @@ function WorkspaceItem() {
     }
   };
 
-  if (!workspace) return <p><SkeletonBlock/></p>;
+  if (!workspace) return (  <div style={{
+    display: "flex",
+    flexDirection: "column",
+    gap:"20px",
+    justifyContent: "center",
+    height: "100vh",
+    width: "100%",   // full width
+  }}>
+    <SkeletonBlock width="80%" height="20px" />
+    <SkeletonBlock width="90%" height="20px" />
+    <SkeletonBlock width="70%" height="20px" />
+    <SkeletonBlock width="60%" height="50px" />
+    <SkeletonBlock width="40%" height="20px" />
+    <SkeletonBlock width="60%" height="30px" />
+    <SkeletonBlock width="80%" height="20px" />
+    <SkeletonBlock width="90%" height="20px" />
+    <SkeletonBlock width="70%" height="20px" />
+    <SkeletonBlock width="60%" height="50px" />
+    <SkeletonBlock width="40%" height="20px" />
+    <SkeletonBlock width="60%" height="30px" />
+
+  </div>);
 
   const memberUsers = users.filter((u) => workspace.memberIds.includes(u.uid));
 

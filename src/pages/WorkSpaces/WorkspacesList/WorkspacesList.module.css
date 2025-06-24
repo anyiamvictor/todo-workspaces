@@ -178,3 +178,7 @@
   font-style: italic;
   margin-top: 1rem auto;
 }
+
+.searchInput{
+  max-width: fit-content;
+}
