@@ -1,30 +1,27 @@
 import { NavLink, Link } from "react-router-dom";
 import styles from "./Sidebar.module.css";
-import logo from "../../assets/logo-light-transparent.png"; // Adjust the path as necessary
+import logo from "../../assets/logo-light-transparent.png";
 
-function Sidebar() {
+function SideBar({ closeSidebar }) {
   return (
-    <aside className={styles.sidebar}>
-      <Link to="/" className={styles.logo}>
+    <div className={styles.sidebarInner}>
+      <Link to="/" className={styles.logo} onClick={closeSidebar}>
         <img src={logo} alt="Logo" />
       </Link>
 
       <nav className={styles.nav}>
-        <NavLink to="/dashboard" className={({ isActive }) => isActive ? styles.active : ""} end>
+        <NavLink to="/dashboard" end className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ""}`} onClick={closeSidebar}>
           Dashboard
         </NavLink>
-        <NavLink to="/workspaces" className={({ isActive }) => isActive ? styles.active : ""}>
+        <NavLink to="/workspaces" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ""}`} onClick={closeSidebar}>
           Workspaces
         </NavLink>
-        {/* <NavLink to="/tasks" className={({ isActive }) => isActive ? styles.active : ""}>
-          Tasks
-        </NavLink> */}
-        <NavLink to="/userprofile" className={({ isActive }) => isActive ? styles.active : ""}>
-         My Profile
+        <NavLink to="/userprofile" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ""}`} onClick={closeSidebar}>
+          My Profile
         </NavLink>
       </nav>
-    </aside>
+    </div>
   );
 }
 
-export default Sidebar;
+export default SideBar;

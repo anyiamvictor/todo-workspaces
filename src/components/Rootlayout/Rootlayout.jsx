@@ -1,29 +1,48 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
-// import Navbar from "../NavBar/NavBar";
-import Footer from "../Footer/Footer"; 
 import SideBar from "../SideBar/SideBar";
-import styles from './RootLayout.module.css';
-
+import Footer from "../Footer/Footer";
+import styles from "./RootLayout.module.css";
 
 function RootLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
+  };
+
+  const closeSidebar = () => {
+    if (sidebarOpen) setSidebarOpen(false);
+  };
+
   return (
     <div className={styles.rootContainer}>
+      {/* Hamburger */}
+      <button
+        className={`${styles.sidebarToggle} ${sidebarOpen ? styles.open : ""}`}
+        onClick={toggleSidebar}
+        aria-label="Toggle sidebar"
+      >
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+      </button>
 
       <div className={styles.rootLayout}>
-        <aside className={styles.sidebar}>
-          <SideBar />
+        <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
+          <SideBar closeSidebar={closeSidebar} />
         </aside>
-        <main className={styles.pageContent}>
+
+        <main className={styles.pageContent} onClick={closeSidebar}>
           <Outlet />
         </main>
       </div>
 
       <div className={styles.footerContainer}>
-      <Footer />
+        <Footer />
       </div>
-
     </div>
   );
 }
 
-  export default RootLayout;
+export default RootLayout;

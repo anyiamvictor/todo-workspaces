@@ -10,7 +10,10 @@
 .cardGroup {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;;
+  width:100%;
 }
 
 .card {
@@ -22,6 +25,7 @@
   height: fit-content;
   max-height: 500px;
   overflow: auto;
+  
 }
 
 .card h2 {
@@ -43,15 +47,21 @@
   justify-content: space-between;
   align-items: center;
   margin: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
-
 .nameimg {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: #f9f9f9;
   padding: 1.5rem;
   border-radius: 10px;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
 }
+
 
 .avatar {
   width: 80px;
@@ -96,7 +106,9 @@
   display: flex;
   align-items: center;
   position: relative;
+  flex-wrap: wrap;
 }
+
 /* Notification Bell Button */
 .bellButton {
   background: none;
@@ -114,7 +126,6 @@
   color: #222;
 }
 
-/* 🔔 Animate only when there's unread */
 .hasUnread {
   animation: bellIdle 2.5s infinite;
 }
@@ -128,18 +139,6 @@
   100% { transform: rotate(0deg); }
 }
 
-
-/* Subtle bounce effect
-@keyframes bellIdle {
-  0% { transform: rotate(0deg); }
-  20% { transform: rotate(10deg); }
-  40% { transform: rotate(-8deg); }
-  60% { transform: rotate(5deg); }
-  80% { transform: rotate(-2deg); }
-  100% { transform: rotate(0deg); }
-} */
-
-/* Notification Red Dot */
 .notificationDot {
   position: absolute;
   top: 3px;
@@ -167,11 +166,10 @@
   }
 }
 
-/* Notification Dropdown Panel */
 .notificationDropdown {
   position: absolute;
   top: 5.7rem;
-  right: 20rem;
+  right: 0;
   background: #ffffff;
   border-radius: 10px;
   width: 280px;
@@ -193,8 +191,6 @@
   pointer-events: auto;
 }
 
-
-/* Header */
 .notificationDropdown h4 {
   font-size: 1rem;
   font-weight: 600;
@@ -204,7 +200,6 @@
   padding-bottom: 0.4rem;
 }
 
-/* List Styling */
 .notificationDropdown ul {
   list-style: none;
   margin: 0;
@@ -231,7 +226,6 @@
   border-bottom: none;
 }
 
-/* Unread Indicator */
 .unreadDot {
   width: 8px;
   height: 8px;
@@ -240,4 +234,66 @@
   margin-left: 10px;
   flex-shrink: 0;
   box-shadow: 0 0 4px rgba(255, 59, 63, 0.6);
+}
+
+/* =====================
+   RESPONSIVE: MOBILE
+======================== */
+@media screen and (max-width: 768px) {
+*{
+}
+ 
+  .headerRow {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin: 1rem 0;
+
+  }
+
+  .nameimg {
+    flex-direction: row; /* ✅ still horizontal */
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .avatar {
+    margin-left: auto;
+    width: 60px;
+    height: 60px;
+  }
+
+  
+
+  .logoutButton {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .bellButton {
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+  }
+
+  .notificationDropdown {
+    right: 0;
+    left: 0;
+    margin: auto;
+    top: 7.5rem;
+    width: 90%;
+  }
+
+  .cardGroup {
+    flex-direction: column;
+ max-width:100%;
+
+  }
+
+  .card {
+    width: 100%;
+    padding: 2px;
+    max-height: fit-content;
+  }
 }

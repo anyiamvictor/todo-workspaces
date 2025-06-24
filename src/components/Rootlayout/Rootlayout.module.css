@@ -1,15 +1,15 @@
 body, html {
-  /* overflow: hidden; */
   height: 100%;
   scrollbar-width: none;
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
 }
 
-/* For vertical scrollbar */
 ::-webkit-scrollbar {
   width: 0px;
-  background: transparent; /* Optional: no background */
+  background: transparent;
 }
-
 
 .rootContainer {
   display: flex;
@@ -32,6 +32,40 @@ body, html {
   min-width: 180px;
   padding: 1rem;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.sidebarToggle {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.bar {
+  height: 4px;
+  background-color: white;
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
+
+/* Hamburger Animation */
+.open .bar:nth-child(1) {
+  transform: rotate(45deg) translateY(10px);
+}
+.open .bar:nth-child(2) {
+  opacity: 0;
+}
+.open .bar:nth-child(3) {
+  transform: rotate(-45deg) translateY(-10px);
 }
 
 .pageContent {
@@ -40,26 +74,44 @@ body, html {
   overflow-x: hidden;
   padding: 20px;
   min-height: 0;
-  margin-bottom: 5rem;;
+  margin-bottom: 5rem;
+  transition: all 0.3s ease;
+
+
 }
 
 .pageContent::-webkit-scrollbar {
   width: 8px;
 }
-
-.pageContent::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .pageContent::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 10px;
 }
-
 
 .footerContainer {
   background-color: #f8f8f8;
   text-align: center;
   border-top: 1px solid #ddd;
   margin-top: 40px;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 1000;
+    width: 250px;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebarToggle {
+    display: flex; /* visible only on mobile */
+  }
 }

@@ -109,27 +109,24 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.headerRow}>
-        <div className={styles.nameimg}>
-          <h1 className={styles.title}>Welcome {user?.name}</h1>
-          <div className={styles.avatar}>
-            <img
-              src={user?.avatarUrl || '/default-avatar.png'}
-              alt="Avatar"
-            />
-          </div>
-        </div>
+    <div className={styles.headerRow}>
+  <div className={styles.nameimg}>
+    <h1 className={styles.title}>Welcome {user?.name}</h1>
+    <div className={styles.avatar}>
+      <img src={user?.avatarUrl || '/default-avatar.png'} alt="Avatar" />
+    </div>
+    <div className={styles.rightControls}>
+      <button onClick={toggleNotifications} className={`${styles.bellButton} ${notifications.some(n => !n.seen) ? styles.hasUnread : ''}`}>
+        🔔
+        {notifications.some(n => !n.seen) && (
+          <span className={styles.notificationDot} />
+        )}
+      </button>
+      <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
+    </div>
+  </div>
+</div>
 
-        <div className={styles.rightControls}>
-          <button onClick={toggleNotifications} className={`${styles.bellButton} ${notifications.some(n => !n.seen) ? styles.hasUnread : ''}`}>
-            🔔
-            {notifications.some(n => !n.seen) && (
-              <span className={styles.notificationDot} />
-            )}
-          </button>
-          <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
-        </div>
-      </div>
 
       {showNotifications && (
         <div className={`${styles.notificationDropdown} ${styles.show}`}>

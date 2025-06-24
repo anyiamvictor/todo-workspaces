@@ -1,40 +1,41 @@
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #222;
-    padding: 2rem 1rem;
-    display: flex;
-    flex-direction: column;
-    color: white;
-  }
-  
-  .logo {
-    font-size: 10px;
-    margin-bottom: 2rem;
-  }
-  
-  .logo img {
-    width: 200px; /* or any size you prefer */
-    height: auto; /* maintains aspect ratio */
-    display: block; /* remove extra space below image */
-  }
-  
-  .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-  }
-  
-  .active {
-    background-color: #ff6f61;
-    font-weight: 700;
-  }
-  
+.sidebarInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-top:40px;
+}
+
+.logo {
+  font-size: 10px;
+  margin-bottom: 2rem;
+}
+
+.logo img {
+  width: 200px;
+  height: auto;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.navLink:hover {
+  background-color: #333;
+}
+
+.active {
+  background-color: #ff6f61;
+  font-weight: 700;
+}

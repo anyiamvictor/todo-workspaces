@@ -116,6 +116,7 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
             <input
               type="text"
               value={name}
+              maxLength={50}
               onChange={(e) => setName(e.target.value)}
               required
               autoFocus

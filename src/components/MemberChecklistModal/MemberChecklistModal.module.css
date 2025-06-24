@@ -15,6 +15,7 @@
     width: 400px;
     max-height: 85vh;
     overflow-y: auto;
+    margin-bottom: 30px;;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
   
@@ -100,4 +101,12 @@
     color: #555;
     margin-left: 4px;
   }
-  
+  @media screen and (max-width: 768px) {
+    .modal {
+width:80%
+
+    }
+
+
+
+  }

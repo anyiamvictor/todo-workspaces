@@ -81,13 +81,7 @@
   display: none;
 }
 
-.wrkspctop{
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
 
 .deleteIconBtn {
   background: transparent;
@@ -181,4 +175,67 @@
 
 .searchInput{
   max-width: fit-content;
+}
+
+.wrkspctop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* wrap on small screens */
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Improve responsiveness */
+.searchInput {
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex-grow: 1;
+  min-width: 180px;
+}
+
+.addBtn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  .wrkspctop {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .addBtn {
+    font-size: 0.95rem;
+    padding: 0.4rem;
+    width: 100%;
+  }
+
+  .searchInput {
+    font-size: 0.95rem;
+    width: 100%;
+  }
+
+  .listItem {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .link {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+  }
 }
