@@ -10,10 +10,12 @@ import {
   doc,
   updateDoc,
   onSnapshot,
-  getDocs
+  getDocs,
+  getDoc
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
 import SkeletonBlock from "../SkeletonBlock/SkeletonBlock"
+import TextSpinner from "../TextSpinner/TextSpinner";
 
 function ProjectList() {
   const { workspaceId } = useParams();
@@ -27,6 +29,7 @@ function ProjectList() {
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [warnIncomplete, setWarnIncomplete] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!workspaceId) return;
@@ -96,18 +99,39 @@ function ProjectList() {
     setWarnIncomplete(project.status === "active" && hasUnapprovedTasks);
     setShowModal(true);
   };
-
   const deleteProjectAndChildren = async (projectId) => {
     try {
       const taskQuery = query(collection(db, "tasks"), where("projectId", "==", projectId));
       const taskSnap = await getDocs(taskQuery);
-      const tasksToDelete = taskSnap.docs;
-
-      await Promise.all(tasksToDelete.map((taskDoc) => deleteDoc(taskDoc.ref)));
-
+      const tasksToDelete = taskSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  
+      // Count pending tasks per user
+      const pendingCountMap = {};
+      for (const task of tasksToDelete) {
+        if (task.status === "pending" && task.assignedTo) {
+          pendingCountMap[task.assignedTo] = (pendingCountMap[task.assignedTo] || 0) + 1;
+        }
+      }
+  
+      // Update each affected user's pendingCount
+      const updateUserPromises = Object.entries(pendingCountMap).map(async ([userId, count]) => {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const current = userSnap.data().pendingCount || 0;
+          await updateDoc(userRef, { pendingCount: Math.max(0, current - count) });
+        }
+      });
+  
+      // Delete all tasks
+      const deleteTaskPromises = tasksToDelete.map((task) => deleteDoc(doc(db, "tasks", task.id)));
+  
+      await Promise.all([...updateUserPromises, ...deleteTaskPromises]);
+  
+      // Handle project stat for completed projects
       const project = projects.find((p) => p.id === projectId);
       const stats = getTaskStatsForProject(projectId);
-
+  
       if (
         project.status === "completed" &&
         stats.uncompleted === 0 &&
@@ -119,7 +143,7 @@ function ProjectList() {
           totalProjectsCompleted: (userDoc.totalProjectsCompleted || 0) + 1,
         });
       }
-
+  
       await deleteDoc(doc(db, "projects", projectId));
       setProjects((prev) => prev.filter((p) => p.id !== projectId));
     } catch (err) {
@@ -127,11 +151,13 @@ function ProjectList() {
       alert("Failed to delete project");
     }
   };
+  
 
-  const handleConfirmDelete = () => {
-    if (projectToDelete) {
-      deleteProjectAndChildren(projectToDelete.id);
-    }
+  const handleConfirmDelete = async () => {
+    if (!projectToDelete || deleting) return;
+    setDeleting(true);
+    await deleteProjectAndChildren(projectToDelete.id);
+    setDeleting(false);
     setShowModal(false);
     setProjectToDelete(null);
     setWarnIncomplete(false);
@@ -245,25 +271,35 @@ function ProjectList() {
       </ul>
 
       {/* Confirmation Modal */}
-      {showModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <p>
-              {warnIncomplete
-                ? `This project has unapproved tasks. Deleting now won't increase your stats.`
-                : `Are you sure you want to delete "${projectToDelete?.name}" and all its tasks?`}
-            </p>
-            <div className={styles.modalActions}>
-              <button onClick={handleConfirmDelete} className={styles.confirmButton}>
-                Yes, Delete
-              </button>
-              <button onClick={handleCancelDelete} className={styles.cancelButton}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+{/* Confirmation Modal */}
+{showModal && (
+  <div className={styles.modalOverlay}>
+    <div className={styles.modal}>
+      <p>
+        {warnIncomplete
+          ? `This project has unapproved tasks. Deleting now won't increase your stats.`
+          : `Are you sure you want to delete "${projectToDelete?.name}" and all its tasks?`}
+      </p>
+      <div className={styles.modalActions}>
+        <button
+          onClick={handleConfirmDelete}
+          className={styles.confirmButton}
+          disabled={deleting}
+        >
+          {deleting ? <TextSpinner/>: "Yes, Delete"}
+        </button>
+        <button
+          onClick={handleCancelDelete}
+          className={styles.cancelButton}
+          disabled={deleting}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Permission Denied Modal */}
       {permissionDenied && (

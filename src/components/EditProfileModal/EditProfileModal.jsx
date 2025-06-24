@@ -11,6 +11,7 @@ import { db, storage } from '../../components/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import imageCompression from 'browser-image-compression';
 import { formatDistanceToNow } from 'date-fns';
+import TextSpinner from '../TextSpinner/TextSpinner';
 
 const EditProfileModal = ({ user, onClose, onUpdated }) => {
   const [name, setName] = useState(user.name || '');
@@ -168,7 +169,7 @@ const EditProfileModal = ({ user, onClose, onUpdated }) => {
         <div className={styles.actions}>
           <button onClick={onClose}>Cancel</button>
           <button onClick={handleSave} disabled={uploading}>
-            {uploading ? 'Saving...' : 'Save'}
+            {uploading ? <TextSpinner/>: 'Save'}
           </button>
         </div>
       </motion.div>

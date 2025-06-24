@@ -5,7 +5,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import TextSpinner from "../TextSpinner/TextSpinner"
+import TextSpinner from "../TextSpinner/TextSpinner";
+import BackButton from "../BackButton/Backbutton"
 function LoginForm({ login, googleSignIn, setError }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -74,6 +75,7 @@ function LoginForm({ login, googleSignIn, setError }) {
           <FcGoogle className={styles.icon} />
         </button>
       </div>
+      {/* <BackButton/> */}
     </form>
   );
 }
