@@ -84,3 +84,16 @@
   object-fit: cover;
   background-color: #ddd;
 }
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+
+.memberList {
+display: flex;
+}
+
+.memberItem{
+  flex-direction: column;
+}
+
+}

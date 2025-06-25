@@ -1,10 +1,42 @@
 /* :root {
-  --color-primary: #4f46e5;
-  --color-primary-light: #6366f1;
-  --color-secondary: #10b981;
-  --color-background: #282829;
-  --color-text: #111827;
-  --color-muted-text: #6b7280;
-  --color-border: #d1d5db;
+  --color-primary: #4299E1;
+  --color-primary-hover: #3182CE;
+  --color-bg: #F7FAFC;
+  --color-bg-dark: #022035;
+  --color-panel: #FFFFFF;
+  --color-text: #2D3748;
+  --color-text2: #999ca0;
+
+  --color-text-muted: #4A5568;
+  --color-border: #E2E8F0;
+  --color-success: #38A169;
+  --color-warning: #DD6B20;
+  --color-danger: #E53E3E;
+  --color-hover: rgb(122, 131, 4);
+  --color-hover-text: rgb(250, 250, 250);
+  --color-active: rgba(221, 252, 110, 0.712);
+
+
 } */
+:root {
+  --color-primary: #2962FF;          /* Vivid blue - energetic & clear */
+  --color-primary-hover: #0039CB;    /* Darker blue for hover - strong & distinct */
+  --color-bg: #F4F6F8;               /* Soft light gray - clean background */
+  --color-bg-dark: #121B2A;          /* Very dark navy - good dark mode base */
+  --color-panel: #FFFFFF;            /* Pure white for cards & panels */
+
+  --color-text: #0f1113;             /* Dark slate gray - solid readability */
+  --color-text2: #6B7280;            /* Medium gray - secondary text */
+  --color-text-muted: #9CA3AF;       /* Light gray for muted text */
+
+  --color-border: #D1D5DB;           /* Light gray border */
+
+  --color-success: #2E7D32;          /* Rich green - success */
+  --color-warning: #F9A825;          /* Warm amber - warning */
+  --color-danger: #D32F2F;           /* Deep red - danger */
+
+  --color-hover: #ff7707;            /* Bright amber - hover highlight */
+  --color-hover-text: #0a0a0a;       /* White text on hover */
+  --color-active: rgb(255, 193, 7); /* Semi-transparent amber for active bg */
+}
 

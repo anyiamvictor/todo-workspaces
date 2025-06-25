@@ -15,7 +15,7 @@
 
 .list {
   display: flex;
-  /* width:100%; */
+  width:100%;
   justify-content: center;
   flex-direction: row;
   flex-wrap:wrap;
@@ -209,6 +209,9 @@
 
 /* Mobile Styles */
 @media screen and (max-width: 768px) {
+
+
+
   .wrkspctop {
     flex-direction: column;
     align-items: stretch;
@@ -226,9 +229,15 @@
     width: 100%;
   }
 
+  .list{
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+  }
   .listItem {
-    width: 100%;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
+    padding:10px;
   }
 
   .link {

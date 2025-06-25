@@ -59,7 +59,7 @@ function WorkspaceLayout() {
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
-        <h2>Workspace: {workspace ? workspace.name : "Loading..."}</h2>
+        <h2>{workspace ? workspace.name : "Loading..."}</h2>
 
         <nav className={styles.nav}>
           {!isOnProjectDetail && (

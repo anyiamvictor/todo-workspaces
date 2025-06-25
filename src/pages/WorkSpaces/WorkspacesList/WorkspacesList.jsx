@@ -150,7 +150,7 @@ function WorkspacesList() {
       <ul className={styles.list}>
         {filteredWorkspaces.length === 0 ? (
           <p className={styles.noWorkspacesMsg}>
-            No workspaces found. Click “+ Add Workspace” to get started.
+            No workspaces found. Click “+ Add Workspace” to get started. or Wait for a Supervisor to Create one
           </p>
         ) : (
           filteredWorkspaces.map((workspace) => (

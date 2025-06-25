@@ -1,12 +1,13 @@
-/* Footer.module.css */
+@import url("../../index.css");
 .footer {
-    background-color: #222;
-    color: #bbb;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     text-align: center;
     padding: 1rem;
     font-size: 0.9rem;
     position: fixed;
     bottom: 0;
     width: 100%;
+    z-index: 3000 !important;
   }
   

@@ -4,6 +4,21 @@
     margin: auto;
   }
   
+  
+.bb{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border:1px solid red; */
+  padding:12px
+}
+
+
+.bb h3{
+font-size: 22px;
+}
+
+
   .addTaskBtn {
     background-color: #007bff;
     color: white;
@@ -69,9 +84,6 @@
     margin-top: 1rem;
  }
 
-  
- 
-
   .modalOverlay {
     position: fixed;
     top: 0;
@@ -119,6 +131,7 @@
     justify-content: space-between;
     gap: 0.5rem;
     align-items: center;
+    /* border:1px solid red; */
   }
   
   .searchControls {
@@ -130,4 +143,33 @@
     padding: 0.5rem;
     font-size: 1rem;
   }
-  
+
+@media screen and (max-width: 768px) {
+.sortControls{
+  flex-direction: column;
+  justify-content: center;
+  align-items: center
+  ;
+
+}
+.sort {
+display: flex;
+font-size: 15px;
+justify-content: center;
+align-items: center;
+text-align: center;
+gap:10px;
+}
+
+
+.searchInput {
+  width: 100px;
+}
+
+.bb h3{
+
+}
+
+
+
+}

@@ -64,3 +64,15 @@
     font-weight: 500;
   }
   
+  @media screen and (max-width: 768px) {
+    .modal{
+      width:70%
+    }
+
+
+  .actions {
+justify-content: space-between;
+
+  }
+    
+    }

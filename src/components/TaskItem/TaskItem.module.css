@@ -95,9 +95,41 @@
   justify-content: space-between;
 }
 
-.taskContent {
+/* .taskContent {
   display: flex;
-} 
+}
+
+.taskContentHidden {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+} */
+
+/* For animating show/hide of taskContent */
+.taskContent {
+  max-height: 1000px; /* big enough to fit content */
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.taskContentHidden {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.taskContentWrapper {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.taskContentWrapper.show {
+  max-height: 1000px; /* high enough to fit content */
+  opacity: 1;
+}
 
 
 .descriptionwrapper {
@@ -141,6 +173,8 @@ flex:1;
 .finalized {
   opacity: 0.5;
   pointer-events: none;
+  border-left: 7px solid green
+  /* border: 12px ridge green */
 }
 
 .priority {
@@ -169,3 +203,87 @@ flex:1;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
+
+.mobileHeader {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Show toggle button and title in mobile view */
+
+
+@media screen and (max-width: 1024px) {
+
+  .taskItem{
+padding:0
+
+  }
+
+
+.taskContent{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+  
+  }
+
+
+
+  .taskid{
+
+    display: flex;
+    justify-content: space-between;
+    /* align-items: flex-end; */
+    padding:9px;
+  }
+
+  
+  .meta {
+    font-size: 0.75rem;
+  margin-bottom: 0rem;
+  justify-content: space-around;
+
+
+
+  }
+  .taskActions{
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding:4px;
+
+  }
+
+  .taskActions button {
+    padding: 7px;
+    width:100%
+  }
+
+  .noteSection{
+    width:100%;
+    margin-left:0%;
+    padding:0;
+    box-shadow: none;
+
+  }
+
+  .noteSection *{
+    padding:2px;
+  }
+
+  .mobileHeader {
+    display: flex;
+    padding: 0.5rem 1rem;
+    background-color: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .toggleButton {
+    background: transparent;
+    border: none;
+    color: #3182ce !important;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  }

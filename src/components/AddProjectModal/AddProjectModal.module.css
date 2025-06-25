@@ -113,3 +113,9 @@
     color: #666;
   }
   
+@media screen and (max-width: 768px) {
+.modal{
+  width:70%;
+}
+
+}

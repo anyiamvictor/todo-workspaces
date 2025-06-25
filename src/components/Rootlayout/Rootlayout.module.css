@@ -1,10 +1,14 @@
+@import url("../../index.css");
+
 body, html {
   height: 100%;
   scrollbar-width: none;
   margin:0;
   padding:0;
   box-sizing: border-box;
-}
+  text-transform: capitalize;
+
+}a
 
 ::-webkit-scrollbar {
   width: 0px;
@@ -16,6 +20,9 @@ body, html {
   flex-direction: column;
   height: 100vh;
   overflow: auto;
+background-color: var(--color-bg);
+/* background-color: black; */
+
 }
 
 .rootLayout {
@@ -27,8 +34,8 @@ body, html {
 }
 
 .sidebar {
-  background-color: #222;
-  color: whitesmoke;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   min-width: 180px;
   padding: 1rem;
   flex-shrink: 0;
@@ -52,7 +59,7 @@ body, html {
 
 .bar {
   height: 4px;
-  background-color: white;
+  background-color: black;
   border-radius: 2px;
   transition: 0.3s ease;
 }
@@ -89,7 +96,7 @@ body, html {
 }
 
 .footerContainer {
-  background-color: #f8f8f8;
+  background-color: var(--color-bg);
   text-align: center;
   border-top: 1px solid #ddd;
   margin-top: 40px;

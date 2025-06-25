@@ -5,6 +5,10 @@
   padding-bottom: 0.5rem;
   justify-content: center;
 }
+.header {
+  text-transform: capitalize;
+
+}
 
 .link {
   text-decoration: none;
@@ -23,4 +27,24 @@
   background-color: #026592;
   color: rgb(255, 255, 255);
   font-weight: bold;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+.wrapper {
+  margin-top: 50px;;
+}
+
+.header h2{
+  font-size: 22px;
+}
+
+.nav{
+gap:.2rem;
+flex-direction:column;
+align-items: center;
+width: 100%;
+text-align: center;
+
+}
 }

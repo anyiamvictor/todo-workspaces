@@ -98,3 +98,10 @@
 .react-select__menu {
   z-index: 9999;
 }
+
+@media screen and (max-width: 768px) {
+.modalContent{
+  width:70%
+}
+
+}

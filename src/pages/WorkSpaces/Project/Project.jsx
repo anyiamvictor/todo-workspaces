@@ -177,10 +177,13 @@ function Project() {
 
   return (
     <div className={styles.projectContainer}>
+      {/* <p>Available Tasks:</p> */}
+      <div className={styles.bb}>
       <h3>{projectName || "fetching users name"}</h3>
-      <p>Available Tasks:</p>
-
+      <BackButton />
+</div> 
       <div className={styles.btns}>
+
         {user.uid === projectCreatedBy && (
           <button
             className={styles.addTaskBtn}
@@ -192,12 +195,12 @@ function Project() {
             + Add Task
           </button>
         )}
-        <BackButton />
       </div>
 
+      
       <div className={styles.sortControls}>
-        <div>
-          <label htmlFor="sort">Sort tasks by: </label>
+        <div className={styles.sort}>
+          <label htmlFor="sort">Sort tasks </label>
           <select
             id="sort"
             value={sortOption}

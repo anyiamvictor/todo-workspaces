@@ -1,6 +1,8 @@
 import { NavLink, Link } from "react-router-dom";
 import styles from "./Sidebar.module.css";
-import logo from "../../assets/logo-light-transparent.png";
+// import logo from "../../assets/logo-light-transparent.png";
+import logo from "../../assets/logo-transparent.png";
+
 
 function SideBar({ closeSidebar }) {
   return (

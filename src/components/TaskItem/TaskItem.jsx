@@ -7,6 +7,8 @@ import { db } from "../../components/firebaseConfig";
 function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled }) {
   const { user } = useAuth();
   const [projectOwnerId, setProjectOwnerId] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchProjectOwner = async () => {
@@ -27,6 +29,18 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
 
     fetchProjectOwner();
   }, [task.projectId]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setIsExpanded(true); // Always expanded on desktop
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize(); // set on mount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   function getDueDateInfo(dueDate) {
     const today = new Date();
@@ -61,99 +75,115 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
 
   return (
     <li className={`${styles.taskItem} ${task.status === "approved" ? styles.finalized : ""}`}>
-      <div className={styles.taskContent}>
-        <div>
-          <h3 className={styles.title}>{task.title}</h3>
-          <div className={styles.taskid}>
-            <div className={styles.meta}>
-              <span>
-                <strong>Status:</strong>{" "}
-                <span className={`${styles.statusBadge} ${styles[`status-${task.status.toLowerCase()}`]}`}>
-                  {task.status}
-                </span>
-              </span>
-              <span>
-                <strong>Assigned to:</strong> {task.assignedToName || "Unassigned"}
-              </span>
-              {task.createdAt && (
+      <div className={styles.mobileHeader}>
+        <h3 className={styles.title}>{task.title}</h3>
+        {isMobile && (
+          <button className={styles.toggleButton} onClick={() => setIsExpanded(prev => !prev)}>
+            <span style={{ color: !isExpanded && task.status === "approved" ? "gray" : "inherit" }}>
+              {isExpanded ? "Hide" : "View"}
+            </span>
+          </button>
+        )}
+      </div>
+  
+      <div
+        className={`${styles.taskContentWrapper} ${
+          !isMobile || isExpanded ? styles.show : ""
+        }`}
+      >
+        <div className={styles.taskContent}>
+          <div>
+            <div className={styles.taskid}>
+              <div className={styles.meta}>
                 <span>
-                  <strong>Created:</strong>{" "}
-                  <span className={styles.createdDate}>
-                    {new Date(task.createdAt).toLocaleDateString()}
+                  <strong>Status:</strong>{" "}
+                  <span className={`${styles.statusBadge} ${styles[`status-${task.status.toLowerCase()}`]}`}>
+                    {task.status}
                   </span>
                 </span>
-              )}
-              <span>
-                <strong>Due:</strong>{" "}
-                <span className={`${styles.dueDate} ${dueClass}`}>
-                  {dueLabel} ({new Date(task.dueDate).toLocaleDateString()})
+                <span>
+                  <strong>Assigned to:</strong> {task.assignedToName || "Unassigned"}
                 </span>
-              </span>
-              <span>
-                <strong>Priority:</strong>{" "}
-                <span className={`${styles.priority} ${styles[`priority-${task.priority.toLowerCase()}`]}`}>
-                  {task.priority}
+                {task.createdAt && (
+                  <span>
+                    <strong>Created:</strong>{" "}
+                    <span className={styles.createdDate}>
+                      {new Date(task.createdAt).toLocaleDateString()}
+                    </span>
+                  </span>
+                )}
+                <span>
+                  <strong>Due:</strong>{" "}
+                  <span className={`${styles.dueDate} ${dueClass}`}>
+                    {dueLabel} ({new Date(task.dueDate).toLocaleDateString()})
+                  </span>
                 </span>
-              </span>
-            </div>
-
-            <div className={styles.taskActions}>
-              {!isProjectOwner && (
-                <button onClick={() => onDone(task.id, user)} disabled={task.doneClicked}>
-                  ✅ Submit for Review
-                </button>
-              )}
-
-              {isSupervisor && isProjectOwner && (
-                <>
+                <span>
+                  <strong>Priority:</strong>{" "}
+                  <span className={`${styles.priority} ${styles[`priority-${task.priority.toLowerCase()}`]}`}>
+                    {task.priority}
+                  </span>
+                </span>
+              </div>
+  
+              <div className={styles.taskActions}>
+                {!isProjectOwner && (
                   <button
-                    onClick={() => onApprove(task.id)}
-                    disabled={task.status !== "completed"}
-                    className={task.status !== "completed" ? styles.disabledButton : ""}
+                    onClick={() => onDone(task.id, user)}
+                    disabled={task.doneClicked || task.status === "approved"}
+                    className={(task.doneClicked || task.status === "approved") ? styles.disabledButton : ""}
                   >
-                    {task.status === "approved"
-                      ? "✅ Finalized"
-                      : task.status === "completed"
-                        ? "👍 Approve"
-                        : "👍 Approve"}
+                    {task.status === "approved" ? "✅ Finalized" : "✅ Submit"}
                   </button>
-
-                  <button
-                    onClick={() => onReject(task.id)}
-                    disabled={rejectDisabled || task.status !== "completed"}
-                    className={rejectDisabled || task.status !== "completed" ? styles.disabledButton : ""}
-                  >
-                    ❌ Reject Submission
-                  </button>
-
-                  <button
-                    onClick={() => onEdit(task)}
-                    disabled={task.status === "approved" || task.doneClicked}
-                    className={task.status === "approved" || task.doneClicked ? styles.disabledButton : ""}
-                  >
-                    ✏️ Edit
-                  </button>
-
-                </>
-              )}
+                )}
+  
+                {isSupervisor && isProjectOwner && (
+                  <>
+                    <button
+                      onClick={() => {
+                        onApprove(task.id);
+                        if (isMobile) setIsExpanded(false); // collapse on mobile
+                      }}
+                      disabled={task.status !== "completed"}
+                      className={task.status !== "completed" ? styles.disabledButton : ""}
+                    >
+                      {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}
+                    </button>
+  
+                    <button
+                      onClick={() => onReject(task.id)}
+                      disabled={rejectDisabled || task.status !== "completed"}
+                      className={rejectDisabled || task.status !== "completed" ? styles.disabledButton : ""}
+                    >
+                      ❌ Reject
+                    </button>
+  
+                    <button
+                      onClick={() => onEdit(task)}
+                      disabled={task.status === "approved" || task.doneClicked}
+                      className={task.status === "approved" || task.doneClicked ? styles.disabledButton : ""}
+                    >
+                      ✏️ Edit
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className={styles.noteSection}>
-          <div className={styles.noteHeader}>
-            <h4 className={styles.noteTitle}>📝 Note</h4>
-        
-          </div>
-
-          <div
-          >
-            <p className={styles.description}>{task.description}</p>
+  
+          <div className={styles.noteSection}>
+            <div className={styles.noteHeader}>
+              <h4 className={styles.noteTitle}>📝 Note</h4>
+            </div>
+            <div>
+              <p className={styles.description}>{task.description}</p>
+            </div>
           </div>
         </div>
       </div>
     </li>
   );
+  
 }
 
 export default TaskItem;
