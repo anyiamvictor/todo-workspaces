@@ -8,14 +8,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 20000 !important;
+
 }
 
 .modalContent {
   background-color: white;
   border-radius: 16px;
   padding: 2rem;
-  width: 90%;
+  margin-top: 0;
+  width: 40%;
   max-width: 500px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease-in-out;

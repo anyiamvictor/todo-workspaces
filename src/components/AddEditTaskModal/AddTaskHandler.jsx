@@ -1,3 +1,6 @@
+//totalsAssigned task in the db should be handled herer since me moved task and edit inot new cmponents
+
+
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import TaskForm from "./TaskForm";

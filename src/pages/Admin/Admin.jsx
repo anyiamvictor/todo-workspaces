@@ -1,3 +1,7 @@
+// Something is wrong. when i create a workspce with an account, the second account also have the workspace. 
+// i think it has to do with how the group fetching is done when creating workspace from admin panel
+
+
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
@@ -19,6 +23,7 @@ import {
   onSnapshot
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig"; // adjust if path differs
+import TextSpinner from "../../components/TextSpinner/TextSpinner";
 
 
 function Admin() {
@@ -157,18 +162,11 @@ useEffect(() => {
   
 
   if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
-  if (loading) return <p>Loading admin dashboard...</p>;
+  if (loading) return  <TextSpinner/>;
   if (error) return <p>{error}</p>;
 
   const toggleUserStatus = async (userId, currentStatus) => {
     const newStatus = currentStatus === "active" ? "inactive" : "active";
-  
-    // await fetch(`http://localhost:3001/users/${userId}`, {
-    //   method: "PATCH",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ status: newStatus }),
-    // });
-  
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, { status: newStatus });
   
@@ -254,13 +252,7 @@ useEffect(() => {
   
   const handleSubmit = async (workspace) => {
     try {
-      // const response = await fetch("http://localhost:3001/workspaces", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(workspace),
-      // });
-      // const added = await response.json();
-  
+    
       const docRef = await addDoc(collection(db, "workspaces"), workspace);
       const added = { id: docRef.id, ...workspace };
   
@@ -471,7 +463,7 @@ useEffect(() => {
               <button onClick={() => openProjectModal(ws.id)}>+ Create Project</button>
 
               <button onClick={() => confirmDeleteWorkspace(ws)} className={styles.deleteButton}>
-                🗑️ 
+                🗑️
               </button>
             </li>
           ))}
@@ -542,13 +534,17 @@ useEffect(() => {
         <ul>
           {sortedUsers.map((u) => (
             <li key={u.id}>
-              {u.name} ({u.email}) – {u.role} – {u.status}
-              <button onClick={() => toggleUserStatus(u.id, u.status)}>
-                {u.status === "active" ? "Deactivate" : "Activate"}
-              </button>
-              <button onClick={() => toggleUserRole(u.id, u.role)}>
-                {u.role === "supervisor" ? "Unmake Supervisor" : "Make Supervisor"}
-              </button>
+              {u.name}({u.email}) – {u.role} – {u.status}
+              {!(u.id === user?.uid && user?.role === "admin") && (
+                <>
+                  <button onClick={() => toggleUserStatus(u.id, u.status)}>
+                    {u.status === "active" ? "Deactivate" : "Activate"}
+                  </button>
+                  <button onClick={() => toggleUserRole(u.id, u.role)}>
+                    {u.role === "supervisor" ? "Unmake Supervisor" : "Make Supervisor"}
+                  </button>
+                </>
+              )}
               <button onClick={() => deleteUser(u.id, u.name)}>🗑️</button>
 
               {showUserDeleteModal && (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // added useNavigate
 import styles from "./WorkspacesList.module.css";
 import WorkspaceModal from "../../../components/WorkspaceModal/WorkspaceModal";
 import { useAuth } from "../../../contexts/AuthContext/AuthContextFirebase";
@@ -10,6 +10,7 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  getDoc, // added getDoc for single doc fetch
 } from "firebase/firestore";
 import { db } from "../../../components/firebaseConfig";
 import SkeletonBlock from "../../../components/SkeletonBlock/SkeletonBlock";
@@ -22,7 +23,15 @@ function WorkspacesList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [workspaceToDelete, setWorkspaceToDelete] = useState(null);
+  
+  // NEW modal state for "not authorized"
+  const [showAccessDeniedModal, setShowAccessDeniedModal] = useState(false);
+
+  // NEW: Store workspace name for modal display
+  const [deniedWorkspaceName, setDeniedWorkspaceName] = useState("");
+
   const { user } = useAuth();
+  const navigate = useNavigate(); // NEW: for programmatic navigation
 
   useEffect(() => {
     const fetchWorkspaces = async () => {
@@ -46,7 +55,6 @@ function WorkspacesList() {
   const handleAddWorkspace = (newWorkspace) => {
     setWorkspaces((prev) => [...prev, newWorkspace]);
   };
-  
 
   const requestDelete = (workspace) => {
     const isAuthorized = user.role === "admin" || user.uid === workspace.ownerId;
@@ -98,6 +106,36 @@ function WorkspacesList() {
     setWorkspaceToDelete(null);
   };
 
+  // NEW function to handle click on workspace link with access check
+  const handleWorkspaceClick = async (e, workspace) => {
+    e.preventDefault();
+
+    try {
+      const workspaceRef = doc(db, "workspaces", workspace.id);
+      const workspaceSnap = await getDoc(workspaceRef);
+
+      if (!workspaceSnap.exists()) {
+        alert("Workspace not found.");
+        return;
+      }
+
+      const workspaceData = workspaceSnap.data();
+
+      // Check if current user is in memberIds array
+      if (workspaceData.memberIds && workspaceData.memberIds.includes(user.uid)) {
+        // User authorized, navigate to workspace
+        navigate(`/workspaces/${workspace.id}`);
+      } else {
+        // Not authorized, show modal
+        setDeniedWorkspaceName(workspace.name);
+        setShowAccessDeniedModal(true);
+      }
+    } catch (err) {
+      console.error("Error checking workspace membership:", err);
+      alert("Error checking workspace membership: " + err.message);
+    }
+  };
+
   const filteredWorkspaces = workspaces.filter((ws) =>
     ws.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -123,8 +161,8 @@ function WorkspacesList() {
       <SkeletonBlock width="60%" height="50px" />
       <SkeletonBlock width="40%" height="20px" />
       <SkeletonBlock width="60%" height="30px" />
-
-    </div>);
+    </div>
+  );
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -164,10 +202,19 @@ function WorkspacesList() {
                   ✖️
                 </button>
               )}
-              <Link to={`/workspaces/${workspace.id}`} className={styles.link}>
+              {/* UPDATED: replaced Link with <a> and onClick handler */}
+              <a
+                href={`/workspaces/${workspace.id}`}
+                className={styles.link}
+                onClick={(e) => handleWorkspaceClick(e, workspace)}
+              >
                 {workspace.name}
-                <p className={styles.description}>{workspace.description}</p>
-              </Link>
+                <p className={styles.description}>
+                  {workspace.description.split(' ').length > 8
+                    ? workspace.description.split(' ').slice(0, 8).join(' ') + '...'
+                    : workspace.description}
+                </p>
+              </a>
             </li>
           ))
         )}
@@ -206,6 +253,21 @@ function WorkspacesList() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* NEW: Access Denied Modal */}
+      {showAccessDeniedModal && (
+        <div className={styles.confirmBackdrop}>
+          <div className={styles.confirmBox}>
+            <p>
+              You’re not part of the workspace <strong>{deniedWorkspaceName}</strong>. <br />
+              Please contact the admin for access.
+            </p>
+            <div className={styles.confirmActions}>
+              <button onClick={() => setShowAccessDeniedModal(false)}>Okay</button>
+            </div>
           </div>
         </div>
       )}

@@ -1,4 +1,6 @@
 // components/LoginForm.jsx
+// when iregister a new member and login in, it doesnt log in until i refresh the page
+//when a registerd member logs in, it should  redirects to the dashboard
 import React, { useState } from "react";
 import styles from "./LoginForm.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";

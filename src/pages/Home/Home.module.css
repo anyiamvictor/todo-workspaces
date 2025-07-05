@@ -7,7 +7,7 @@ margin:1px auto;
     padding: 2rem;
     text-align: center;
     background: #f5f7fa;
-    min-height: 90vh;
+    max-height: 90vh;
     width:fit-content;
     box-shadow: 1px 1px 30px rgba(160, 160, 160, 0.616);
     border-radius: 25px;;
@@ -107,3 +107,7 @@ margin:1px auto;
     color: white;
   }
   
+  
+@media screen and (max-width: 768px) {
+  
+}

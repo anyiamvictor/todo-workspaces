@@ -162,6 +162,8 @@ flex:1;
   text-align: justify;
   word-break: break-all;
   padding: 5px;
+  width:100rem;
+  max-width: 70%;
 
 }
 
