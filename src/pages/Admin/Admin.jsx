@@ -554,7 +554,7 @@ useEffect(() => {
                       {u.status === "active" ? "Deactivate" : "Activate"}
                     </button>
                     <button onClick={() => toggleUserRole(u.id, u.role)}>
-                      {u.role === "supervisor" ? "Unmake" : "Make Sup"}
+                      {u.role === "supervisor" ? "Unmake" : "Make Supervisor"}
                     </button>
                   </>
                 )}
