@@ -53,7 +53,9 @@ const [taskProjectId, setTaskProjectId] = useState(null);
 const [showProjectDeleteModal, setShowProjectDeleteModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
-const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
+  const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+  
   
   
   
@@ -251,16 +253,18 @@ useEffect(() => {
   };
   
   const handleSubmit = async (workspace) => {
+    if (isSubmitting) return ;
+    setIsSubmitting(true);
     try {
     
-      const docRef = await addDoc(collection(db, "workspaces"), workspace);
-      const added = { id: docRef.id, ...workspace };
-  
-      setWorkspaces((prev) => [...prev, added]);
+      setWorkspaces((prev) => [...prev, workspace]);
       setShowModal(false);
+  
     } catch (err) {
       console.error("Error adding workspace:", err.message);
       alert("Error creating workspace: " + err.message);
+    }   finally {
+      setIsSubmitting(false);
     }
   };
   
