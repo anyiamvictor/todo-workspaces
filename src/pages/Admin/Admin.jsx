@@ -24,6 +24,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig"; // adjust if path differs
 import TextSpinner from "../../components/TextSpinner/TextSpinner";
+import MemberDetailsPerformance from "./MemberDetailsPerformance";
+import {motion, AnimatePresence} from "framer-motion"; // Import framer-motion for animations
 
 
 function Admin() {
@@ -54,7 +56,12 @@ const [showProjectDeleteModal, setShowProjectDeleteModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [showTaskDeleteModal, setShowTaskDeleteModal] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPerformanceModal, setShowPerformanceModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [showUsers, setShowUsers] = useState(false);
+
+
   
   
   
@@ -91,7 +98,7 @@ useEffect(() => {
     unsubGroup();
     unsubUsers();
   };
-}, [groupId, user?.uid]);
+}, [groupId, user?.uid ]);
 //next add snap shot for workgroups, task, project 
 
   const fetchGroupData = async () => {
@@ -427,10 +434,14 @@ useEffect(() => {
       )}
 
       <div className={styles.headerRow}>
+       
         <h1 className={styles.adminHeader}>Admin Panel for {group?.name}</h1>
-        <button onClick={() => { logout(); navigate("/auth"); }} className={styles.logoutButton}>
-          Logout
-        </button>
+        <div className={styles.userHeader}>
+          <button onClick={() => { logout(); navigate("/auth"); }} className={styles.logoutButton}>
+            Logout
+          </button>
+          <button>Delete Account</button>
+        </div>
       </div>
 
       <p className={styles.adminWelcome}>Welcome, {user.name}!</p>
@@ -501,6 +512,8 @@ useEffect(() => {
           </div>
         ))}
       </section>
+
+
       {showTaskModal && (
         <AddEditTaskModal
           projectId={taskProjectId}
@@ -529,69 +542,106 @@ useEffect(() => {
           </div>
         </div>
       )}
+
+
+
+
+
       <section className={styles.section}>
         <h2>Manage Users</h2>
-        <ul className={styles.userList}>
-          {sortedUsers.map((u) => (
-            <li className={styles.userCard} key={u.id}>
-              <div className={styles.userDetails}>
-                <p className={styles.userName}><strong>Name:</strong>{u.name}</p>
-                <p className={styles.userEmail}><strong>Email:</strong>{u.email}</p>
-                <p className={styles.userMeta}>
-                  <span className={styles.userRole}><strong>Role:</strong>{u.role}</span> –{" "}
-                  <span className={u.status === "active" ? styles.activeStatus : styles.inactiveStatus}>
-                    {u.status}
-                  </span>
-                </p>
-              </div>
+        <button onClick={() => setShowUsers((prev) => !prev)}>
+          {showUsers ? "Hide Users ▲" : "Show Users ▼"}
+        </button>
 
-              
-              
-              <div className={styles.actions}>
-                {!(u.id === user?.uid && user?.role === "admin") && (
-                  <>
-                    <button onClick={() => toggleUserStatus(u.id, u.status)}>
-                      {u.status === "active" ? "Deactivate" : "Activate"}
-                    </button>
-                    <button onClick={() => toggleUserRole(u.id, u.role)}>
-                      {u.role === "supervisor" ? "Unmake" : "Make Supervisor"}
-                    </button>
-                  </>
-                )}
-                <button onClick={() => deleteUser(u.id, u.name)}>🗑️ Delete</button>
-                <button>Performance</button>
-              </div>
-
-              
-              {/* Online status */}
-              <div className={styles.statusBadge}>
-                <span
-                  className={styles.statusDot}
-                  style={{ backgroundColor: u.isOnline ? "green" : "red" }}
-                ></span>
-                {u.isOnline
-                  ? "Online"
-                  : `Offline – Last seen: ${formatLastSeen(u.lastSeen)}`}
-              </div>
-
-              {showUserDeleteModal && (
-                <div className={styles.modalOverlay}>
-                  <div className={styles.modal}>
-                    <p>
-                      Are you sure you want to delete <strong>{userToDelete?.name}</strong>?
+        <AnimatePresence>
+  {showUsers && (
+    <motion.ul
+      className={styles.userList}
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >{sortedUsers.map((u) => (
+              u.id === user?.uid && user?.role === "admin" ? null : (
+                <li className={styles.userCard} key={u.id}>
+                  <div className={styles.userDetails}>
+                    <span><img
+                      src={u.avatarUrl || "/default-avatar.png"}
+                      alt={`${u.name}'s avatar`}
+                      className={styles.avatar}
+                    /></span>
+                  
+                    <p className={styles.userName}><strong>Name:</strong>{u.name}</p>
+                    <p className={styles.userEmail}><strong>Email:</strong>{u.email}</p>
+                    <p className={styles.userMeta}>
+                      <span className={styles.userRole}><strong>Role:</strong>{u.role}</span> –{" "}
+                      <span className={u.status === "active" ? styles.activeStatus : styles.inactiveStatus}>
+                        {u.status}
+                      </span>
                     </p>
-                    <div className={styles.modalButtons}>
-                      <button onClick={confirmDeleteUser}>Yes, Delete</button>
-                      <button onClick={() => setShowUserDeleteModal(false)}>Cancel</button>
-                    </div>
                   </div>
-                </div>
-              )}
 
-            </li>
+              
+              
+                  <div className={styles.actions}>
+                    <>
+                      <button onClick={() => toggleUserStatus(u.id, u.status)}>
+                        {u.status === "active" ? "Deactivate" : "Activate"}
+                      </button>
+                      <button onClick={() => toggleUserRole(u.id, u.role)}>
+                        {u.role === "supervisor" ? "Unmake Supervisor" : "Make Supervisor"}
+                      </button>
+                      <button onClick={() => deleteUser(u.id, u.name)}>🗑️ Delete User</button>
+                      <button onClick={() => {
+                        setSelectedUserId(u.id);
+                        setShowPerformanceModal(true);
+                      }}>Performance</button>
+                    </>
+                  </div>
+
+              
+                  {/* Online status */}
+                  <div className={styles.statusBadge}>
+                    <span
+                      className={styles.statusDot}
+                      style={{ backgroundColor: u.isOnline ? "green" : "red" }}
+                    ></span>
+                    {u.isOnline
+                      ? "Online"
+                      : `Offline – Last seen: ${formatLastSeen(u.lastSeen)}`}
+                  </div>
+
+                  {showUserDeleteModal && (
+                    <div className={styles.modalOverlay}>
+                      <div className={styles.modal}>
+                        <p>
+                          Are you sure you want to delete <strong>{userToDelete?.name}</strong>?
+                        </p>
+                        <div className={styles.modalButtons}>
+                          <button onClick={confirmDeleteUser}>Yes, Delete</button>
+                          <button onClick={() => setShowUserDeleteModal(false)}>Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                </li>)
             
-          ))}
-        </ul>
+            ))}
+            </motion.ul>
+        )}
+</AnimatePresence>
+        {/* display user details/perfomance */}
+        {showPerformanceModal && selectedUserId && (
+          <MemberDetailsPerformance
+            userId={selectedUserId}
+            onClose={() => {
+              setSelectedUserId(null);
+              setShowPerformanceModal(false);
+            }}
+          />
+        )}
+
       </section>
 
 

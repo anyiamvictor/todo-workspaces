@@ -115,6 +115,8 @@ export default function EditTaskHandler({ projectId, task, onClose, onSuccess })
          // Update user stats
   await updateUserStat(prevAssignedId, "pendingCount", -1);
         await updateUserStat(assignedId, "pendingCount", 1);
+        await updateUserStat(prevAssignedId, "totalAssignedTask", -1);
+        await updateUserStat(assignedId, "totalAssignedTask", 1);
         
         // notifications
         if (assignedId) {

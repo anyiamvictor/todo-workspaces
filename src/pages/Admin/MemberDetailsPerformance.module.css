@@ -1,0 +1,90 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background: white;
+    padding: 2rem;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .contentWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .statsGrid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .chartContainer {
+    flex: 1;
+    max-width: 300px;
+  }
+  
+  .performanceSummary {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    justify-self: center;
+  }
+  
+  .performanceSummary {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  /* Color-coded performance levels */
+  .good {
+    background-color: #e6ffed;
+    color: #218838;
+    border: 1px solid #28a745;
+  }
+  
+  .average {
+    background-color: #fff8e1;
+    color: #b26a00;
+    border: 1px solid #ffc107;
+  }
+  
+  .poor {
+    background-color: #ffe6e6;
+    color: #c82333;
+    border: 1px solid #dc3545;
+  }
+  

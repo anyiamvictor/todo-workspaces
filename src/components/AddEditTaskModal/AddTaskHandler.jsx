@@ -1,6 +1,3 @@
-//totalsAssigned task in the db should be handled herer since me moved task and edit inot new cmponents
-
-
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext/AuthContextFirebase";
 import TaskForm from "./TaskForm";
@@ -9,13 +6,13 @@ import {
   doc,
   getDoc,
   addDoc,
-  updateDoc,
   collection,
   query,
   where,
   getDocs,
 } from "firebase/firestore";
 import { createNotifications } from "../createNotifications";
+import { updateUserStat } from "../StatHandler/";
 
 export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
   const { user } = useAuth();
@@ -32,8 +29,7 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
   const [projectCreatedAt, setProjectCreatedAt] = useState("");
   const [projectEndDate, setProjectEndDate] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  
-
+  const [errorMsg, setErrorMsg] = useState(""); // ✅ Error state
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -63,6 +59,14 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
     loadUsers();
   }, [user.groupId]);
 
+  // ✅ Auto-dismiss error message after 5 seconds
+  useEffect(() => {
+    if (errorMsg) {
+      const timer = setTimeout(() => setErrorMsg(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -76,20 +80,22 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
     e.preventDefault();
     if (submitting) return;
     setSubmitting(true);
-  
+
     try {
       const assignedId = formData.assignedTo?.value;
       const due = new Date(formData.dueDate);
-  
+
       if (projectCreatedAt && due < new Date(projectCreatedAt)) {
-        alert("❌ Due date cannot be before project start date.");
+        setErrorMsg("❌ Due date cannot be before project start date.");
+        setSubmitting(false);
         return;
       }
       if (projectEndDate && due > new Date(projectEndDate)) {
-        alert("❌ Due date cannot be after project end date.");
+        setErrorMsg("❌ Due date cannot be after project end date.");
+        setSubmitting(false);
         return;
       }
-  
+
       const payload = {
         ...formData,
         assignedTo: assignedId,
@@ -101,46 +107,57 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
         completedLog: [],
         status: "pending",
       };
-  
-      const taskRef = await addDoc(collection(db, "tasks"), payload);
-  
+
+      await addDoc(collection(db, "tasks"), payload);
+
       if (assignedId) {
         await createNotifications({
           userId: assignedId,
           message: `You have a new task: '${formData.title}'`,
         });
-  
-        const userRef = doc(db, "users", assignedId);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const current = userSnap.data().pendingCount || 0;
-          await updateDoc(userRef, { pendingCount: current + 1 });
-        }
+
+        await updateUserStat(assignedId, "pendingCount", 1);
+        await updateUserStat(assignedId, "totalAssignedTask", 1);
       }
-  
+
       onSuccess();
     } catch (error) {
       console.error("❌ Error creating task:", error);
-      alert("Something went wrong while creating the task.");
+      setErrorMsg("Something went wrong while creating the task. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
-  
-  
 
   return (
-    <TaskForm
-      isEdit={false}
-      formData={formData}
-      groupUsers={groupUsers}
-      projectCreatedAt={projectCreatedAt}
-      projectEndDate={projectEndDate}
-      handleChange={handleChange}
-      handleSelectChange={handleSelectChange}
-      handleSubmit={handleSubmit}
-      onClose={onClose}
-      submitting={submitting}
-    />
+    <>
+      {errorMsg && (
+        <div style={{
+          backgroundColor: "#fdecea",
+          color: "#b71c1c",
+          padding: "12px",
+          borderRadius: "6px",
+          marginBottom: "1rem",
+          border: "1px solid #f44336",
+          fontSize: "0.95rem",
+          fontWeight: 500,
+        }}>
+          {errorMsg}
+        </div>
+      )}
+
+      <TaskForm
+        isEdit={false}
+        formData={formData}
+        groupUsers={groupUsers}
+        projectCreatedAt={projectCreatedAt}
+        projectEndDate={projectEndDate}
+        handleChange={handleChange}
+        handleSelectChange={handleSelectChange}
+        handleSubmit={handleSubmit}
+        onClose={onClose}
+        submitting={submitting}
+      />
+    </>
   );
 }
