@@ -40,7 +40,6 @@
 
 ul {
   list-style: none;
-  padding-left: 1rem;
 }
 
 li {
@@ -50,7 +49,6 @@ li {
 }
 
 button {
-  margin-left: 0.5rem;
   padding: 0.3rem 0.6rem;
   font-size: 0.85rem;
   border: none;
@@ -73,7 +71,7 @@ button:nth-child(3) {
 }
 
 button:nth-child(4) {
-  background-color: #d63031;
+  background-color: #38BDF8 ;
   color: white;
 }
 
@@ -170,4 +168,111 @@ button:nth-child(4) {
 
 .workspaceItem {
   margin-bottom: 1rem;
+}
+
+
+.userList {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+
+}
+
+.userCard {
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease;
+  background-color: #1E293B;
+
+}
+
+.userCard:hover {
+  transform: translateY(-3px);
+}
+
+.userDetails {
+  color:rgb(223, 218, 218);
+text-align: left;
+word-break: break-all;
+padding: 0.5rem 0;
+
+}
+
+.userName {
+  margin: 0;
+  font-size: 0.8rem;
+
+}
+
+.userEmail {
+  margin: 0.1rem 0;
+  font-size: 0.8rem;
+
+}
+
+.userMeta {
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.userRole {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.activeStatus {
+  color: #007bff; /* blue for active */
+  font-weight: 500;
+}
+
+.inactiveStatus {
+  color: #ff8c00; /* orange for inactive */
+  font-weight: 500;
+}
+
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 buttons per row */
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.actions button {
+  padding:0.6rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  border: none;
+  border-radius: 5px;
+  /* background-color: #0bb1f8   ; */
+  /* color: #0F172A ; */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+
+
+.statusBadge {
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #c8c2c2;
+}
+
+.statusDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
 }

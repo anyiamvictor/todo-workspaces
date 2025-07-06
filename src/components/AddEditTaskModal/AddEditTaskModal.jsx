@@ -13,6 +13,8 @@ import {
 } from "firebase/firestore";
 import TaskForm from "./TaskForm";
 import { createNotifications } from "../createNotifications";
+import TextSpinner from "../TextSpinner/TextSpinner";
+
 
 export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
   const { user } = useAuth();
@@ -31,6 +33,7 @@ export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }
   const [groupUsers, setGroupUsers] = useState([]);
   const [projectCreatedAt, setProjectCreatedAt] = useState("");
   const [projectEndDate, setProjectEndDate] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -72,6 +75,7 @@ export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     const assignedId = formData.assignedTo?.value || null;
     const due = new Date(formData.dueDate);
 
@@ -81,6 +85,7 @@ export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }
     }
     if (projectEndDate && due > new Date(projectEndDate)) {
       alert("❌ Due date cannot be after project end date.");
+      setSubmitting(false);
       return;
     }
 
@@ -119,6 +124,8 @@ export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }
     } catch (err) {
       console.error("Error saving task:", err);
       alert("Something went wrong while saving the task.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -133,6 +140,7 @@ export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }
       handleSelectChange={handleSelectChange}
       handleSubmit={handleSubmit}
       onClose={onClose}
+      submitting={submitting}
     />
   );
 }

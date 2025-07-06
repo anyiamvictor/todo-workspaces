@@ -9,7 +9,7 @@ import styles from "./Admin.module.css";
 import WorkspaceModal from "../../components/WorkspaceModal/WorkspaceModal";
 import AddProjectModal from "../../components/AddProjectModal/AddProjectModal";
 import AddEditTaskModal from "../../components/AddEditTaskModal/AddEditTaskModal";
-import TaskForm from "../../components/AddEditTaskModal/TaskForm";
+// import TaskForm from "../s../components/AddEditTaskModal/TaskForm";
 import {
   collection,
   query,
@@ -531,21 +531,48 @@ useEffect(() => {
       )}
       <section className={styles.section}>
         <h2>Manage Users</h2>
-        <ul>
+        <ul className={styles.userList}>
           {sortedUsers.map((u) => (
-            <li key={u.id}>
-              {u.name}({u.email}) – {u.role} – {u.status}
-              {!(u.id === user?.uid && user?.role === "admin") && (
-                <>
-                  <button onClick={() => toggleUserStatus(u.id, u.status)}>
-                    {u.status === "active" ? "Deactivate" : "Activate"}
-                  </button>
-                  <button onClick={() => toggleUserRole(u.id, u.role)}>
-                    {u.role === "supervisor" ? "Unmake Supervisor" : "Make Supervisor"}
-                  </button>
-                </>
-              )}
-              <button onClick={() => deleteUser(u.id, u.name)}>🗑️</button>
+            <li className={styles.userCard} key={u.id}>
+              <div className={styles.userDetails}>
+                <p className={styles.userName}><strong>Name:</strong>{u.name}</p>
+                <p className={styles.userEmail}><strong>Email:</strong>{u.email}</p>
+                <p className={styles.userMeta}>
+                  <span className={styles.userRole}><strong>Role:</strong>{u.role}</span> –{" "}
+                  <span className={u.status === "active" ? styles.activeStatus : styles.inactiveStatus}>
+                    {u.status}
+                  </span>
+                </p>
+              </div>
+
+              
+              
+              <div className={styles.actions}>
+                {!(u.id === user?.uid && user?.role === "admin") && (
+                  <>
+                    <button onClick={() => toggleUserStatus(u.id, u.status)}>
+                      {u.status === "active" ? "Deactivate" : "Activate"}
+                    </button>
+                    <button onClick={() => toggleUserRole(u.id, u.role)}>
+                      {u.role === "supervisor" ? "Unmake" : "Make Sup"}
+                    </button>
+                  </>
+                )}
+                <button onClick={() => deleteUser(u.id, u.name)}>🗑️ Delete</button>
+                <button>Performance</button>
+              </div>
+
+              
+              {/* Online status */}
+              <div className={styles.statusBadge}>
+                <span
+                  className={styles.statusDot}
+                  style={{ backgroundColor: u.isOnline ? "green" : "red" }}
+                ></span>
+                {u.isOnline
+                  ? "Online"
+                  : `Offline – Last seen: ${formatLastSeen(u.lastSeen)}`}
+              </div>
 
               {showUserDeleteModal && (
                 <div className={styles.modalOverlay}>
@@ -561,26 +588,6 @@ useEffect(() => {
                 </div>
               )}
 
-              {/* Online status */}
-              <span
-                style={{
-                  marginLeft: "1rem",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.3rem",
-                }}
-              >
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    backgroundColor: u.isOnline ? "green" : "red",
-                    display: "inline-block",
-                  }}
-                ></span>
-                {u.isOnline ? "Online" : `Offline – Last seen: ${formatLastSeen(u.lastSeen)}`}
-              </span>
             </li>
             
           ))}
