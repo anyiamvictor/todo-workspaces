@@ -191,7 +191,9 @@ useEffect(() => {
     fetchUsersOnly();
   };
   
-
+  // accordeing to firebase authentication, you can only delete the user from the db
+  // but not from the firebase authentication, so we will just delete the user from the db
+  //however to delete from firebase authentication, you need to use the firebase admin sdk with cloud functions
   const deleteUser = async (userId, userName) => {
     setUserToDelete({ id: userId, name: userName });
     setShowUserDeleteModal(true);
@@ -201,9 +203,7 @@ useEffect(() => {
     if (!userToDelete) return;
   
     try {
-      // await fetch(`http://localhost:3001/users/${userToDelete.id}`, {
-      //   method: "DELETE",
-      // });
+    
       await deleteDoc(doc(db, "users", userToDelete.id));
       fetchUsersOnly();
     } catch (err) {
@@ -267,7 +267,6 @@ useEffect(() => {
       setIsSubmitting(false);
     }
   };
-  
 
   const handleProjectSubmit = async (projectData) => {
     try {
@@ -294,8 +293,6 @@ useEffect(() => {
       alert("Could not create project.");
     }
   };
-  
-  
   
   const confirmDeleteWorkspace = (workspace) => {
     setWorkspaceToDelete(workspace);
@@ -346,7 +343,6 @@ useEffect(() => {
       alert("Failed to delete workspace and its children.");
     }
   };
-  
 
   const confirmDeleteProject = (project) => {
     setProjectToDelete(project);
