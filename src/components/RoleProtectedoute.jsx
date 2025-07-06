@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext/AuthContextFirebase";
+import TextSpinner from "./TextSpinner/TextSpinner";
 
 function RoleProtectedRoute({ allowedRoles, children }) {
   const { user, loading } = useAuth();
@@ -8,7 +9,7 @@ function RoleProtectedRoute({ allowedRoles, children }) {
   const { groupId } = useParams(); // ✅ for admin routes
 
   // ⏳ Wait until auth is ready
-  if (loading) return null;
+  if (loading) return <TextSpinner />;
 
   // ❌ Not logged in
   if (!user) {

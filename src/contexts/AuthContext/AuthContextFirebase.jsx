@@ -18,6 +18,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
+import { useLocation } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -27,6 +28,8 @@ export function AuthProvider({ children }) {
   const [pendingGoogleUser, setPendingGoogleUser] = useState(null);
   const [showInvitePrompt, setShowInvitePrompt] = useState(false);
   const navigate = useNavigate();
+const location = useLocation();
+
 
   const SESSION_KEY = "loggedInUser";
 
@@ -147,6 +150,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      window.location.reload();
     } catch (err) {
       console.error("Login failed:", err);
       throw err;
@@ -194,9 +198,10 @@ export function AuthProvider({ children }) {
 
           sessionStorage.setItem(SESSION_KEY, JSON.stringify(dbUser));
           setUser({ ...dbUser, firebaseUser });
-          navigate(dbUser.role === "admin" ? `/admin/${dbUser.groupId}` : "/dashboard", {
-            replace: true,
-          });
+          if (location.pathname === "/auth") navigate(dbUser.role === "admin" ? `/admin/${dbUser.groupId}` : "/dashboard", {
+              replace: true,
+            })
+          
         } catch (err) {
           console.error("User fetch failed:", err);
           await logout();

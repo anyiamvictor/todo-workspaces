@@ -28,12 +28,7 @@ function Authentication() {
   const [bio, setBio] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
-  useEffect(() => {
-    if (user?.groupId) {
-      if (user.role === "admin") navigate(`/admin/${user.groupId}`);
-      else navigate("/dashboard");
-    }
-  }, [user]);
+  
 
   useEffect(() => {
     if (successMsg || error) {
