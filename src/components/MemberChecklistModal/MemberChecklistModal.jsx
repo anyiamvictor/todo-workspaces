@@ -59,23 +59,26 @@ function MemberChecklistModal({ members, selected, onChange, onClose, ownerId })
         </div>
 
         <ul className={styles.memberList}>
-          {filteredMembers.map((member) => (
-            <li key={member.uid}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={localSelected.includes(member.uid)}
-                  onChange={() => toggleMember(member.uid)}
-                  disabled={member.uid === ownerId}
-                />
-                {member.name}
-                {member.uid === ownerId && (
-                  <span className={styles.ownerNote}> (Creator - cannot be removed)</span>
-                )}
-              </label>
-            </li>
-          ))}
+          {filteredMembers
+            .filter((member) => member.role !== "admin") // Exclude admins
+            .map((member) => (
+              <li key={member.uid}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={localSelected.includes(member.uid)}
+                    onChange={() => toggleMember(member.uid)}
+                    disabled={member.uid === ownerId}
+                  />
+                  {member.name}
+                  {member.uid === ownerId && (
+                    <span className={styles.ownerNote}> (Creator - cannot be removed)</span>
+                  )}
+                </label>
+              </li>
+            ))}
         </ul>
+
 
         <div className={styles.actions}>
           <button onClick={handleSave}>Save</button>

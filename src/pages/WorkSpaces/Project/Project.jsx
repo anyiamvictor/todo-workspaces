@@ -179,7 +179,7 @@ function Project() {
     <div className={styles.projectContainer}>
       {/* <p>Available Tasks:</p> */}
       <div className={styles.bb}>
-      <h3>{projectName || "fetching users name"}</h3>
+      <h3>{projectName || "fetching Project name..."}</h3>
       <BackButton />
 </div> 
       <div className={styles.btns}>
