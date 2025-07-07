@@ -55,7 +55,6 @@ function AddProjectModal({ onClose, onSubmit }) {
               {200 - formData.description.length} characters remaining
             </small>
           </div>
-
           <label>Due Date:</label>
           <input
             type="date"
@@ -63,12 +62,14 @@ function AddProjectModal({ onClose, onSubmit }) {
             value={formData.endDate}
             onChange={handleChange}
             required
+            min={new Date().toISOString().split("T")[0]} // ✅ Prevent past dates
           />
 
+
           <div className={styles.actions}>
-            <button type="submit" disabled={submitting}>{submitting ? <TextSpinner/> : "Save Project"}</button>
+            <button type="submit" disabled={submitting}>{submitting ? <TextSpinner /> : "Save Project"}</button>
             <button type="button" onClick={onClose}>
-              Cancel 
+              Cancel
             </button>
           </div>
         </form>

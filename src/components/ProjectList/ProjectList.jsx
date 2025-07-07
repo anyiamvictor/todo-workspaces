@@ -46,7 +46,8 @@ function ProjectList() {
     const unsubscribeTasks = onSnapshot(
       query(collection(db, "tasks"), where("workspaceId", "==", workspaceId)),
       (snapshot) => {
-        setTasks(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        const loadedTasks = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setTasks(loadedTasks);
       },
       (err) => setError(err.message)
     );
@@ -69,22 +70,6 @@ function ProjectList() {
   const getUserNameById = (uid) => {
     const userObj = users.find((u) => u.uid === uid);
     return userObj ? userObj.name : "Unknown";
-  };
-
-  const getTaskStatsForProject = (projectId) => {
-    const relatedTasks = tasks.filter((task) => task.projectId === projectId);
-    const total = relatedTasks.length;
-    const completed = relatedTasks.filter((task) => task.status === "approved").length;
-    const uncompleted = total - completed;
-    const completedPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-    return {
-      total,
-      completed,
-      uncompleted,
-      completedPercent,
-      uncompletedPercent: 100 - completedPercent,
-    };
   };
 
   const handleDeleteClick = (project) => {
@@ -175,6 +160,21 @@ function ProjectList() {
     return "#38a169";
   };
 
+  const getTaskStatsForProject = (projectId) => {
+    const relatedTasks = tasks.filter((task) => task.projectId === projectId);
+    const total = relatedTasks.length;
+    const completed = relatedTasks.filter((task) => task.status === "approved").length;
+    const uncompleted = total - completed;
+    const completedPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    return {
+      total,
+      completed,
+      uncompleted,
+      completedPercent,
+      uncompletedPercent: 100 - completedPercent,
+    };
+  };
   if (loading) return  <div style={{
     display: "flex",
     flexDirection: "column",
@@ -211,13 +211,12 @@ function ProjectList() {
           return (
             <li
               key={project.id}
-              className={`${styles.projectItem} ${
-                project.status === "completed"
-                  ? styles.completed
-                  : project.status === "pending"
+              className={`${styles.projectItem} ${project.status === "completed"
+                ? styles.completed
+                : project.status === "pending"
                   ? styles.pending
                   : ""
-              }`}
+                }`}
             >
               <Link
                 to={`/workspaces/${workspaceId}/projects/${project.id}`}
@@ -271,34 +270,33 @@ function ProjectList() {
       </ul>
 
       {/* Confirmation Modal */}
-{/* Confirmation Modal */}
-{showModal && (
-  <div className={styles.modalOverlay}>
-    <div className={styles.modal}>
-      <p>
-        {warnIncomplete
-          ? `This project has unapproved tasks. Deleting now won't increase your stats.`
-          : `Are you sure you want to delete "${projectToDelete?.name}" and all its tasks?`}
-      </p>
-      <div className={styles.modalActions}>
-        <button
-          onClick={handleConfirmDelete}
-          className={styles.confirmButton}
-          disabled={deleting}
-        >
-          {deleting ? <TextSpinner/>: "Yes, Delete"}
-        </button>
-        <button
-          onClick={handleCancelDelete}
-          className={styles.cancelButton}
-          disabled={deleting}
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <p>
+              {warnIncomplete
+                ? `This project has unapproved tasks. Deleting now won't increase your stats.`
+                : `Are you sure you want to delete "${projectToDelete?.name}" and all its tasks?`}
+            </p>
+            <div className={styles.modalActions}>
+              <button
+                onClick={handleConfirmDelete}
+                className={styles.confirmButton}
+                disabled={deleting}
+              >
+                {deleting ? <TextSpinner /> : "Yes, Delete"}
+              </button>
+              <button
+                onClick={handleCancelDelete}
+                className={styles.cancelButton}
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
 
       {/* Permission Denied Modal */}

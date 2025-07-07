@@ -23,20 +23,32 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
     dueDate: "",
     status: "pending",
     priority: "medium",
+    workspaceId: "", // ✅ added this
   });
 
   const [groupUsers, setGroupUsers] = useState([]);
   const [projectCreatedAt, setProjectCreatedAt] = useState("");
   const [projectEndDate, setProjectEndDate] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(""); // ✅ Error state
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const fetchProject = async () => {
-      const docSnap = await getDoc(doc(db, "projects", projectId));
-      const data = docSnap.data();
-      setProjectCreatedAt(data.createdAt);
-      setProjectEndDate(data.endDate);
+      try {
+        const docSnap = await getDoc(doc(db, "projects", projectId));
+        const data = docSnap.data();
+        setProjectCreatedAt(data.createdAt);
+        setProjectEndDate(data.endDate);
+
+        // ✅ Store workspaceId in formData
+        setFormData((prev) => ({
+          ...prev,
+          workspaceId: data.workspaceId || "",
+        }));
+      } catch (error) {
+        console.error("Error fetching project:", error);
+        setErrorMsg("Failed to fetch project details.");
+      }
     };
     fetchProject();
   }, [projectId]);
@@ -59,7 +71,6 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
     loadUsers();
   }, [user.groupId]);
 
-  // ✅ Auto-dismiss error message after 5 seconds
   useEffect(() => {
     if (errorMsg) {
       const timer = setTimeout(() => setErrorMsg(""), 5000);
@@ -132,16 +143,18 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
   return (
     <>
       {errorMsg && (
-        <div style={{
-          backgroundColor: "#fdecea",
-          color: "#b71c1c",
-          padding: "12px",
-          borderRadius: "6px",
-          marginBottom: "1rem",
-          border: "1px solid #f44336",
-          fontSize: "0.95rem",
-          fontWeight: 500,
-        }}>
+        <div
+          style={{
+            backgroundColor: "#fdecea",
+            color: "#b71c1c",
+            padding: "12px",
+            borderRadius: "6px",
+            marginBottom: "1rem",
+            border: "1px solid #f44336",
+            fontSize: "0.95rem",
+            fontWeight: 500,
+          }}
+        >
           {errorMsg}
         </div>
       )}

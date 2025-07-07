@@ -13,7 +13,6 @@ import {
 } from "firebase/firestore";
 import TaskForm from "./TaskForm";
 import { createNotifications } from "../createNotifications";
-import TextSpinner from "../TextSpinner/TextSpinner";
 
 
 export default function AddEditTaskModal({ projectId, task, onClose, onSuccess }) {
