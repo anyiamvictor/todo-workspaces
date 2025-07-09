@@ -10,6 +10,8 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isExpanded, setIsExpanded] = useState(false);
 
+  
+
   useEffect(() => {
     const fetchProjectOwner = async () => {
       if (!task.projectId) return;
@@ -75,24 +77,32 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
 
   return (
     <li className={`${styles.taskItem} ${task.status === "approved" ? styles.finalized : ""}`}>
+      <div className={styles.mobileAndTitle}>
+
+      <div className={styles.title}>
+      <h3 >{task.title}</h3>
+      </div>
+      
       <div className={styles.mobileHeader}>
-        <h3 className={styles.title}>{task.title}</h3>
         {isMobile && (
           <button className={styles.toggleButton} onClick={() => setIsExpanded(prev => !prev)}>
             <span style={{ color: !isExpanded && task.status === "approved" ? "gray" : "inherit" }}>
               {isExpanded ? "Hide" : "View"}
             </span>
+            
           </button>
         )}
       </div>
   
+      </div>
+   
       <div
         className={`${styles.taskContentWrapper} ${
           !isMobile || isExpanded ? styles.show : ""
         }`}
       >
         <div className={styles.taskContent}>
-          <div>
+                <div>
             <div className={styles.taskid}>
               <div className={styles.meta}>
                 <span>

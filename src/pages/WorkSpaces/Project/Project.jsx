@@ -177,10 +177,8 @@ function Project() {
 
   return (
     <div className={styles.projectContainer}>
-      {/* <p>Available Tasks:</p> */}
       <div className={styles.bb}>
       <h3>{projectName || "fetching Project name..."}</h3>
-      <BackButton />
 </div> 
       <div className={styles.btns}>
 
@@ -194,7 +192,10 @@ function Project() {
           >
             + Add Task
           </button>
+          
         )}
+      <BackButton />
+
       </div>
 
       
@@ -310,3 +311,5 @@ function Project() {
 }
 
 export default Project;
+// i think we should rename task list becaue it displays list of task but check functionality first.
+// i might need to refactor tis functions into the taskitem component

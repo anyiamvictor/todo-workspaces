@@ -1,27 +1,33 @@
 .taskItem {
   background-color: #fff;
-  border-left: 4px solid #4299e1; /* Blue accent */
+  border-left: 4px solid #4299e1;
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease;
   list-style: none;
-  width:100%;
+  min-height: 220px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
+.mobileAndTitle{
+  display: flex;
+  flex-direction: row ;
+  justify-content: space-between;
+  width: 100%;
+}
 
 .title {
   font-size: 1.1rem;
   font-weight: 600;
   color: #2d3748;
-  margin-bottom: 0.3rem;
-}
-
-.description {
-  font-size: 0.95rem;
-  color: #4a5568;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem 0;
+  padding: 5px;
 }
 
 .meta {
@@ -71,9 +77,10 @@
 
 .taskActions {
   display: flex;
+
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin: 1rem;
 }
 
 .taskActions button {
@@ -90,24 +97,13 @@
   background-color: #e2e8f0;
 }
 
-.taskId{
+.taskId {
   display: flex;
   justify-content: space-between;
 }
 
-/* .taskContent {
-  display: flex;
-}
-
-.taskContentHidden {
-  max-height: 0;
-  opacity: 0;
-  pointer-events: none;
-} */
-
-/* For animating show/hide of taskContent */
 .taskContent {
-  max-height: 1000px; /* big enough to fit content */
+  max-height: 1000px;
   overflow: hidden;
   transition: max-height 0.3s ease, opacity 0.3s ease;
   opacity: 1;
@@ -127,21 +123,7 @@
 }
 
 .taskContentWrapper.show {
-  max-height: 1000px; /* high enough to fit content */
-  opacity: 1;
-}
-
-
-.descriptionwrapper {
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
-  max-height: 0;
-  opacity: 0;
-  justify-self: center;
-}
-
-.expanded {
-  max-height: 200px; /* or whatever fits your content */
+  max-height: 1000px;
   opacity: 1;
 }
 
@@ -150,33 +132,54 @@
   cursor: pointer;
   font-size: 0.9rem;
   color: #4299e1;
-  /* margin: 0.5rem 0; */
-  /* text-align: left; */
+  padding: 10px;
+  margin:10px;
 }
 
-.noteSection{
-margin-left: 7rem;
-flex:1;
-  box-shadow: 4px 4px 40px rgba(128, 128, 128, 0.384);
-  border-radius: 10px;
-  text-align: justify;
-  word-break: break-all;
-  padding: 5px;
-  width:100rem;
-  max-width: 70%;
-
+.noteSection {
+  position: relative;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 0.5rem;
+  max-height: 100px; /* fixed height */
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  transition: box-shadow 0.3s ease;
 }
 
-.noteHeader{
-  display:flex;
-  justify-content: center;
+.noteSection:hover {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.noteHeader {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #4a5568;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.viewNoteButton {
+  background: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: none;
+  margin-top: 0.4rem;
+  cursor: pointer;
+  color: #4299e1;
+  text-decoration: underline;
 }
 
 .finalized {
   opacity: 0.5;
   pointer-events: none;
-  border-left: 7px solid green
-  /* border: 12px ridge green */
+  border-left: 7px solid green;
 }
 
 .priority {
@@ -184,21 +187,22 @@ flex:1;
 }
 
 .priority-high {
-  color: #e53e3e; /* Red */
+  color: #e53e3e;
 }
 
 .priority-medium {
-  color: #dd6b20; /* Orange */
+  color: #dd6b20;
 }
 
 .priority-low {
-  color: #38a169; /* Green */
+  color: #38a169;
 }
 
 .createdDate {
   color: #555;
   font-style: italic;
 }
+
 .disabledButton {
   opacity: 0.5;
   cursor: not-allowed;
@@ -212,73 +216,70 @@ flex:1;
   align-items: center;
 }
 
-/* Show toggle button and title in mobile view */
-
-
-@media screen and (max-width: 1024px) {
-
-  .taskItem{
-padding:0
+/* Mobile responsive adjustments */
+@media screen and (max-width: 760px) { 
+  .taskItem {
+    padding: 0;
+    margin:0;
+    min-height: 90px;
+    justify-content: center;
+    align-items: center;
 
   }
 
-
-.taskContent{
-    width:100%;
+  .taskContent {
+    width: 100%;
     display: flex;
     flex-direction: column;
-  
+    margin:0px !important
+
   }
 
-
-
-  .taskid{
-
+  .taskId {
     display: flex;
     justify-content: space-between;
-    /* align-items: flex-end; */
-    padding:9px;
+    padding: 9px;
+
   }
 
-  
   .meta {
     font-size: 0.75rem;
-  margin-bottom: 0rem;
-  justify-content: space-around;
-
-
-
-  }
-  .taskActions{
-    flex-direction: column;
+    margin: 15px;
     justify-content: space-around;
-    align-items: center;
-    padding:4px;
+  }
 
+  .taskActions {
+    flex-direction: column;
+    width:100%;
+    justify-content:center;
+    align-items: center;
+    padding: 4px;
+    flex-wrap: wrap;
   }
 
   .taskActions button {
     padding: 7px;
-    width:100%
+    width: 80%;
+    font-size: 12px;
   }
 
-  .noteSection{
-    width:100%;
-    margin-left:0%;
-    padding:0;
+  .noteSection {
+    width: 100%;
+    padding: 4px;
     box-shadow: none;
-
+    max-height: 100px;
   }
 
-  .noteSection *{
-    padding:2px;
+  .noteSection * {
+    padding: 2px;
   }
 
   .mobileHeader {
-    display: flex;
+    display: block;
     padding: 0.5rem 1rem;
     background-color: #f7fafc;
     border-bottom: 1px solid #e2e8f0;
+
   }
 
   .toggleButton {
@@ -287,5 +288,21 @@ padding:0
     color: #3182ce !important;
     font-weight: 600;
     cursor: pointer;
+    
   }
+
+  .title {
+    padding: 2px !important;
+    font-size: 0.8rem;
+    text-align: center;
+    margin:0;
+    margin:0px !important
+
   }
+
+  .mobileAndTitle{
+  margin-left: 15px;
+
+  }
+
+}

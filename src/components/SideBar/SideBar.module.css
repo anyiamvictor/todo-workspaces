@@ -1,25 +1,28 @@
 @import url("../../index.css");
 
-
 .sidebarInner {
   display: flex;
   flex-direction: column;
   height: 70%;
-  margin-top:40px;
+  margin-top: 40px;
   background-color: var(--color-bg);
-  box-shadow: 3px 3px 5px var(--color-border);
-  border-radius:40px;
+  box-shadow: 0px 0px 5px var(--color-border);
+  border-radius: 5px;
+  padding: 1rem;
+  align-items: center;
 }
 
 .logo {
   font-size: 10px;
   margin-bottom: 2rem;
-  padding:40px;
-  width:fit-content
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .logo img {
-  width: 200px;
+  width: 160px;
   height: auto;
   display: block;
 }
@@ -27,22 +30,26 @@
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 70%;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
 }
 
 .navLink {
   color: var(--color-text);
   text-decoration: none;
   font-weight: 500;
-  font-size:20px;
+  font-size: 18px;
   padding: 0.5rem 1rem;
   border-radius: 14px;
   transition: background 0.2s ease;
+  width: 90%;
+  text-align: left;
+
 }
 
 .navLink:hover {
-  background-color:var(--color-hover);
+  background-color: var(--color-hover);
   color: var(--color-hover-text);
 }
 
@@ -51,8 +58,24 @@
   font-weight: 600;
 }
 
-
+/* 🌐 Responsive: Mobile Devices */
 @media screen and (max-width: 768px) {
-
-  
+  .sidebarInner {
+    margin-top: 20px;
+    padding: 1rem;
   }
+
+  .logo img {
+    width: 120px;
+  }
+
+  .navLink {
+    font-size: 16px;
+    padding: 0.4rem 0.8rem;
+    width: 100%;
+  }
+
+  .nav {
+    gap: 0.8rem;
+  }
+}

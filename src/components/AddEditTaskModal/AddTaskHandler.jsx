@@ -65,6 +65,7 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
           label: u.name,
           avatarUrl: u.avatarUrl,
           isOnline: u.isOnline,
+          isDisabled: u.role === "supervisor", // Disable if supervisor
         };
       }).filter(Boolean) //filter out any undefined values
       setGroupUsers(formatted);

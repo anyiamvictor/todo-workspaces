@@ -16,17 +16,24 @@ function RootLayout() {
   };
 
   return (
-    <div className={styles.rootContainer}>
+<>
+      <div className={styles.hamSection}>
       {/* Hamburger */}
-      <button
-        className={`${styles.sidebarToggle} ${sidebarOpen ? styles.open : ""}`}
-        onClick={toggleSidebar}
-        aria-label="Toggle sidebar"
-      >
-        <div className={styles.bar}></div>
-        <div className={styles.bar}></div>
-        <div className={styles.bar}></div>
-      </button>
+   <button
+    className={`${styles.sidebarToggle} ${sidebarOpen ? styles.open : ""}`}
+    onClick={toggleSidebar}
+    aria-label="Toggle sidebar"
+  >
+ 
+    <div className={styles.bar}></div>
+    <div className={styles.bar}></div>
+    <div className={styles.bar}></div>
+  </button>
+    </div >
+      
+      
+    <div className={styles.rootContainer}>
+  
 
       <div className={styles.rootLayout}>
         <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
@@ -42,7 +49,7 @@ function RootLayout() {
         <Footer />
       </div>
     </div>
-  );
+ </> );
 }
 
 export default RootLayout;

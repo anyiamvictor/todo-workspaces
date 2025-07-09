@@ -2,7 +2,9 @@
 
 body, html {
   height: 100%;
-  scrollbar-width: 2px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
   margin:0;
   padding:0;
   box-sizing: border-box;
@@ -18,7 +20,9 @@ body, html {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: auto;
+  min-height: 100vh;
+  padding-bottom: 60px; /* or match footer height *
+    overflow: auto;
 background-color: var(--color-bg);
 /* background-color: black; */
 
@@ -53,8 +57,9 @@ background-color: var(--color-bg);
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 1001;
+  z-index: 9999;
 }
+
 
 .bar {
   height: 4px;
@@ -82,6 +87,7 @@ background-color: var(--color-bg);
   min-height: 0;
   margin-bottom: 5rem;
   transition: all 0.3s ease;
+  padding-top: 4rem;
 
 
 }
@@ -110,7 +116,7 @@ background-color: var(--color-bg);
     height: 100%;
     transform: translateX(-100%);
     z-index: 1000;
-    width: 250px;
+    width: 150px;
   }
 
   .sidebar.open {
@@ -119,5 +125,14 @@ background-color: var(--color-bg);
 
   .sidebarToggle {
     display: flex; /* visible only on mobile */
+  }
+  
+.hamSection{
+  width:100%;
+  height: 50px;
+  position: fixed;
+  background-color:#ccc;
+  position: fixed;
+  z-index: 9999;
   }
 }

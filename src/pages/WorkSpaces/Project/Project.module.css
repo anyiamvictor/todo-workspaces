@@ -1,6 +1,6 @@
 .projectContainer {
     padding: 2rem;
-    max-width: 800px;
+    max-width: 1200px;
     margin: auto;
   }
   
@@ -9,8 +9,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* border:1px solid red; */
-  padding:12px
+  padding:12px;
+  text-transform: capitalize;
+
 }
 
 
@@ -25,9 +26,9 @@ font-size: 22px;
     padding: 0.6rem 1rem;
     border: none;
     border-radius: 8px;
-    font-weight: bold;
+    /* font-weight: bold; */
     cursor: pointer;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
     transition: background-color 0.2s ease;
   }
   
@@ -37,14 +38,14 @@ font-size: 22px;
   
   .taskList {
     list-style: none;
-    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.2rem;
   }
   
   .taskItem {
     border: 1px solid #ccc;
     border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
     background-color: #fafafa;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
@@ -166,10 +167,26 @@ gap:10px;
   width: 100px;
 }
 
-.bb h3{
+.bb {
+/* font-size: 17px; */
+}
+
+.addTaskBtn{
+
+  font-size: 13px;
+}
+
+.taskList{
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 
 }
 
+.taskItem{
 
+  padding: 0;
+    margin-bottom: 1rem;
+}
 
 }

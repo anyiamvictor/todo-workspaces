@@ -1,13 +1,21 @@
 @import url("../../index.css");
 .footer {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.9rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 3000 !important;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 3000;
+  height: 60px;
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    font-size: 0.8rem;
+    padding: 0.8rem;
+    height: 50px;
   }
-  
+}
