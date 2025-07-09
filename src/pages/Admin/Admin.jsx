@@ -426,22 +426,20 @@ useEffect(() => {
         </div>
       )}
 
-      <div className={styles.headerRow}>
        
         <h1 className={styles.adminHeader}>Admin Panel for {group?.name}</h1>
-        <div className={styles.userHeader}>
+      <div className={styles.userHeader}>
+      <p className={styles.adminWelcome}>Welcome, {user.name}!</p>
           <button onClick={() => { logout(); navigate("/auth"); }} className={styles.logoutButton}>
             Logout
           </button>
-          <button>Delete Account</button>
         </div>
-      </div>
 
-      <p className={styles.adminWelcome}>Welcome, {user.name}!</p>
 
       <section className={styles.inviteCode}>
         <h2>Group Invite Code</h2>
         <p>This code is required by new users to join your group.</p>
+        <div className={styles.inviteActions}>
         <input
           type="text"
           value={newInviteCode}
@@ -451,6 +449,8 @@ useEffect(() => {
         <button onClick={updateInviteCode} disabled={updatingInviteCode}>
           {updatingInviteCode ? "Updating..." : "Save Invite Code"}
         </button>
+        </div>
+   
       </section>
 
       <section className={styles.section}>
@@ -637,6 +637,7 @@ useEffect(() => {
 
       </section>
 
+      <button>Delete Account</button>
 
     </div>
   );

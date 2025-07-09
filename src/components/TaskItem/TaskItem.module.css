@@ -143,6 +143,7 @@
   padding: 0.5rem;
   max-height: 100px; /* fixed height */
   overflow-y: auto;
+  scrollbar-color: red;
   scroll-behavior: smooth;
   transition: box-shadow 0.3s ease;
 }
@@ -163,6 +164,8 @@
   color: #4a5568;
   line-height: 1.4;
   white-space: pre-wrap;
+  
+
 }
 
 .viewNoteButton {

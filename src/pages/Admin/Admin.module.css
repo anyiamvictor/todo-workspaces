@@ -74,6 +74,10 @@ button:nth-child(4) {
   background-color: #38BDF8 ;
   color: white;
 }
+.inviteActions{
+  display:flex;
+  margin:10px;
+}
 
 .inviteCode input {
   margin-top: 8px;
@@ -85,16 +89,15 @@ button:nth-child(4) {
 }
 .inviteCode button {
   margin-left: 8px;
-  padding: 6px 12px;
+  padding: 6px 10px;
 }
 .logoutButton {
   background-color: #d9534f;
   color: white;
-  padding: 0.4rem 1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-left: auto;
+  padding: .7rem;
 }
 
 .logoutButton:hover {
@@ -112,6 +115,7 @@ button:nth-child(4) {
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+
 }
 
 .statusDot {
@@ -175,8 +179,6 @@ button:nth-child(4) {
   list-style: none;
   padding: 0;
   margin: 2rem 0;
-  /* display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -194,7 +196,9 @@ button:nth-child(4) {
   align-items: center;
   transition: transform 0.2s ease;
   background-color: #1E293B;
- max-width:300px;
+   width: 290px;
+  max-width: 290px;
+
 
 }
 
@@ -210,13 +214,7 @@ padding: 0.5rem 0;
 
 }
 
-.userHeader{
-display: flex;
-justify-content: space-between;
-align-items: center;
-gap:2rem
 
-}
 
 .userName {
   margin: 0;
@@ -253,7 +251,7 @@ gap:2rem
 
 .actions {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 buttons per row */
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
   margin-top: 1rem;
 }
@@ -298,4 +296,126 @@ gap:2rem
 
 .userList {
   overflow: hidden;
+}
+
+.userHeader{
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .adminContainer {
+    padding: 1rem;
+  }
+
+  .adminHeader {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .adminWelcome {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .adminHeaderBar {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .userHeader {
+    gap: 0.5rem;
+  }
+
+  .logoutButton {
+    padding:8px;
+    font-size: 10px;
+  }
+
+  .section {
+    padding: 0.75rem;
+  }
+
+  .section h2,
+  .section h3 {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  .inviteCode h2{
+font-size: 18px;
+  }
+  .inviteCode p{
+    font-size: 15px;
+    text-align: center;
+  }
+  .inviteCode input {
+    width: 50%;
+  }
+
+  .inviteCode button {
+    padding: 2px;
+  }
+
+  .modal {
+    width: 95%;
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .userList {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .userCard {
+    width: 90%;
+    max-width: 90%;
+    padding: 10px;
+  }
+
+  .userDetails {
+    font-size: 0.85rem;
+    text-align: left;
+  }
+
+  .userName,
+  .userEmail,
+  .userMeta {
+    font-size: 0.8rem;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+  }
+
+  .actions {
+    gap: 0.5rem;
+  }
+
+  .actions button {
+    width: 100%;
+    font-size: 0.75rem;
+  }
+
+  .statusBadge {
+    font-size: 0.8rem;
+  }
+
+  .modalButtons button {
+    margin: 0.3rem 0;
+    width: 100%;
+  }
+
+  .workspaceItem,
+  .projectItem,
+  .taskItem {
+    font-size: 0.9rem;
+  }
 }

@@ -135,6 +135,7 @@ function Authentication() {
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 rows={3}
+                maxLength={120}
                 required
               />
               <button type="submit">Join Group</button>

@@ -83,6 +83,16 @@ function WorkspaceModal({ user, onClose, onSubmit }) {
         })
       );
 
+        // ✅ Increment `workspacesCreated` for the creator
+    const creatorRef = doc(db, "users", user.uid);
+    const creatorSnap = await getDoc(creatorRef);
+    if (creatorSnap.exists()) {
+      const currentCreated = creatorSnap.data()?.workspacesCreated || 0;
+      await updateDoc(creatorRef, {
+        workspacesCreated: currentCreated + 1,
+      });
+    }
+
       // Notify selected members
       await Promise.all(
         selectedMemberIds.map((uid) =>

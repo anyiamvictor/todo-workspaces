@@ -148,6 +148,7 @@ function SignupForm({ signup, setError, setInviteError }) {
           value={formData.bio}
           onChange={handleChange}
           rows={3}
+          maxLength={120} 
           required
         />
       </div>

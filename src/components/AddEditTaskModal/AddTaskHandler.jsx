@@ -133,6 +133,13 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
         await updateUserStat(assignedId, "totalAssignedTask", 1);
       }
 
+      //
+      const creatorRef = doc(db, "users", user.uid);
+      const creatorSnap = await getDoc(creatorRef);
+      if (creatorSnap.exists()) {
+        const currentCount = creatorSnap.data()?.tasksCreated || 0;
+        await updateUserStat(user.uid, "tasksCreated", currentCount + 1);
+      }
       onSuccess();
     } catch (error) {
       console.error("❌ Error creating task:", error);
