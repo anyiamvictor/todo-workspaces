@@ -9,18 +9,19 @@
   align-items: center;
   justify-content: center;
   z-index: 20000 !important;
-
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .modalContent {
   background-color: white;
   border-radius: 16px;
-  padding: 2rem;
-  margin-top: 0;
-  width: 40%;
+  padding: 1.5rem;
+  width: 100%;
   max-width: 500px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease-in-out;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
@@ -44,31 +45,45 @@
   display: flex;
   flex-direction: column;
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .form input,
 .form textarea,
 .form select {
-  padding: 0.6rem;
+  padding: 0.5rem;
   border-radius: 8px;
   border: 1px solid #ccc;
   margin-top: 0.3rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+}
+
+.form small {
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+  color: #666;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .actions button {
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.9rem;
   transition: background-color 0.2s ease;
 }
 
@@ -101,9 +116,26 @@
   z-index: 9999;
 }
 
+/* 🌐 Responsive Design for Small Screens */
 @media screen and (max-width: 768px) {
-.modalContent{
-  width:70%
-}
+  .modalContent {
+    padding: 1rem;
+    width: 100%;
+    max-width: 95%;
+  }
 
+  .form input,
+  .form textarea,
+  .form select {
+    font-size: 0.9rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions button {
+    width: 100%;
+  }
 }

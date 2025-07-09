@@ -59,13 +59,14 @@ export default function AddTaskHandler({ projectId, onClose, onSuccess }) {
       const snapshot = await getDocs(q);
       const formatted = snapshot.docs.map((doc) => {
         const u = doc.data();
+        if (u.role === "admin") return ;
         return {
           value: doc.id,
           label: u.name,
           avatarUrl: u.avatarUrl,
           isOnline: u.isOnline,
         };
-      });
+      }).filter(Boolean) //filter out any undefined values
       setGroupUsers(formatted);
     };
     loadUsers();
