@@ -35,10 +35,49 @@ export default function MemberDetailsPerformance({ userId, onClose }) {
     fetchPerformance();
   }, [userId]);
 
-  if (!userId) return null;
+  if (!userId) return <p>No User Data Available Yet</p>;
+  
 
   // Logic to analyze performance
   const performanceSummary = (() => {
+
+
+    if (!userData) return { level: "neutral", message: "User data unavailable." };
+
+    const role = userData?.role || "member"; // Default to member
+  
+    // Supervisor logic
+    if (role === "supervisor") {
+      const workspaceCount = userData?.workSpaceCount || 0;
+      const totalProjects = userData?.totalProjectCompleted || 0;
+  
+      if (workspaceCount === 0 && totalProjects === 0) {
+        return {
+          level: "neutral",
+          message: "🧭 Supervisor has not yet contributed to any workspace or project.",
+        };
+      }
+  
+      if (workspaceCount >= 2 && totalProjects >= 3) {
+        return {
+          level: "good",
+          message: "✅ Supervisor is actively managing workspaces and projects.",
+        };
+      }
+  
+      if (workspaceCount < 1 || totalProjects < 1) {
+        return {
+          level: "poor",
+          message: "⚠️ Supervisor's activity is low. Consider checking in.",
+        };
+      }
+  
+      return {
+        level: "average",
+        message: "🟡 Supervisor is moderately active. There is room to improve.",
+      };
+    }
+    // Member logic    
     const assigned = userData?.totalAssignedTask || 0;
     const completed = userData?.completedCount || 0;
     const rejected = userData?.rejectedCount || 0;
@@ -97,10 +136,6 @@ export default function MemberDetailsPerformance({ userId, onClose }) {
     }
   })();
   
-  
-  
-  
-
   // Chart Data
   const chartData = {
     labels: ["Approved", "Rejected", "Pending", "Completed"],
@@ -119,42 +154,50 @@ export default function MemberDetailsPerformance({ userId, onClose }) {
     ],
   };
 
-    return (
-        <div className={styles.overlay}>
-            <div className={styles.modal}>
-                <h2>User Performance</h2>
-                <button className={styles.closeButton} onClick={onClose}>×</button>
+  return (
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
+        <h2>User Performance</h2>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
 
-                {loading ? (
-                    <TextSpinner />
-                ) : userData ? (
-                    <div className={styles.contentWrapper}>
-                        <div className={styles.statsGrid}>
-                            <p><strong>UID:</strong> {userData.uid}</p>
-                            <p><strong>Bio:</strong> {userData.bio || "N/A"}</p>
-                            <p><strong>Phone:</strong> {userData.phoneNumber || "N/A"}</p>
-                            <p><strong>Approved:</strong> {userData.approvedCount || 0}</p>
-                            <p><strong>Rejected:</strong> {userData.rejectedCount || 0}</p>
-                            <p><strong>Pending:</strong> {userData.pendingCount || 0}</p>
-                            <p><strong>Completed Tasks:</strong> {userData.completedCount || 0}</p>
-                            <p><strong>Assigned Tasks:</strong> {userData.totalAssignedTask || 0}</p>
-                            <p><strong>Completed Projects:</strong> {userData.totalProjectCompleted || 0}</p>
-                            <p><strong>Workspaces:</strong> {userData.workSpaceCount || 0}</p>
+        {loading ? (
+          <TextSpinner />
+        ) : userData ? (
+          <div className={styles.contentWrapper}>
+            <div className={styles.statsGrid}>
+              <p><strong>UID:</strong> {userData.uid}</p>
+              <p><strong>Bio:</strong> {userData.bio || "N/A"}</p>
+              <p><strong>Phone:</strong> {userData.phoneNumber || "N/A"}</p>
+              <p><strong>Approved:</strong> {userData.approvedCount || 0}</p>
+              <p><strong>Rejected:</strong> {userData.rejectedCount || 0}</p>
+              <p><strong>Pending:</strong> {userData.pendingCount || 0}</p>
+              <p><strong>Completed Tasks:</strong> {userData.completedCount || 0}</p>
+              <p><strong>Assigned Tasks:</strong> {userData.totalAssignedTask || 0}</p>
+              <p><strong>Completed Projects:</strong> {userData.totalProjectCompleted || 0}</p>
+              <p><strong>Workspaces:</strong> {userData.workSpaceCount || 0}</p>
 
-                            <p className={`${styles.performanceSummary} ${styles[performanceSummary.level]}`}>
-                                {performanceSummary.message}
-                            </p>
+              <p className={`${styles.performanceSummary} ${styles[performanceSummary.level]}`}>
+                {performanceSummary.message}
+              </p>
 
-                        </div>
-
-                        <div className={styles.chartContainer}>
-                            <Doughnut data={chartData} />
-                        </div>
-                    </div>
-                ) : (
-                    <p>User data not found.</p>
-                )}
             </div>
-        </div>
-    );
+            {userData?.role === "supervisor" ? (
+              <div className={styles.statsGrid}>
+                <p><strong>Workspaces:</strong> {userData.workSpaceCount || 0}</p>
+                <p><strong>Completed Projects:</strong> {userData.totalProjectCompleted || 0}</p>
+                {/* Add more supervisor-specific stats */}
+              </div>
+            ) : (
+              <div className={styles.chartContainer}>
+                <Doughnut data={chartData} />
+              </div>
+            )}
+
+          </div>
+        ) : (
+          <p>User data not found.</p>
+        )}
+      </div>
+    </div>
+  );
 }

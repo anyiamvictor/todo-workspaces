@@ -98,12 +98,6 @@ function Registration() {
         registrationDate: new Date().toISOString().split("T")[0],
       };
 
-      // const groupRes = await fetch("http://localhost:3001/groups", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(newGroup),
-      // });
-      // if (!groupRes.ok) throw new Error("Failed to create group");
 
       await setDoc(doc(db, "groups", newGroupId), newGroup);
 

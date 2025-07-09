@@ -184,14 +184,7 @@ useEffect(() => {
   
 
   const toggleUserRole = async (userId, currentRole) => {
-    const newRole = currentRole === "supervisor" ? "member" : "supervisor";
-  
-    // await fetch(`http://localhost:3001/users/${userId}`, {
-    //   method: "PATCH",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ role: newRole }),
-    // });
-  
+    const newRole = currentRole === "supervisor" ? "member" : "supervisor"; 
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, { role: newRole });
   

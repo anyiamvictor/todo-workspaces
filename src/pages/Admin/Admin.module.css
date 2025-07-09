@@ -175,8 +175,11 @@ button:nth-child(4) {
   list-style: none;
   padding: 0;
   margin: 2rem 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 1.5rem;
 
 }
