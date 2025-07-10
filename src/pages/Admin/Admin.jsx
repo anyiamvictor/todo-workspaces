@@ -26,7 +26,8 @@ import { db } from "../../components/firebaseConfig"; // adjust if path differs
 import TextSpinner from "../../components/TextSpinner/TextSpinner";
 import MemberDetailsPerformance from "./MemberDetailsPerformance";
 import {motion, AnimatePresence} from "framer-motion"; // Import framer-motion for animations
-
+// import { httpsCallable } from "firebase/functions";
+// import { functions } from "./firebase";
 
 function Admin() {
   const { groupId } = useParams();
@@ -60,12 +61,18 @@ const [showProjectDeleteModal, setShowProjectDeleteModal] = useState(false);
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showUsers, setShowUsers] = useState(false);
+  const [showWorkspaces, setShowWorkspaces] = useState(false);
+  const [showProjectsSection, setShowProjectsSection] = useState(true); // Toggle for full section
+const [expandedProjects, setExpandedProjects] = useState({}); // Toggle per project
+
+  
+
+
 
 
   
   
-  
-  
+
 
 
 useEffect(() => {
@@ -191,6 +198,8 @@ useEffect(() => {
     fetchUsersOnly();
   };
   
+  //$ firebase init
+  //$ firebase deploy
   // accordeing to firebase authentication, you can only delete the user from the db
   // but not from the firebase authentication, so we will just delete the user from the db
   //however to delete from firebase authentication, you need to use the firebase admin sdk with cloud functions
@@ -200,12 +209,55 @@ useEffect(() => {
   };
 
   const confirmDeleteUser = async () => {
+    //firebase functions steps
+    //1. in terminal run: npm install -g firebase-tools
+    //2 then login:firebase login
+    //3. then initializ :firebase init functions
+    //4 choose:
+        // Functions
+        // Choose JavaScript (or TypeScript if you're comfortable)
+        // Set up ESLint? → Optional
+        // Install dependencies → Yes
+        // This creates a functions/ folder with index.js and package files.
+
+    
+    //5. enter this in the index.jsfile in a folder automatically created:
+    // const functions = require("firebase-functions");
+    // const admin = require("firebase-admin");
+    // admin.initializeApp();
+    
+    // exports.deleteUserCompletely = functions.https.onCall(async (data, context) => {
+    //   if (!context.auth || context.auth.token.role !== "admin") {
+    //     throw new functions.https.HttpsError("permission-denied", "Only admins can delete users.");
+    //   }
+    
+    //   const { uid } = data;
+    
+    //   try {
+    //     await admin.auth().deleteUser(uid);
+    //     await admin.firestore().collection("users").doc(uid).delete();
+    //     return { success: true };
+    //   } catch (error) {
+    //     console.error("Error deleting user:", error);
+    //     throw new functions.https.HttpsError("internal", "Failed to delete user.");
+    //   }
+    // });
+    
+
     if (!userToDelete) return;
   
     try {
     
+      // const deleteUserFn = httpsCallable(functions, "deleteUserCompletely");
+      // await deleteUserFn({ uid: userToDelete.id });
       await deleteDoc(doc(db, "users", userToDelete.id));
       fetchUsersOnly();
+      return (
+        <div className={styles.deletedUser}>
+          <p>{`User ${userToDelete.name} deleted successfully.`}</p>
+        </div>
+        
+      )
     } catch (err) {
       console.error("Failed to delete user:", err);
       alert("An error occurred while deleting the user.");
@@ -408,6 +460,14 @@ useEffect(() => {
     setShowTaskModal(true);
   };
   
+    
+const toggleProjectVisibility = (projectId) => {
+  setExpandedProjects((prev) => ({
+    ...prev,
+    [projectId]: !prev[projectId],
+  }));
+};
+  
 
   return (
     
@@ -427,83 +487,177 @@ useEffect(() => {
       )}
 
        
-        <h1 className={styles.adminHeader}>Admin Panel for {group?.name}</h1>
+      <h1 className={styles.adminHeader}>Admin Panel for {group?.name}</h1>
       <div className={styles.userHeader}>
-      <p className={styles.adminWelcome}>Welcome, {user.name}!</p>
-          <button onClick={() => { logout(); navigate("/auth"); }} className={styles.logoutButton}>
-            Logout
-          </button>
-        </div>
+        <p className={styles.adminWelcome}>Welcome, {user.name}!</p>
+        <button onClick={() => { logout(); navigate("/auth"); }} className={styles.logoutButton}>
+          Logout
+        </button>
+      </div>
 
 
       <section className={styles.inviteCode}>
         <h2>Group Invite Code</h2>
         <p>This code is required by new users to join your group.</p>
         <div className={styles.inviteActions}>
-        <input
-          type="text"
-          value={newInviteCode}
-          onChange={(e) => setNewInviteCode(e.target.value)}
-          placeholder="Enter invite code"
-        />
-        <button onClick={updateInviteCode} disabled={updatingInviteCode}>
-          {updatingInviteCode ? "Updating..." : "Save Invite Code"}
-        </button>
+          <input
+            type="text"
+            value={newInviteCode}
+            onChange={(e) => setNewInviteCode(e.target.value)}
+            placeholder="Enter invite code"
+          />
+          <button onClick={updateInviteCode} disabled={updatingInviteCode}>
+            {updatingInviteCode ? "Updating..." : "Save Invite Code"}
+          </button>
         </div>
    
       </section>
 
+    
       <section className={styles.section}>
-        <h2>Workspaces</h2>
-        <button onClick={() => setShowModal(true)}>+ Create Workspace</button>
-        {showModal && <WorkspaceModal user={user} onClose={handleClose} onSubmit={handleSubmit} />}
-        {showProjectModal && (<AddProjectModal onClose={() => setShowProjectModal(false)} onSubmit={handleProjectSubmit} defaultData={{ assignedUserIds: [] }} />
+        <h2>Manage Workspaces</h2>
+        <div className={styles.userHeader}>
+          <button onClick={() => setShowWorkspaces(!showWorkspaces)}>
+            {showWorkspaces ? "Hide WorkSpaces ▲" : "Show WorkSpaces ▼"}
+          </button>
+          <button onClick={() => setShowModal(true)}>+ Create Workspace</button>
+        </div>
+
+        {showModal && (
+          <WorkspaceModal user={user} onClose={handleClose} onSubmit={handleSubmit} />
+        )}
+        {showProjectModal && (
+          <AddProjectModal
+            onClose={() => setShowProjectModal(false)}
+            onSubmit={handleProjectSubmit}
+            defaultData={{ assignedUserIds: [] }}
+          />
         )}
 
-        <ul>
-          {workspaces.map((ws) => (
-            <li key={ws.id} className={styles.workspaceItem}>
-              <strong>{ws.name}</strong> - {ws.description}
-              <button onClick={() => openProjectModal(ws.id)}>+ Create Project</button>
+        <AnimatePresence>
+          {showWorkspaces && (
+            <motion.ul
+              className={styles.userList}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              {workspaces.map((ws) => (
+                <li key={ws.id} className={`${styles.userCard} ${styles.workspaceCard}`}>
+                  <div className={styles.userDetails}>
+                    <strong>{ws.name}</strong>
+                    <p>{ws.description}</p>
+                  </div>
+                  <div className={styles.actions}>
+                    <button onClick={() => openProjectModal(ws.id)}>+ Create Project</button>
+                    <button
+                      onClick={() => confirmDeleteWorkspace(ws)}
+                      className={styles.deleteButton}
+                    >
+                      🗑️ Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </motion.ul>
 
-              <button onClick={() => confirmDeleteWorkspace(ws)} className={styles.deleteButton}>
-                🗑️
-              </button>
-            </li>
-          ))}
-        </ul>
-
+          )}
+        </AnimatePresence>
+          
       </section>
 
       
       <section className={styles.section}>
-        <h2>Projects & Tasks</h2>
-        {workspaces.map((ws) => (
-          <div key={ws.id}>
-            <h3>{ws.name}</h3>
-            <ul>
-              {projects
-                .filter((p) => p.workspaceId === ws.id)
-                .map((p) => (
-                  <li key={p.id}>
-                    <strong>📁 {p.name}</strong> – {p.description} [{p.status}] <button onClick={() => openAddTaskModal(p.id)}>+ Add Task</button>
-                    <button onClick={() => confirmDeleteProject(p)}> 🗑️ </button>
-                    <ul>
-                      {tasks
-                        .filter((t) => t.projectId === p.id)
-                        .map((t) => (
-                          <li key={t.id}>
-                            📝 <strong>{t.title}</strong> – {t.status} – {t.priority}
-                            <button onClick={() => openEditTaskModal(t)}>Edit</button>
-                            <button onClick={() => confirmDeleteTask(t)}>🗑️</button>
+        <h2>Manage Projects & Tasks</h2>
+        <div className={styles.userHeader}>
+          <button onClick={() => setShowProjectsSection((prev) => !prev)}>
+            {showProjectsSection ? "Hide Projects ▲" : "Show Projects ▼"}
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {showProjectsSection && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              {workspaces.map((ws) => (
+                <div key={ws.id} className={styles.workspaceWrapper}>
+                  <ul>
+                    <h3>{ws.name}</h3>
+                    {projects
+                      .filter((p) => p.workspaceId === ws.id)
+                      .map((p) => {
+                        const isOpen = expandedProjects[p.id];
+                        return (
+                          <li key={p.id} className={styles.projectItem}>
+                            <div className={styles.projectHeader}>
+
+                              <div>
+
+                                <p className={styles.projectName}>📁 <strong>{p.name}</strong></p>
+                                <p className={styles.projectDescription}>{p.description}</p>
+                                <p className={`${styles.statusTag} ${styles[p.status.toLowerCase()]}`}>
+                                  {p.status}
+                                </p>
+                              </div>
+
+                              <button onClick={() => toggleProjectVisibility(p.id)}>
+                                {isOpen ? "Hide Tasks" : "Show Tasks"}
+                              </button>
+                              <button onClick={() => openAddTaskModal(p.id)}>+ Add Task</button>
+                              <button onClick={() => confirmDeleteProject(p)}>🗑️ Delete</button>
+                              </div>
+                            
+                              
+
+                            <AnimatePresence>
+                              {isOpen && (
+                                <motion.ul
+                                  className={styles.taskInProject}
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.4 }}
+                                >
+                                  {tasks
+                                    .filter((t) => t.projectId === p.id)
+                                    .map((t) => (
+                                      <li key={t.id}>
+                                        <div className={styles.taskItem}>
+                                          <div>
+                                          <p className={styles.taskTitle}>📝 <strong>{t.title}</strong></p>
+                                          <p className={styles.taskTitle}><strong>{t.description}</strong></p>
+
+                                          <div className={styles.taskMeta}>
+                                            <span className={`${styles.statusTag} ${styles[t.status.toLowerCase()]}`}>{t.status}</span>
+                                            <span className={styles.priority}>{t.priority}</span>
+                                          </div>
+                                          </div>
+                                          <div className={styles.taskItems}>
+                                        <button onClick={() => openEditTaskModal(t)}>Edit</button>
+                                        <button onClick={() => confirmDeleteTask(t)}>Delete🗑️</button>
+
+                                          </div>
+                                        </div>
+
+                                      </li>
+                                    ))}
+                                </motion.ul>
+                              )}
+                            </AnimatePresence>
                           </li>
-                        ))}
-                    </ul>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        ))}
+                        );
+                      })}
+                  </ul>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
 
@@ -536,10 +690,6 @@ useEffect(() => {
         </div>
       )}
 
-
-
-
-
       <section className={styles.section}>
         <h2>Manage Users</h2>
         <button onClick={() => setShowUsers((prev) => !prev)}>
@@ -547,14 +697,14 @@ useEffect(() => {
         </button>
 
         <AnimatePresence>
-  {showUsers && (
-    <motion.ul
-      className={styles.userList}
-      initial={{ height: 0, opacity: 0 }}
-      animate={{ height: "auto", opacity: 1 }}
-      exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeInOut" }}
-    >{sortedUsers.map((u) => (
+          {showUsers && (
+            <motion.ul
+              className={styles.userList}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >{sortedUsers.map((u) => (
               u.id === user?.uid && user?.role === "admin" ? null : (
                 <li className={styles.userCard} key={u.id}>
                   <div className={styles.userDetails}>
@@ -622,8 +772,8 @@ useEffect(() => {
             
             ))}
             </motion.ul>
-        )}
-</AnimatePresence>
+          )}
+        </AnimatePresence>
         {/* display user details/perfomance */}
         {showPerformanceModal && selectedUserId && (
           <MemberDetailsPerformance
@@ -637,7 +787,7 @@ useEffect(() => {
 
       </section>
 
-      <button>Delete Account</button>
+      <button className={styles.deleteAccount}>Delete Account</button>
 
     </div>
   );

@@ -18,11 +18,12 @@
 }
 
 .section {
-  margin-bottom: 2rem;
+  margin: 2rem auto;
   padding: 1rem;
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 6px;
+  width:70%
 }
 
 .section h2 {
@@ -54,6 +55,10 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  background-color: #398dce;
+  color:#ffffff;
+  font-weight: 600;
+
 }
 
 button:hover {
@@ -174,6 +179,39 @@ button:nth-child(4) {
   margin-bottom: 1rem;
 }
 
+.workspaceCard {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  max-width: 240px;
+  width: 100%;
+  transition: transform 0.2s ease;
+  word-wrap: break-word;
+}
+
+.workspaceCard:hover {
+  transform: translateY(-2px);
+}
+
+.workspaceCard .userDetails {
+  color: white;
+  text-align: left;
+  padding: 0;
+}
+
+.workspaceCard .actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.workspaceCard .actions button {
+  flex: 1;
+  font-size: 0.75rem;
+}
+
 
 .userList {
   list-style: none;
@@ -196,8 +234,8 @@ button:nth-child(4) {
   align-items: center;
   transition: transform 0.2s ease;
   background-color: #1E293B;
-   width: 290px;
-  max-width: 290px;
+   width: 220px;
+  max-width: 220px;
 
 
 }
@@ -275,7 +313,7 @@ padding: 0.5rem 0;
   margin-top: 0.6rem;
   display: flex;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: .6rem;
   color: #c8c2c2;
 }
 
@@ -300,12 +338,167 @@ padding: 0.5rem 0;
 
 .userHeader{
 display: flex;
-justify-content: space-between;
+justify-content:space-around;
 align-items: center;
 
 }
 
+.projectHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  text-transform: capitalize;
+}
 
+.projectHeader > div {
+  flex: 1;
+  min-width: 220px;
+}
+
+.taskInProject {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+
+.projectName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.projectDescription {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-style: italic;
+  margin-bottom: 0.25rem;
+}
+
+.taskItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  word-wrap: break-word;
+  gap:20px;
+  background-color: #fff;
+  box-shadow: 0 0 9px rgba(185, 182, 182, 0.925);
+  border-radius: 6px;
+  padding:  1.75rem;
+  margin: 0.5rem ;
+  width: 300px;
+  height: fit-content;
+
+  
+
+}
+
+.taskItems{
+  display: flex;
+}
+.taskTitle {
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.taskMeta {
+  gap: 1rem;
+  /* margin-top: 0.2rem; */
+
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.priority {
+    background-color: #fcd34d;
+    color: #333;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }/* Yellow for priority */
+
+.statusTag {
+  font-weight: 500;
+  /* padding: 2px 6px; */
+  border-radius: 4px;
+  text-transform: capitalize;
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: white;
+}
+
+.statusTag.active { background-color: #28a745; }
+.statusTag.pending { background-color: #ff9800; }
+.statusTag.completed { background-color: #2196f3; }
+
+.approved {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.pending {
+  background-color: #fff7ed;
+  color: #92400e;
+}
+
+.rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+.projectHeader button,
+.taskItem button {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #0676f7;
+  color: rgb(255, 255, 255);
+  box-shadow: 0 3px 9px solid gray;
+  cursor: pointer;
+  margin-right: 0.3rem;
+}
+
+.projectHeader button:hover,
+.taskItem button:hover {
+  background-color: #1e80f0;
+  color:rgb(237, 243, 247)
+}
+
+.workspaceWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 100%;
+  background-color: #0f172a;
+  margin:10px auto;
+
+  
+}
+
+/* Project card styling */
+.projectItem {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  background-color: #f9fafb;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  gap: 0.75rem;
+}
+
+.deleteAccount{
+  background-color: rgb(252, 108, 108);
+  color:rgb(34, 0, 0);
+  font-weight: 600;
+}
 
 @media screen and (max-width: 768px) {
   .adminContainer {
@@ -417,5 +610,46 @@ font-size: 18px;
   .projectItem,
   .taskItem {
     font-size: 0.9rem;
+  }
+
+  .workspaceCard {
+    width: 90%;
+    max-width: 90%;
+    padding: 0.8rem;
+  }
+
+  .workspaceCard .actions {
+    flex-direction: column;
+  }
+
+  .workspaceCard .actions button {
+    width: 100%;
+    font-size: 0.75rem;
+  }
+
+  .projectHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .projectName {
+    font-size: 1rem;
+  }
+
+  .projectDescription {
+    font-size: 0.9rem;
+  }
+
+  .taskMeta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .projectItem {
+    padding: 0.75rem;
+  }
+
+  .taskItem {
+    font-size: 0.85rem;
   }
 }
