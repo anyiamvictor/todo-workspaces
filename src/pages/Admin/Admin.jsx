@@ -244,6 +244,7 @@ useEffect(() => {
     // });
 
     //6. run in terminal: firebase deploy --only functions
+    //7 uncommetent the two deleteUserfn and delete the basci delete from database "deleteDoc"
     
 
     if (!userToDelete) return;
