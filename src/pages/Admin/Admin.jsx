@@ -242,6 +242,8 @@ useEffect(() => {
     //     throw new functions.https.HttpsError("internal", "Failed to delete user.");
     //   }
     // });
+
+    //6. run in terminal: firebase deploy --only functions
     
 
     if (!userToDelete) return;
