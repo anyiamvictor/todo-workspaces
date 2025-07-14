@@ -160,13 +160,7 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
                       {task.status === "approved" ? "✅ Finalized" : "👍 Approve"}
                     </button>
   
-                    <button
-                      onClick={() => onReject(task.id)}
-                      disabled={rejectDisabled || task.status !== "completed"}
-                      className={rejectDisabled || task.status !== "completed" ? styles.disabledButton : ""}
-                    >
-                      ❌ Reject
-                    </button>
+                 
   
                     <button
                       onClick={() => onEdit(task)}
@@ -174,6 +168,14 @@ function TaskItem({ task, onDone, onApprove, onReject, onEdit, rejectDisabled })
                       className={task.status === "approved" || task.doneClicked ? styles.disabledButton : ""}
                     >
                       ✏️ Edit
+                    </button>
+
+                       <button
+                      onClick={() => onReject(task.id)}
+                      disabled={rejectDisabled || task.status !== "completed"}
+                      className={rejectDisabled || task.status !== "completed" ? styles.disabledButton : ""}
+                    >
+                      ❌ Reject
                     </button>
                   </>
                 )}

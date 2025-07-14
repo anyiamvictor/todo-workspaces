@@ -10,7 +10,7 @@ import WorkspacesList from "./pages/WorkSpaces/WorkspacesList/WorkspacesList";
 import WorkspaceItem from "./pages/WorkSpaces/WorkspaceItem/WorkspaceItem";
 import WorkspaceLayout from "./components/WorkspaceLayout/WorkspaceLayout";
 import ProjectList from "./components/ProjectList/ProjectList";
-import Project from "./pages/WorkSpaces/Project/Project";
+import ProjectTaskList from "./pages/WorkSpaces/ProjectTaskList/ProjectTaskList";
 // import AddEditTask from "./components/AddEditTaskModal/AddEditTaskModal";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Rootlayout from "./components/Rootlayout/Rootlayout";
@@ -54,7 +54,7 @@ function App() {
             <Route path="/workspaces/:workspaceId" element={<WorkspaceLayout />}>
               <Route index element={<WorkspaceItem />} />
               <Route path="projects" element={<ProjectList />} />
-              <Route path="projects/:projectId" element={<Project />}>
+              <Route path="projects/:projectId" element={<ProjectTaskList />}>
                 <Route path="task/:taskId" element={<TaskItem />} />
                 {/* <Route path="add-task" element={<AddEditTask />} /> */}
               </Route>

@@ -15,7 +15,9 @@ import { db } from "../../components/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { auth } from "../../components/firebaseConfig"; 
 import TextSpinner from "../../components/TextSpinner/TextSpinner"
-
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../../components/firebaseConfig";
+import toast from "react-hot-toast";
 
 // Friendly error messages
 const getFriendlyMessage = (code) => {
@@ -62,8 +64,7 @@ function Registration() {
 
     try {
       // ✅ Check for duplicate email in Firestore
-      // const res = await fetch(`http://localhost:3001/users?email=${form.email}`);
-      // const existing = await res.json();
+    
       const q = query(collection(db, "users"), where("email", "==", form.email));
       const snapshot = await getDocs(q);
       const existing = snapshot.docs.map((doc) => doc.data());
@@ -77,7 +78,7 @@ function Registration() {
       const newGroupId = `g-${crypto.randomUUID()}`;
 
       // ✅ Register admin user
-      const newUser = await signup(form.email, form.password, {
+       const { firebaseUser, savedUser } = await signup(form.email, form.password, {
         name: form.adminName,
         phoneNumber: form.phoneNumber,
         bio: form.bio,
@@ -85,23 +86,22 @@ function Registration() {
         status: "active",
         groupId: newGroupId,
         avatarUrl: "https://randomuser.me/api/portraits/men/7.jpg",
-        isOnline:false
+        isOnline: false
       });
-      await signOut(auth);
-      sessionStorage.clear(); // just in case
+    
 
-      // ✅ Create new group entry in Firestore
+      // Create new group entry in Firestore
       const newGroup = {
         id: newGroupId,
         name: form.companyName,
-        adminId: newUser.uid,
+        adminId: firebaseUser.uid,
         registrationDate: new Date().toISOString().split("T")[0],
       };
 
-
       await setDoc(doc(db, "groups", newGroupId), newGroup);
-
-      alert("Registration successful! Please log in.");
+      toast.success("Registration successful! Please log in.");
+      await signOut(auth);
+      sessionStorage.clear(); // just in case
       navigate("/auth", replace);
 
     } catch (err) {
@@ -163,11 +163,11 @@ function Registration() {
 
         <div className={styles.formGroup}>
           <label>Bio</label>
-          <textarea name="bio" value={form.bio} onChange={handleChange} rows={3} />
+          <textarea name="bio" value={form.bio} onChange={handleChange} rows={3} maxLength={120} />
         </div>
 
         <button type="submit" className={styles.submitBtn} disabled={loading}>
-          {loading ? <TextSpinner/> : "Register Company"}
+          {loading ? <TextSpinner /> : "Register Company"}
         </button>
       </form>
     </div>

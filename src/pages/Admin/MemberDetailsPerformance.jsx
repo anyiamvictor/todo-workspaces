@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { doc,  onSnapshot } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
 import styles from "./MemberDetailsPerformance.module.css";
 import TextSpinner from "../../components/TextSpinner/TextSpinner";
@@ -18,62 +18,143 @@ export default function MemberDetailsPerformance({ userId, onClose }) {
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState(null);
 
+  const formatPhone = (phone) =>
+  phone ? phone.replace(/(\d{3})(\d{3})(\d{4})/, "+$1 $2 $3") : "N/A";
+
+
+  // useEffect(() => {
+  //   const fetchPerformance = async () => {
+  //     try {
+  //       const ref = doc(db, "users", userId);
+  //       const snap = await getDoc(ref);
+  //       if (snap.exists()) {
+  //         const data = snap.data();
+  //         setUserData(data);
+
+  //         if (data.role === "supervisor") {
+  //           setChartData({
+  //             labels: ["Tasks Created", "Completed Projects", "Workspaces Created"],
+  //             datasets: [
+  //               {
+  //                 label: "Supervisor Performance",
+  //                 data: [
+  //                   data.tasksCreated || 0,
+  //                   data.totalProjectsCompleted || 0,
+  //                   data.workspacesCreated || 0,
+  //                 ],
+  //                 backgroundColor: ["#36a2eb", "#4caf50", "#ff9800"],
+  //                 borderWidth: 1,
+  //               },
+  //             ],
+  //           });
+  //         } else {
+  //           setChartData({
+  //             labels: ["Approved", "Rejected", "Pending", "Completed"],
+  //             datasets: [
+  //               {
+  //                 label: "Member Performance",
+  //                 data: [
+  //                   data.approvedCount || 0,
+  //                   data.rejectedCount || 0,
+  //                   data.pendingCount || 0,
+  //                   data.completedCount || 0,
+
+
+  //                 ],
+  //                 backgroundColor: ["#28a745", "#dc3545", "#fd7e14", "#007bff"],
+  //                 borderWidth: 1,
+  //               },
+  //             ],
+  //           });
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching user performance:", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchPerformance();
+  // }, [userId]);
+
   useEffect(() => {
-    const fetchPerformance = async () => {
-      try {
-        const ref = doc(db, "users", userId);
-        const snap = await getDoc(ref);
-        if (snap.exists()) {
-          const data = snap.data();
-          setUserData(data);
+  if (!userId) return;
 
-          if (data.role === "supervisor") {
-            setChartData({
-              labels: ["Tasks Created", "Completed Projects", "Workspaces Created"],
-              datasets: [
-                {
-                  label: "Supervisor Performance",
-                  data: [
-                    data.tasksCreated || 0,
-                    data.totalProjectsCompleted || 0,
-                    data.workspacesCreated || 0,
-                  ],
-                  backgroundColor: ["#36a2eb", "#4caf50", "#ff9800"],
-                  borderWidth: 1,
-                },
+  const ref = doc(db, "users", userId);
+  const unsubscribe = onSnapshot(ref, (snap) => {
+    if (snap.exists()) {
+      const data = snap.data();
+      setUserData(data);
+
+      if (data.role === "supervisor") {
+        setChartData({
+          labels: ["Tasks Created", "Completed Projects", "Workspaces Created"],
+          datasets: [
+            {
+              label: "Supervisor Performance",
+              data: [
+                data.tasksCreated || 0,
+                data.totalProjectsCompleted || 0,
+                data.workspacesCreated || 0,
               ],
-            });
-          } else {
-            setChartData({
-              labels: ["Approved", "Rejected", "Pending", "Completed"],
-              datasets: [
-                {
-                  label: "Member Performance",
-                  data: [
-                    data.approvedCount || 0,
-                    data.rejectedCount || 0,
-                    data.pendingCount || 0,
-                    data.completedCount || 0,
-
-
-                  ],
-                  backgroundColor: ["#28a745", "#dc3545", "#fd7e14", "#007bff"],
-                  borderWidth: 1,
-                },
+              backgroundColor: ["#36a2eb", "#4caf50", "#ff9800"],
+              borderWidth: 1,
+            },
+          ],
+        });
+      } else {
+        setChartData({
+          labels: ["Approved", "Rejected", "Pending", "Completed"],
+          datasets: [
+            {
+              label: "Member Performance",
+              data: [
+                data.approvedCount || 0,
+                data.rejectedCount || 0,
+                data.pendingCount || 0,
+                data.completedCount || 0,
               ],
-            });
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching user performance:", err);
-      } finally {
-        setLoading(false);
+              backgroundColor: ["#28a745", "#dc3545", "#fd7e14", "#007bff"],
+              borderWidth: 1,
+            },
+          ],
+        });
       }
-    };
+    }
+    setLoading(false);
+  }, (err) => {
+    console.error("Error fetching user performance:", err);
+    setLoading(false);
+  });
 
-    fetchPerformance();
-  }, [userId]);
+  return () => unsubscribe();
+}, [userId]);
 
+
+const isEmptyChart = chartData?.datasets?.[0]?.data?.every((val) => val === 0);
+
+
+  useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") onClose();
+  };
+  window.addEventListener("keydown", handleKeyDown);
+  return () => window.removeEventListener("keydown", handleKeyDown);
+}, [onClose]);
+
+  
+  const chartOptions = {
+  animation: {
+    animateScale: true,
+    duration: 1000,
+  },
+  plugins: {
+    legend: { position: "bottom" },
+  },
+};
+
+  
   if (!userId) return <p>No User Data Available Yet</p>;
 
   const performanceSummary = (() => {
@@ -82,7 +163,7 @@ export default function MemberDetailsPerformance({ userId, onClose }) {
 
     if (role === "supervisor") {
       const workspaceCount = userData?.workspacesCreated || 0;
-      const totalProjects = userData?.totalProjectCompleted || 0;
+      const totalProjects = userData?.totalProjectsCompleted || 0;
       const tasksCreated = userData?.tasksCreated || 0;
 
       if (workspaceCount === 0 && totalProjects === 0 && tasksCreated === 0) {
@@ -180,7 +261,7 @@ export default function MemberDetailsPerformance({ userId, onClose }) {
           <div className={styles.contentWrapper}>
             <div className={styles.statsGrid}>
               <p><strong>Name:</strong> {userData.name}</p>
-              <p><strong>Phone:</strong> {userData.phoneNumber || "N/A"}</p>
+              <p><strong>Phone:</strong> {formatPhone(userData.phoneNumber)}</p>
               <p className={styles.bio}><strong>Bio:</strong> {userData.bio || "N/A"}</p>
               {userData.role === "supervisor" ? (
                 <>
@@ -205,8 +286,13 @@ export default function MemberDetailsPerformance({ userId, onClose }) {
               </p>
             </div>
             <div className={styles.chartContainer}>
-              {chartData && <Doughnut data={chartData} />}
-            </div>
+  {chartData && !isEmptyChart ? (
+    <Doughnut data={chartData} options={chartOptions} />
+  ) : (
+    <p className={styles.noChartData}>No performance data available yet.</p>
+  )}
+</div>
+
           </div>
         ) : (
           <p>User data not found.</p>

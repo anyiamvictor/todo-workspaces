@@ -10,6 +10,7 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  onSnapshot,
   getDoc, // added getDoc for single doc fetch
 } from "firebase/firestore";
 import { db } from "../../../components/firebaseConfig";
@@ -33,28 +34,53 @@ function WorkspacesList() {
   const { user } = useAuth();
   const navigate = useNavigate(); // NEW: for programmatic navigation
 
-  useEffect(() => {
-    const fetchWorkspaces = async () => {
-      try {
-        const snapshot = await getDocs(
-          query(collection(db, "workspaces"), where("groupId", "==", user.groupId))
-        );
-        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        setWorkspaces(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchWorkspaces = async () => {
+  //     try {
+  //       const snapshot = await getDocs(
+  //         query(collection(db, "workspaces"), where("groupId", "==", user.groupId))
+  //       );
+  //       const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  //       setWorkspaces(data);
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (user?.groupId) fetchWorkspaces();
-  }, [user?.groupId]);
+  //   if (user?.groupId) fetchWorkspaces();
+  // }, [user?.groupId]);
+
+  useEffect(() => {
+  if (!user?.groupId) return;
+
+  const q = query(collection(db, "workspaces"), where("groupId", "==", user.groupId));
+  const unsubscribe = onSnapshot(
+    q,
+    (snapshot) => {
+      const updatedWorkspaces = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setWorkspaces(updatedWorkspaces);
+      setLoading(false);
+    },
+    (err) => {
+      setError(err.message);
+      setLoading(false);
+    }
+    );
+    
+
+  return () => unsubscribe();
+}, [user?.groupId]);
 
   const handleModalClose = () => setShowModal(false);
-  const handleAddWorkspace = (newWorkspace) => {
-    setWorkspaces((prev) => [...prev, newWorkspace]);
-  };
+
+  // const handleAddWorkspace = (newWorkspace) => {
+  //   setWorkspaces((prev) => [...prev, newWorkspace]);
+  // };
 
   const requestDelete = (workspace) => {
     const isAuthorized = user.role === "admin" || user.uid === workspace.ownerId;
@@ -224,7 +250,8 @@ function WorkspacesList() {
         <WorkspaceModal
           user={user}
           onClose={handleModalClose}
-          onSubmit={handleAddWorkspace}
+          // onSubmit={handleAddWorkspace}
+          onSubmit={() => setShowModal(false)}
         />
       )}
 

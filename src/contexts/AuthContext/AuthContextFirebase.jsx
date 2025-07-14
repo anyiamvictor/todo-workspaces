@@ -19,6 +19,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../components/firebaseConfig";
 import { useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
+
 
 const AuthContext = createContext();
 
@@ -60,8 +62,9 @@ const location = useLocation();
         setShowInvitePrompt(true);
       }
     } catch (error) {
+      toast.error("Google Sign-In failed:", error);
       console.error("Google Sign-In failed:", error);
-      alert("Google login failed. Please try again.");
+      toast.error("Google login failed. Please try again.");
     }
   };
 
@@ -104,6 +107,8 @@ const location = useLocation();
       await logout();
     } catch (error) {
       console.error("Google user registration failed:", error);
+      toast.error("Google user registration failed:", error);
+
       alert(error.message || "Something went wrong. Please try again.");
     }
   };
@@ -111,11 +116,11 @@ const location = useLocation();
   const signup = async (email, password, extraFields = {}) => {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = result.user.uid;
+      const user = result.user;
 
       const isAdmin = extraFields.role === "admin";
       const newUser = {
-        uid,
+          uid: user.uid,
         email,
         name: extraFields.name || "",
         phoneNumber: extraFields.phoneNumber || "",
@@ -136,13 +141,16 @@ const location = useLocation();
         totalProjectsCompleted: 0,
       };
 
-      console.log("✅ Firebase Auth user UID:", uid);
-      await setDoc(doc(db, "users", uid), newUser);
+      console.log("✅ Firebase Auth user UID:", user.uid);
+      await setDoc(doc(db, "users", user.uid), newUser);
       console.log("✅ User saved to Firestore:", newUser);
 
-      return newUser;
+     return { firebaseUser: user, savedUser: newUser };
     } catch (err) {
       console.error("❌ Signup failed:", err.code, err.message);
+      toast.error("❌ Signup failed:", err.code, err.message);
+
+      
       throw err;
     }
   };
@@ -153,6 +161,8 @@ const location = useLocation();
       window.location.reload();
     } catch (err) {
       console.error("Login failed:", err);
+      toast.error("Login failed:", err);
+
       throw err;
     }
   };
@@ -170,6 +180,8 @@ const location = useLocation();
       await signOut(auth);
     } catch (err) {
       console.error("Logout error:", err);
+      toast.error("Logout error:", err);
+
     }
 
     sessionStorage.clear();

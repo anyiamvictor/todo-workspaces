@@ -17,13 +17,19 @@
   color: #555;
 }
 
+.adminHeaderBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .section {
   margin: 2rem auto;
   padding: 1rem;
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 6px;
-  width:70%
+  width: 70%;
 }
 
 .section h2 {
@@ -41,6 +47,7 @@
 
 ul {
   list-style: none;
+  padding: 0;
 }
 
 li {
@@ -56,9 +63,8 @@ button {
   border-radius: 4px;
   cursor: pointer;
   background-color: #398dce;
-  color:#ffffff;
+  color: #ffffff;
   font-weight: 600;
-
 }
 
 button:hover {
@@ -67,7 +73,6 @@ button:hover {
 
 button:nth-child(2) {
   background-color: #0984e3;
-  color: white;
 }
 
 button:nth-child(3) {
@@ -76,43 +81,38 @@ button:nth-child(3) {
 }
 
 button:nth-child(4) {
-  background-color: #38BDF8 ;
-  color: white;
+  background-color: #38bdf8;
 }
-.inviteActions{
-  display:flex;
-  margin:10px;
+
+.inviteActions {
+  display: flex;
+  margin: 10px;
 }
 
 .inviteCode input {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin: 8px 0;
   padding: 6px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 250px;
 }
+
 .inviteCode button {
   margin-left: 8px;
   padding: 6px 10px;
 }
+
 .logoutButton {
   background-color: #d9534f;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  padding: .7rem;
+  padding: 0.7rem;
 }
 
 .logoutButton:hover {
   background-color: #c9302c;
-}
-
-.adminHeaderBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .userItem {
@@ -120,23 +120,22 @@ button:nth-child(4) {
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-
 }
 
 .statusDot {
+  display: inline-block;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  display: inline-block;
   margin-left: 8px;
 }
 
 .online {
-  background-color: #28a745; /* green */
+  background-color: #28a745;
 }
 
 .offline {
-  background-color: #dc3545; /* red */
+  background-color: #dc3545;
 }
 
 .modalOverlay {
@@ -166,11 +165,21 @@ button:nth-child(4) {
   padding: 0.5rem 1rem;
 }
 
+.modalButtons button:first-child {
+  background-color: #ccc;
+  color: #333;
+}
+
+.modalButtons button.deleteAccount {
+  background-color: red;
+  color: white;
+}
+
 .deleteButton {
-  margin-left: 1rem;
-  color: red;
+  /* margin-left: 1rem; */
+  color: white;
+  background-color: red;
   border: none;
-  background: transparent;
   cursor: pointer;
   font-weight: bold;
 }
@@ -179,25 +188,38 @@ button:nth-child(4) {
   margin-bottom: 1rem;
 }
 
+.workspaceWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* ⬅️ This centers children horizontally */
+  gap: 1.5rem;
+  width: 90%;
+  padding:15px;
+  max-width: 90%;
+  background-color: #0f172a;
+  margin: 10px auto;          /* ⬅️ This centers the wrapper itself */
+}
+
+.workspaceWrapper > * {
+  width: 100%;
+  max-width: 100%;
+}
+
+
 .workspaceCard {
   background-color: #ffffff;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
-  max-width: 240px;
+  max-width: 100%;
   width: 100%;
   transition: transform 0.2s ease;
   word-wrap: break-word;
+
 }
 
 .workspaceCard:hover {
   transform: translateY(-2px);
-}
-
-.workspaceCard .userDetails {
-  color: white;
-  text-align: left;
-  padding: 0;
 }
 
 .workspaceCard .actions {
@@ -212,32 +234,24 @@ button:nth-child(4) {
   font-size: 0.75rem;
 }
 
-
 .userList {
-  list-style: none;
-  padding: 0;
-  margin: 2rem 0;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 1.5rem;
-
 }
 
 .userCard {
   border-radius: 10px;
   padding: 1rem;
+  background-color: #1e293b;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  transition: transform 0.2s ease;
-  background-color: #1E293B;
-   width: 220px;
+  width: 220px;
   max-width: 220px;
-
-
+  transition: transform 0.2s ease;
 }
 
 .userCard:hover {
@@ -245,30 +259,24 @@ button:nth-child(4) {
 }
 
 .userDetails {
-  color:rgb(223, 218, 218);
-text-align: left;
-word-break: break-all;
-padding: 0.5rem 0;
-
+  color: rgb(223, 218, 218);
+  text-align: left;
+  word-break: break-word;
+  padding: 0.5rem 0;
 }
 
-
-
-.userName {
-  margin: 0;
-  font-size: 0.8rem;
-
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
 }
 
-.userEmail {
-  margin: 0.1rem 0;
-  font-size: 0.8rem;
-
-}
-
+.userName,
+.userEmail,
 .userMeta {
   font-size: 0.8rem;
-  margin-top: 0.3rem;
 }
 
 .userRole {
@@ -277,15 +285,14 @@ padding: 0.5rem 0;
 }
 
 .activeStatus {
-  color: #4aee0a; /* blue for active */
+  color: #4aee0a;
   font-weight: 500;
 }
 
 .inactiveStatus {
-  color: #ff8c00; /* orange for inactive */
+  color: #ff8c00;
   font-weight: 500;
 }
-
 
 .actions {
   display: grid;
@@ -295,52 +302,26 @@ padding: 0.5rem 0;
 }
 
 .actions button {
-  padding:0.4rem;
-  font-size: 12px ;
+  padding: 0.4rem;
+  font-size: 12px;
   white-space: nowrap;
   border: none;
   border-radius: 5px;
-  /* background-color: #0bb1f8   ; */
-  /* color: #0F172A ; */
   cursor: pointer;
-  transition: background-color 0.3s;
 }
-
-
-
 
 .statusBadge {
   margin-top: 0.6rem;
   display: flex;
   align-items: center;
-  font-size: .6rem;
+  font-size: 0.6rem;
   color: #c8c2c2;
 }
 
-.statusDot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 0.5rem;
-}
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 10px;
-}
-
-.userList {
-  overflow: hidden;
-}
-
-.userHeader{
-display: flex;
-justify-content:space-around;
-align-items: center;
-
+.userHeader {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .projectHeader {
@@ -364,7 +345,6 @@ align-items: center;
   margin-top: 1rem;
 }
 
-
 .projectName {
   font-size: 1rem;
   font-weight: 600;
@@ -379,65 +359,78 @@ align-items: center;
   margin-bottom: 0.25rem;
 }
 
+.projectItem {
+  width: 90%;
+  margin: 10px auto;      /* Centers the project item */
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+
 .taskItem {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  word-wrap: break-word;
-  gap:20px;
+  gap: 20px;
   background-color: #fff;
   box-shadow: 0 0 9px rgba(185, 182, 182, 0.925);
   border-radius: 6px;
-  padding:  1.75rem;
-  margin: 0.5rem ;
+  padding: 1.75rem;
+  margin: 0.5rem;
   width: 300px;
   height: fit-content;
-
-  
-
+  word-wrap: break-word;
 }
 
-.taskItems{
+.taskItems {
   display: flex;
 }
+
 .taskTitle {
   font-size: 0.95rem;
   color: #1e293b;
 }
 
 .taskMeta {
-  gap: 1rem;
-  /* margin-top: 0.2rem; */
-
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
   font-size: 0.8rem;
   margin-top: 0.3rem;
 }
 
 .priority {
-    background-color: #fcd34d;
-    color: #333;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-weight: 500;
-  }/* Yellow for priority */
+  background-color: #fcd34d;
+  color: #333;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
 
 .statusTag {
   font-weight: 500;
-  /* padding: 2px 6px; */
-  border-radius: 4px;
+  border-radius: 6px;
   text-transform: capitalize;
   display: inline-block;
   padding: 0.2rem 0.5rem;
-  border-radius: 6px;
   font-size: 0.75rem;
   color: white;
 }
 
-.statusTag.active { background-color: #28a745; }
-.statusTag.pending { background-color: #ff9800; }
-.statusTag.completed { background-color: #2196f3; }
+.statusTag.active {
+  background-color: #28a745;
+}
+
+.statusTag.pending {
+  background-color: #ff9800;
+}
+
+.statusTag.completed {
+  background-color: #2196f3;
+}
 
 .approved {
   background-color: #dcfce7;
@@ -453,6 +446,7 @@ align-items: center;
   background-color: #fee2e2;
   color: #991b1b;
 }
+
 .projectHeader button,
 .taskItem button {
   font-size: 0.75rem;
@@ -460,7 +454,7 @@ align-items: center;
   border: none;
   border-radius: 5px;
   background-color: #0676f7;
-  color: rgb(255, 255, 255);
+  color: #ffffff;
   box-shadow: 0 3px 9px solid gray;
   cursor: pointer;
   margin-right: 0.3rem;
@@ -469,37 +463,25 @@ align-items: center;
 .projectHeader button:hover,
 .taskItem button:hover {
   background-color: #1e80f0;
-  color:rgb(237, 243, 247)
+  color: #edf3f7;
 }
 
-.workspaceWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  max-width: 100%;
-  background-color: #0f172a;
-  margin:10px auto;
-
-  
-}
-
-/* Project card styling */
-.projectItem {
-  display: flex;
-  flex-direction: column;
-  max-width: 90%;
-  background-color: #f9fafb;
-  border-radius: 10px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-  gap: 0.75rem;
-}
-
-.deleteAccount{
+.deleteAccount {
   background-color: rgb(252, 108, 108);
-  color:rgb(34, 0, 0);
+  color: rgb(34, 0, 0);
   font-weight: 600;
 }
 
+@keyframes popUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 @media screen and (max-width: 768px) {
   .adminContainer {
     padding: 1rem;
@@ -522,16 +504,20 @@ align-items: center;
   }
 
   .userHeader {
+    flex-direction: column;
     gap: 0.5rem;
   }
 
   .logoutButton {
-    padding:8px;
+    padding: 8px;
     font-size: 10px;
   }
 
   .section {
-    padding: 0.75rem;
+    /* padding: 0.75rem; */
+    padding: 0;
+
+    width: 100%;
   }
 
   .section h2,
@@ -539,13 +525,16 @@ align-items: center;
     font-size: 1.1rem;
     text-align: center;
   }
-  .inviteCode h2{
-font-size: 18px;
+
+  .inviteCode h2 {
+    font-size: 18px;
   }
-  .inviteCode p{
+
+  .inviteCode p {
     font-size: 15px;
     text-align: center;
   }
+
   .inviteCode input {
     width: 50%;
   }
@@ -556,30 +545,23 @@ font-size: 18px;
 
   .modal {
     width: 95%;
-    max-width: 95%;
     padding: 1rem;
   }
 
   .userList {
     flex-direction: column;
     gap: 1rem;
+
   }
 
   .userCard {
-    width: 90%;
+    width: 100%;
     max-width: 90%;
-    padding: 10px;
+    padding: 0px;
   }
 
   .userDetails {
     font-size: 0.85rem;
-    text-align: left;
-  }
-
-  .userName,
-  .userEmail,
-  .userMeta {
-    font-size: 0.8rem;
   }
 
   .avatar {
@@ -606,15 +588,8 @@ font-size: 18px;
     width: 100%;
   }
 
-  .workspaceItem,
-  .projectItem,
-  .taskItem {
-    font-size: 0.9rem;
-  }
-
   .workspaceCard {
     width: 90%;
-    max-width: 90%;
     padding: 0.8rem;
   }
 
@@ -641,15 +616,23 @@ font-size: 18px;
   }
 
   .taskMeta {
-    flex-direction: column;
     gap: 0.25rem;
+  }
+  
+  .taskInProject {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.8rem;
   }
 
   .projectItem {
     padding: 0.75rem;
+
   }
 
   .taskItem {
     font-size: 0.85rem;
+    width: inherit;
+    padding: 1rem;
+    /* gap:1px; */
   }
 }

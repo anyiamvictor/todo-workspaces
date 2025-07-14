@@ -1,5 +1,3 @@
-// Something is wrong. when i create a workspce with an account, the second account also have the workspace. 
-// i think it has to do with how the group fetching is done when creating workspace from admin panel
 
 
 import { useParams, Navigate, useNavigate } from "react-router-dom";
@@ -26,8 +24,9 @@ import { db } from "../../components/firebaseConfig"; // adjust if path differs
 import TextSpinner from "../../components/TextSpinner/TextSpinner";
 import MemberDetailsPerformance from "./MemberDetailsPerformance";
 import {motion, AnimatePresence} from "framer-motion"; // Import framer-motion for animations
-// import { httpsCallable } from "firebase/functions";
-// import { functions } from "./firebase";
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../../components/firebaseConfig";
+import toast from 'react-hot-toast';
 
 function Admin() {
   const { groupId } = useParams();
@@ -63,24 +62,36 @@ const [showProjectDeleteModal, setShowProjectDeleteModal] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [showWorkspaces, setShowWorkspaces] = useState(false);
   const [showProjectsSection, setShowProjectsSection] = useState(true); // Toggle for full section
-const [expandedProjects, setExpandedProjects] = useState({}); // Toggle per project
+  const [expandedProjects, setExpandedProjects] = useState({}); // Toggle per project
+  const [deletingUser, setDeletingUser] = useState(false);
+  const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
+const [confirmDeleteText, setConfirmDeleteText] = useState("");
+const [deletingGroup, setDeletingGroup] = useState(false);
+
+const [allProjects, setAllProjects] = useState([]);
+const [allTasks, setAllTasks] = useState([]);
+
+  useEffect(() => {
+  if (!groupId) return;
+
+  const q = query(
+    collection(db, 'workspaces'),
+    where('groupId', '==', groupId)
+  );
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setWorkspaces(data);
+  });
+
+  return () => unsubscribe();
+}, [groupId]);
 
   
-
-
-
-
-  
-  
-
-
-
 useEffect(() => {
   if (!groupId || !user?.uid) return;
 
-  fetchGroupData(); // Initial load for all data once
 
-  // Real-time listeners
   const unsubGroup = onSnapshot(doc(db, "groups", groupId), (docSnap) => {
     if (docSnap.exists()) {
       const groupData = docSnap.data();
@@ -101,60 +112,76 @@ useEffect(() => {
     }
   );
 
+  const unsubProjects = onSnapshot(
+    collection(db, "projects"),
+    (snap) => {
+      const all = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAllProjects(all);
+    },
+    (err) => console.error("Project snapshot error:", err)
+  );
+
+  const unsubTasks = onSnapshot(
+    collection(db, "tasks"),
+    (snap) => {
+      const all = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAllTasks(all);
+    },
+    (err) => console.error("Task snapshot error:", err)
+  );
+
   return () => {
     unsubGroup();
     unsubUsers();
+    unsubProjects();
+    unsubTasks();
   };
-}, [groupId, user?.uid ]);
-//next add snap shot for workgroups, task, project 
+}, [groupId, user?.uid]);
+
+
+useEffect(() => {
+  if (!workspaces.length || !allProjects.length) return;
+
+  const filtered = allProjects.filter((p) =>
+    workspaces.some(ws => ws.id === p.workspaceId)
+  );
+  setProjects(filtered);
+}, [workspaces, allProjects]);
+
+
+useEffect(() => {
+  if (!projects.length || !allTasks.length) return;
+
+  const filtered = allTasks.filter((t) =>
+    projects.some(p => p.id === t.projectId)
+  );
+  setTasks(filtered);
+}, [projects, allTasks]);
+
 
   const fetchGroupData = async () => {
     try {
-      // const groupRes = await fetch(`http://localhost:3001/groups/${groupId}`);
-      // const groupData = await groupRes.json();
-  
       const groupSnap = await getDoc(doc(db, "groups", groupId));
       const groupData = groupSnap.exists() ? groupSnap.data() : null;
-  
+
       if (!groupData || groupData.adminId !== user.uid) {
         setError("Unauthorized or group not found.");
         return;
       }
-  
-      // const [wsRes, usersRes] = await Promise.all([
-      //   fetch(`http://localhost:3001/workspaces?groupId=${groupId}`),
-      //   fetch(`http://localhost:3001/users?groupId=${groupId}`)
-      // ]);
-  
+
       const [wsSnapshot, usersSnapshot] = await Promise.all([
         getDocs(query(collection(db, "workspaces"), where("groupId", "==", groupId))),
         getDocs(query(collection(db, "users"), where("groupId", "==", groupId))),
       ]);
-  
+
       const wsData = wsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       const userData = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  
+
       setGroup(groupData);
       setWorkspaces(wsData);
       setUsers(userData);
       setNewInviteCode(groupData.inviteCode || "");
-  
-      // const projRes = await fetch(`http://localhost:3001/projects`);
-      // const projData = await projRes.json();
-      const allProjectsSnap = await getDocs(collection(db, "projects"));
-      const projData = allProjectsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      const groupProjects = projData.filter(p => wsData.some(ws => ws.id === p.workspaceId));
-      setProjects(groupProjects);
-  
-      // const taskRes = await fetch(`http://localhost:3001/tasks`);
-      // const taskData = await taskRes.json();
-      const allTasksSnap = await getDocs(collection(db, "tasks"));
-      const taskData = allTasksSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      const groupTasks = taskData.filter(t =>
-        groupProjects.some(p => p.id === t.projectId)
-      );
-      setTasks(groupTasks);
-  
+
     } catch (err) {
       console.error(err);
       setError("Something went wrong.");
@@ -162,6 +189,8 @@ useEffect(() => {
       setLoading(false);
     }
   };
+
+  fetchGroupData();
   
 
   const fetchUsersOnly = async () => {
@@ -179,7 +208,7 @@ useEffect(() => {
 
   if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
   if (loading) return  <TextSpinner/>;
-  if (error) return <p>{error}</p>;
+  if (error) return toast.error(`${error.message}`);
 
   const toggleUserStatus = async (userId, currentStatus) => {
     const newStatus = currentStatus === "active" ? "inactive" : "active";
@@ -190,87 +219,82 @@ useEffect(() => {
   };
   
 
+  // const toggleUserRole = async (userId, currentRole) => {
+  //   const newRole = currentRole === "supervisor" ? "member" : "supervisor"; 
+  //   const userRef = doc(db, "users", userId);
+  //   await updateDoc(userRef, { role: newRole });
+  
+  //   fetchUsersOnly();
+  // };
   const toggleUserRole = async (userId, currentRole) => {
-    const newRole = currentRole === "supervisor" ? "member" : "supervisor"; 
-    const userRef = doc(db, "users", userId);
-    await updateDoc(userRef, { role: newRole });
-  
+  const newRole = currentRole === "supervisor" ? "member" : "supervisor";
+
+  const assignRoleFn = httpsCallable(functions, "assignRole");
+  try {
+   await assignRoleFn({ targetUid: userId, newRole });
+    // await updateDoc(doc(db, "users", userId), { role: newRole });
+    toast.success(`Role updated to ${newRole}`);
     fetchUsersOnly();
-  };
-  
-  //$ firebase init
-  //$ firebase deploy
-  // accordeing to firebase authentication, you can only delete the user from the db
-  // but not from the firebase authentication, so we will just delete the user from the db
-  //however to delete from firebase authentication, you need to use the firebase admin sdk with cloud functions
+  } catch (err) {
+    console.error("Failed to assign role:", err);
+    toast.error("Failed to change role. You must be an admin.");
+  }
+};
+ 
+
   const deleteUser = async (userId, userName) => {
     setUserToDelete({ id: userId, name: userName });
     setShowUserDeleteModal(true);
   };
 
   const confirmDeleteUser = async () => {
-    //firebase functions steps
-    //1. in terminal run: npm install -g firebase-tools
-    //2 then login:firebase login
-    //3. then initializ :firebase init functions
-    //4 choose:
-        // Functions
-        // Choose JavaScript (or TypeScript if you're comfortable)
-        // Set up ESLint? → Optional
-        // Install dependencies → Yes
-        // This creates a functions/ folder with index.js and package files.
-
-    
-    //5. enter this in the index.jsfile in a folder automatically created:
-    // const functions = require("firebase-functions");
-    // const admin = require("firebase-admin");
-    // admin.initializeApp();
-    
-    // exports.deleteUserCompletely = functions.https.onCall(async (data, context) => {
-    //   if (!context.auth || context.auth.token.role !== "admin") {
-    //     throw new functions.https.HttpsError("permission-denied", "Only admins can delete users.");
-    //   }
-    
-    //   const { uid } = data;
-    
-    //   try {
-    //     await admin.auth().deleteUser(uid);
-    //     await admin.firestore().collection("users").doc(uid).delete();
-    //     return { success: true };
-    //   } catch (error) {
-    //     console.error("Error deleting user:", error);
-    //     throw new functions.https.HttpsError("internal", "Failed to delete user.");
-    //   }
-    // });
-
-    //6. run in terminal: firebase deploy --only functions
-    //7 uncommetent the two deleteUserfn and delete the basci delete from database "deleteDoc"
-    
+    // deletes user in fire store db and firebase auth
 
     if (!userToDelete) return;
+    setDeletingUser(true);
+    console.log(userToDelete)
   
     try {
     
-      // const deleteUserFn = httpsCallable(functions, "deleteUserCompletely");
-      // await deleteUserFn({ uid: userToDelete.id });
-      await deleteDoc(doc(db, "users", userToDelete.id));
+      const deleteUserFn = httpsCallable(functions, "deleteUserCompletely");
+      await deleteUserFn({ uid: userToDelete.id });
       fetchUsersOnly();
-      return (
-        <div className={styles.deletedUser}>
-          <p>{`User ${userToDelete.name} deleted successfully.`}</p>
-        </div>
+      return   toast.success(`User "${userToDelete.name}" deleted successfully`)
+
         
-      )
     } catch (err) {
       console.error("Failed to delete user:", err);
-      alert("An error occurred while deleting the user.");
+      return   toast.error(`User "${userToDelete.name}" was NOT deleted. An Error Occoured`)
+
     } finally {
       setShowUserDeleteModal(false);
       setUserToDelete(null);
+    setDeletingUser(false);
+
     }
   };
+
+   
   
-  
+const handleGroupDelete = async () => {
+  setDeletingGroup(true);
+  try {
+    const fn = httpsCallable(functions, "deleteGroupCompletely");
+    await fn();
+    toast.success("Group deleted successfully.");
+    await logout();
+    navigate("/auth");
+  } catch (err) {
+    console.error("Group deletion failed:", err);
+    toast.error("Failed to delete group. Please try again.");
+  } finally {
+    setDeletingGroup(false);
+    setConfirmDeleteText(""); // Clear input
+    setShowDeleteGroupModal(false);
+  }
+};
+
+
 
   const updateInviteCode = async () => {
     if (!newInviteCode.trim()) return;
@@ -289,7 +313,8 @@ useEffect(() => {
       setGroup((prev) => ({ ...prev, inviteCode: newInviteCode.trim() }));
     } catch (err) {
       console.error(err);
-      alert("An error occurred while updating the invite code.");
+      toast.error("An error occurred while updating the invite code. Please Try again")
+      // alert("An error occurred while updating the invite code.");
     } finally {
       setUpdatingInviteCode(false);
     }
@@ -317,7 +342,7 @@ useEffect(() => {
   
     } catch (err) {
       console.error("Error adding workspace:", err.message);
-      alert("Error creating workspace: " + err.message);
+      toast.error("Error creating workspace: " + err.message);
     }   finally {
       setIsSubmitting(false);
     }
@@ -345,7 +370,7 @@ useEffect(() => {
       setProjectWorkspaceId(null);
     } catch (err) {
       console.error(err);
-      alert("Could not create project.");
+      toast.error("Could not create project. Please Try again");
     }
   };
   
@@ -395,7 +420,7 @@ useEffect(() => {
       setWorkspaceToDelete(null);
     } catch (err) {
       console.error("Error deleting workspace:", err);
-      alert("Failed to delete workspace and its children.");
+      toast.error("Failed to delete workspace and its children.Try again");
     }
   };
 
@@ -471,6 +496,8 @@ const toggleProjectVisibility = (projectId) => {
   }));
 };
   
+
+
 
   return (
     
@@ -608,12 +635,16 @@ const toggleProjectVisibility = (projectId) => {
                                 </p>
                               </div>
 
-                              <button onClick={() => toggleProjectVisibility(p.id)}>
+                              <div className={styles.projectItemButtons}>
+                                
+                              <button  onClick={() => toggleProjectVisibility(p.id)}>
                                 {isOpen ? "Hide Tasks" : "Show Tasks"}
                               </button>
-                              <button onClick={() => openAddTaskModal(p.id)}>+ Add Task</button>
-                              <button onClick={() => confirmDeleteProject(p)}>🗑️ Delete</button>
+                              <button  onClick={() => openAddTaskModal(p.id)}>+ Add Task</button>
+                                <button onClick={() => confirmDeleteProject(p)}>🗑️ Delete</button>
                               </div>
+                                
+                            </div>
                             
                               
 
@@ -632,17 +663,17 @@ const toggleProjectVisibility = (projectId) => {
                                       <li key={t.id}>
                                         <div className={styles.taskItem}>
                                           <div>
-                                          <p className={styles.taskTitle}>📝 <strong>{t.title}</strong></p>
-                                          <p className={styles.taskTitle}><strong>{t.description}</strong></p>
+                                            <p className={styles.taskTitle}>📝 <strong>{t.title}</strong></p>
+                                            <p className={styles.taskTitle}><strong>{t.description}</strong></p>
 
-                                          <div className={styles.taskMeta}>
-                                            <span className={`${styles.statusTag} ${styles[t.status.toLowerCase()]}`}>{t.status}</span>
-                                            <span className={styles.priority}>{t.priority}</span>
-                                          </div>
+                                            <div className={styles.taskMeta}>
+                                              <span className={`${styles.statusTag} ${styles[t.status.toLowerCase()]}`}>{t.status}</span>
+                                              <span className={styles.priority}>{t.priority}</span>
+                                            </div>
                                           </div>
                                           <div className={styles.taskItems}>
-                                        <button onClick={() => openEditTaskModal(t)}>Edit</button>
-                                        <button onClick={() => confirmDeleteTask(t)}>Delete🗑️</button>
+                                            <button onClick={() => openEditTaskModal(t)}>Edit</button>
+                                            <button onClick={() => confirmDeleteTask(t)}>Delete🗑️</button>
 
                                           </div>
                                         </div>
@@ -663,42 +694,13 @@ const toggleProjectVisibility = (projectId) => {
         </AnimatePresence>
       </section>
 
-
-      {showTaskModal && (
-        <AddEditTaskModal
-          projectId={taskProjectId}
-          task={taskToEdit}
-          onClose={() => setShowTaskModal(false)}
-          onSuccess={handleTaskSuccess}
-        />
-      )}
-
-      {showProjectDeleteModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <p>Are you sure you want to delete project "{projectToDelete?.name}"?</p>
-            <button onClick={handleDeleteProject}>Yes, Delete</button>
-            <button onClick={() => setShowProjectDeleteModal(false)}>Cancel</button>
-          </div>
-        </div>
-      )}
-
-      {showTaskDeleteModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <p>Are you sure you want to delete task "{taskToDelete?.title}"?</p>
-            <button onClick={handleDeleteTask}>Yes, Delete</button>
-            <button onClick={() => setShowTaskDeleteModal(false)}>Cancel</button>
-          </div>
-        </div>
-      )}
-
+      
       <section className={styles.section}>
         <h2>Manage Users</h2>
         <button onClick={() => setShowUsers((prev) => !prev)}>
           {showUsers ? "Hide Users ▲" : "Show Users ▼"}
         </button>
-
+        {deletingUser && <TextSpinner />}
         <AnimatePresence>
           {showUsers && (
             <motion.ul
@@ -757,7 +759,18 @@ const toggleProjectVisibility = (projectId) => {
                       : `Offline – Last seen: ${formatLastSeen(u.lastSeen)}`}
                   </div>
 
-                  {showUserDeleteModal && (
+                
+
+                </li>
+              )
+              
+            
+            ))}
+            </motion.ul>
+            
+          )}
+        </AnimatePresence>
+          {showUserDeleteModal && (
                     <div className={styles.modalOverlay}>
                       <div className={styles.modal}>
                         <p>
@@ -770,13 +783,6 @@ const toggleProjectVisibility = (projectId) => {
                       </div>
                     </div>
                   )}
-
-                </li>)
-            
-            ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
         {/* display user details/perfomance */}
         {showPerformanceModal && selectedUserId && (
           <MemberDetailsPerformance
@@ -790,8 +796,86 @@ const toggleProjectVisibility = (projectId) => {
 
       </section>
 
-      <button className={styles.deleteAccount}>Delete Account</button>
+      {showTaskModal && (
+        <AddEditTaskModal
+          projectId={taskProjectId}
+          task={taskToEdit}
+          onClose={() => setShowTaskModal(false)}
+          onSuccess={handleTaskSuccess}
+        />
+      )}
 
+      {showProjectDeleteModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <p>Are you sure you want to delete project "{projectToDelete?.name}"?</p>
+            <button onClick={handleDeleteProject}>Yes, Delete</button>
+            <button onClick={() => setShowProjectDeleteModal(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {showTaskDeleteModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <p>Are you sure you want to delete task "{taskToDelete?.title}"?</p>
+            <button onClick={handleDeleteTask}>Yes, Delete</button>
+            <button onClick={() => setShowTaskDeleteModal(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+      {showDeleteGroupModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2 style={{ color: "red", marginBottom: "1rem" }}>⚠️ Confirm Group Deletion</h2>
+            <p>
+              This will <strong>permanently delete</strong> your group, all users, workspaces, projects, and tasks.
+              <br /><br />
+              <span style={{ color: "red", fontWeight: "bold" }}>This action cannot be undone.</span>
+            </p>
+
+            <p style={{ marginTop: "1rem", fontSize: "0.85rem", color: "#555" }}>
+              To confirm, type <strong>"DELETE"</strong> below:
+            </p>
+
+            <input
+              type="text"
+              value={confirmDeleteText}
+              onChange={(e) => setConfirmDeleteText(e.target.value)}
+              placeholder='Type "DELETE" to confirm'
+              style={{
+                width: "100%",
+                padding: "0.5rem",
+                marginTop: "0.5rem",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+              }}
+            />
+
+            <div className={styles.modalButtons}>
+              <button onClick={() => setShowDeleteGroupModal(false)} disabled={deletingGroup}>
+                Cancel
+              </button>
+
+              <button
+                className={`${styles.deleteAccount}`}
+                onClick={handleGroupDelete}
+                disabled={confirmDeleteText !== "DELETE" || deletingGroup}
+              >
+                {deletingGroup ? <TextSpinner /> : "Yes, Delete Everything"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <button className={styles.deleteAccount} onClick={() => setShowDeleteGroupModal(true)}>
+        Delete Account
+      </button>
+
+
+   
+   
     </div>
   );
 }

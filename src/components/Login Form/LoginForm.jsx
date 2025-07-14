@@ -25,8 +25,7 @@ function LoginForm({ login, googleSignIn, setError }) {
     setLoading(true);
 
     try {
-      // const res = await fetch(`http://localhost:3001/users?email=${formData.email}`);
-      // const users = await res.json();
+      
       const snapshot = await getDocs(query(collection(db, "users"), where("email", "==", formData.email)));
       const users = snapshot.docs.map(doc =>({id:doc.id, ...doc.data()}))
       if (users.length === 0 || users[0].status !== "active") {

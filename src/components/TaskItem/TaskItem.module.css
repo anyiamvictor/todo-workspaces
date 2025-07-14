@@ -85,6 +85,7 @@
 
 .taskActions button {
   background-color: #edf2f7;
+  color:rgb(44, 43, 43);
   border: none;
   padding: 0.4rem 0.9rem;
   border-radius: 6px;
@@ -96,6 +97,8 @@
 .taskActions button:hover {
   background-color: #e2e8f0;
 }
+
+
 
 .taskId {
   display: flex;

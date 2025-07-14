@@ -9,6 +9,7 @@ import {
   getDocs,
   updateDoc,
   collection,
+  onSnapshot
  
 } from "firebase/firestore";
 import { db } from "../../../components/firebaseConfig";
@@ -22,30 +23,57 @@ function WorkspaceItem() {
   const [showMemberModal, setShowMemberModal] = useState(false);
   const { user } = useAuth();
 
+  // useEffect(() => {
+  //   const fetchWorkspace = async () => {
+  //     try {
+  //       const workspaceSnap = await getDoc(doc(db, "workspaces", workspaceId));
+  //       const usersSnap = await getDocs(collection(db, "users"));
+
+  //       if (!workspaceSnap.exists()) throw new Error("Workspace not found");
+
+  //       const workspaceData = { id: workspaceSnap.id, ...workspaceSnap.data() };
+  //       const usersData = usersSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+  //       setWorkspace(workspaceData);
+  //       setUsers(usersData);
+
+  //       const owner = usersData.find((u) => u.uid === workspaceData.ownerId);
+  //       setOwnerName(owner ? owner.name : "Unknown Owner");
+  //     } catch (err) {
+  //       console.error("Failed to fetch workspace or users:", err);
+  //       setOwnerName("Failed to load owner");
+  //     }
+  //   };
+
+  //   fetchWorkspace();
+  // }, [workspaceId]);
+
+
   useEffect(() => {
-    const fetchWorkspace = async () => {
-      try {
-        const workspaceSnap = await getDoc(doc(db, "workspaces", workspaceId));
-        const usersSnap = await getDocs(collection(db, "users"));
+  if (!workspaceId) return;
 
-        if (!workspaceSnap.exists()) throw new Error("Workspace not found");
+  const workspaceRef = doc(db, "workspaces", workspaceId);
+  const unsubscribe = onSnapshot(workspaceRef, async (workspaceSnap) => {
+    if (!workspaceSnap.exists()) {
+      console.error("Workspace not found.");
+      return;
+    }
 
-        const workspaceData = { id: workspaceSnap.id, ...workspaceSnap.data() };
-        const usersData = usersSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const workspaceData = { id: workspaceSnap.id, ...workspaceSnap.data() };
+    setWorkspace(workspaceData);
 
-        setWorkspace(workspaceData);
-        setUsers(usersData);
+    // Fetch users only once
+    const usersSnap = await getDocs(collection(db, "users"));
+    const usersData = usersSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    setUsers(usersData);
 
-        const owner = usersData.find((u) => u.uid === workspaceData.ownerId);
-        setOwnerName(owner ? owner.name : "Unknown Owner");
-      } catch (err) {
-        console.error("Failed to fetch workspace or users:", err);
-        setOwnerName("Failed to load owner");
-      }
-    };
+    const owner = usersData.find((u) => u.uid === workspaceData.ownerId);
+    setOwnerName(owner ? owner.name : "Unknown Owner");
+  });
 
-    fetchWorkspace();
-  }, [workspaceId]);
+  return () => unsubscribe();
+}, [workspaceId]);
+
 
   const handleUpdateWorkspaceMembers = async (updatedMemberIds) => {
     try {

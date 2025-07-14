@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import styles from "./Project.module.css";
+import styles from "./ProjectTaskList.module.css";
 import AddTaskHandler from "../../../components/AddEditTaskModal/AddTaskHandler";
 import EditTaskHandler from "../../../components/AddEditTaskModal/EditTaskHandler";
 import BackButton from "../../../components/BackButton/BackButton";
@@ -22,7 +22,7 @@ import { updateUserStat } from "../../../components/StatHandler";
 import SkeletonBlock from "../../../components/SkeletonBlock/SkeletonBlock";
 
 
-function Project() {
+function ProjectTaskList() {
   const { projectId } = useParams();
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
@@ -310,6 +310,6 @@ function Project() {
   );
 }
 
-export default Project;
+export default ProjectTaskList;
 // i think we should rename task list becaue it displays list of task but check functionality first.
 // i might need to refactor tis functions into the taskitem component
